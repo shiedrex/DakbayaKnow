@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textView40"
+        android:layout_width="328dp"
+        android:layout_height="60dp"
+        android:fontFamily="@font/nexablack"
+        android:text="Upload Required Documents"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.171" />
+
+    <Button
+        android:id="@+id/checkRequirementsButton"
+        android:layout_width="245dp"
+        android:layout_height="85dp"
+        android:backgroundTint="#FF9800"
+        android:fontFamily="@font/nexablack"
+        android:text="CHECK REQUIREMENTS OF  YOUR DESTINATION ADDRESS"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.783" />
+
+    <TextView
+        android:id="@+id/textView66"
+        android:layout_width="328dp"
+        android:layout_height="150dp"
+        android:fontFamily="@font/nexalight"
+        android:text="ATTENTION! Falsifying of COVID-19 test results is a crime punishable under Republic ACT 11332 or the Mandatory Reporting of Notifiable Diseases and Health Events of Public Health Concern Act which provides for penalties or imprisonment or both fine and imprisonment at the discretion of the court."
+        android:textAlignment="textStart"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.559" />
+
+    <TextView
+        android:id="@+id/textView65"
+        android:layout_width="328dp"
+        android:layout_height="50dp"
+        android:fontFamily="@font/nexalight"
+        android:text="NOTICE! Please upload only the documents as required by your destination LGU."
+        android:textAlignment="textStart"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.493"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.348" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

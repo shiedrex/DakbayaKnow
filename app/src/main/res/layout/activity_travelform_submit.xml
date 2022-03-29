@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/ticket"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/nexablack"
+                android:gravity="center"
+                android:paddingStart="20dp"
+                android:paddingEnd="0dp"
+                android:text="Already have a ticket?"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/ticketConfirm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/nexabold"
+                android:gravity="center"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:text="If YES, kindly click Health Declaration Form button. If NO, kindly click Book Ticket button."
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/bookTicketButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="20dp"
+                android:backgroundTint="#FF9800"
+                android:fontFamily="@font/nexablack"
+                android:text="BOOK TICKET"
+                android:textColorLink="#FFC107" />
+
+            <Button
+                android:id="@+id/HDFButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:backgroundTint="#FF9800"
+                android:fontFamily="@font/nexablack"
+                android:text="Health Declaration Form"
+                android:textColorLink="#FFC107" />
+
+            <Button
+                android:id="@+id/uploadDocxButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="40dp"
+                android:backgroundTint="#FF9800"
+                android:fontFamily="@font/nexablack"
+                android:text="Upload Docx"
+                android:textColorLink="#FFC107" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

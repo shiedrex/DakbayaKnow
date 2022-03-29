@@ -1,0 +1,636 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/travellerInfo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/nexabold"
+                android:maxLines="1"
+                android:paddingStart="10dp"
+                android:paddingEnd="0dp"
+                android:text="Travellers Information"
+                android:textAlignment="center"
+                android:textSize="24sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="240dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/nexalight"
+                    android:hint="Traveller Type"
+                    app:boxStrokeColor="@color/orange"
+                    app:hintTextColor="@color/Orange">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/spinner_travellerType"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/nexalight"
+                        android:inputType="none"
+                        android:text="" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:fontFamily="@font/nexalight"
+                    android:hint="Title"
+                    app:boxStrokeColor="@color/orange"
+                    app:hintTextColor="@color/Orange">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/spinner_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/nexalight"
+                        android:inputType="none"
+                        android:text="" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/nexalight"
+                android:hint="First Name"
+                app:boxStrokeColor="@color/orange"
+                app:endIconMode="clear_text"
+                app:hintTextColor="@color/Orange">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/firstname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nexalight"
+                    android:inputType="text"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/nexalight"
+                android:hint="Middle Initial"
+                app:boxStrokeColor="@color/orange"
+                app:endIconMode="clear_text"
+                app:hintTextColor="@color/Orange">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/middleInitial"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nexalight"
+                    android:inputType="text"
+                    android:maxLines="1"
+                    android:maxLength="1"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/nexalight"
+                android:hint="Last Name"
+                app:boxStrokeColor="@color/orange"
+                app:endIconMode="clear_text"
+                app:hintTextColor="@color/Orange">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/lastname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nexalight"
+                    android:inputType="text"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/nexalight"
+                android:hint="Suffix Name"
+                app:boxStrokeColor="@color/orange"
+                app:endIconMode="clear_text"
+                app:hintTextColor="@color/Orange">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/suffixname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nexalight"
+                    android:inputType="text"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/nexalight"
+                android:hint="Email Address"
+                android:inputType="text"
+                android:maxLines="1"
+                app:boxStrokeColor="@color/orange"
+                app:endIconMode="clear_text"
+                app:hintTextColor="@color/Orange">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/emailAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nexalight"
+                    android:inputType="textEmailAddress"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/nexalight"
+                android:hint="Contact Number"
+                android:inputType="text"
+                android:maxLines="1"
+                app:boxStrokeColor="@color/orange"
+                app:endIconMode="clear_text"
+                app:hintTextColor="@color/Orange">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/contactNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nexalight"
+                    android:inputType="phone"
+                    android:maxLength="11"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/gender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/nexalight"
+                android:paddingStart="10dp"
+                android:paddingEnd="0dp"
+                android:text="Gender"
+                android:textSize="16sp" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RadioButton
+                    android:id="@+id/male"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="20dp"
+                    android:fontFamily="@font/nexalight"
+                    android:text="Male" />
+
+                <RadioButton
+                    android:id="@+id/female"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="20dp"
+                    android:fontFamily="@font/nexalight"
+                    android:text="Female" />
+
+                <RadioButton
+                    android:id="@+id/rather"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="20dp"
+                    android:fontFamily="@font/nexalight"
+                    android:text="Rather not say" />
+            </RadioGroup>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/nexalight"
+                android:hint="Emergency Contact Person"
+                android:inputType="text"
+                android:maxLines="1"
+                app:boxStrokeColor="@color/orange"
+                app:endIconMode="clear_text"
+                app:hintTextColor="@color/Orange">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/emergencyContactPerson"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nexalight"
+                    android:inputType="text"
+                    android:maxLength="100"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/nexalight"
+                android:hint="Emergency Contact Number"
+                android:inputType="text"
+                android:maxLines="1"
+                app:boxStrokeColor="@color/orange"
+                app:endIconMode="clear_text"
+                app:hintTextColor="@color/Orange">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/emergencyContactNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nexalight"
+                    android:inputType="phone"
+                    android:maxLength="11"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/travelDetails"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/nexablack"
+                android:gravity="center"
+                android:paddingStart="20dp"
+                android:paddingEnd="0dp"
+                android:text="Travel Details"
+                android:textSize="24sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/nexabold"
+                android:paddingStart="10dp"
+                android:paddingEnd="0dp"
+                android:text="Current Address"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/nexabold"
+                android:hint="Region"
+                android:paddingStart="10dp"
+                android:paddingEnd="0dp"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/border"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/spinner_cRegion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/nexabold"
+                android:hint="Province"
+                android:paddingStart="10dp"
+                android:paddingEnd="0dp"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="240dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/border"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/spinner_cProvince"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/nexabold"
+                android:hint="Municipality"
+                android:paddingStart="10dp"
+                android:paddingEnd="0dp"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="240dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/border"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/spinner_cMunicipality"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/nexalight"
+                android:hint="House #, Street, Barangay"
+                android:inputType="text"
+                android:maxLines="1"
+                app:boxStrokeColor="@color/orange"
+                app:endIconMode="clear_text"
+                app:hintTextColor="@color/Orange">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/cAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nexalight"
+                    android:inputType="text"
+                    android:maxLength="100"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/nexabold"
+                android:paddingStart="10dp"
+                android:paddingEnd="0dp"
+                android:text="Destination Address"
+                android:textSize="18sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/nexabold"
+                android:hint="Region"
+                android:paddingStart="10dp"
+                android:paddingEnd="0dp"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/border"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/spinner_dRegion"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/nexabold"
+                android:hint="Province"
+                android:paddingStart="10dp"
+                android:paddingEnd="0dp"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="240dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/border"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/spinner_dProvince"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/nexabold"
+                android:hint="Municipality"
+                android:paddingStart="10dp"
+                android:paddingEnd="0dp"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="240dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/border"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <Spinner
+                    android:id="@+id/spinner_dMunicipality"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/nexalight"
+                android:hint="House #, Street, Barangay"
+                android:inputType="text"
+                android:maxLines="1"
+                app:boxStrokeColor="@color/orange"
+                app:endIconMode="clear_text"
+                app:hintTextColor="@color/Orange">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/dAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nexalight"
+                    android:inputType="text"
+                    android:maxLength="100"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/nexalight"
+                android:hint="Departure Date (Double tap to pop calendar)"
+                android:inputType="text"
+                android:maxLines="1"
+                app:boxStrokeColor="@color/orange"
+                app:endIconMode="clear_text"
+                app:hintTextColor="@color/Orange">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/departure"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nexalight"
+                    android:inputType="text"
+                    android:maxLength="15"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/nexalight"
+                android:hint="Arrival Date (Double tap to pop calendar)"
+                android:inputType="text"
+                android:maxLines="1"
+                app:boxStrokeColor="@color/orange"
+                app:endIconMode="clear_text"
+                app:hintTextColor="@color/Orange">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/arrival"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nexalight"
+                    android:inputType="text"
+                    android:maxLength="15"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/submitButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="40dp"
+                android:backgroundTint="#FF9800"
+                android:fontFamily="@font/nexablack"
+                android:text="Submit"
+                android:textColorLink="#FFC107" />
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "619581031597",
+    "project_id": "dakbayaknow",
+    "storage_bucket": "dakbayaknow.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:619581031597:android:4b5cfab7d371de7b9b7224",
+        "android_client_info": {
+          "package_name": "com.example.dakbayaknow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "619581031597-m040hnbejq85hjmkit67vf8nghvemv4g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDC3mOSiY3VxBO7F9qo_PMMwa0H4blWov0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "619581031597-m040hnbejq85hjmkit67vf8nghvemv4g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

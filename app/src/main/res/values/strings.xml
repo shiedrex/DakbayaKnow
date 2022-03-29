@@ -1,0 +1,89 @@
+<resources>
+    <string name="app_name">DakbayaKnow</string>
+    <string name="my_applications">My Applications</string>
+    <string name="health_declaration_form">Health Declaration Form</string>
+    <string name="travel_permit">Travel Permit</string>
+    <string name="dk">dk</string>
+
+    <string name="col1">LGU</string>
+    <string name="col2">Policy</string>
+    <string name="col3">Requirements</string>
+    <string name="row1_1">Cebu City</string>
+    <string name="row1_2">Restricted</string>
+    <string name="row1_3">Details</string>
+
+    <string name="profile">Profile</string>
+    <string name="scan_document">Scan Document</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">DakbayaKnow</string>
+    <string name="nav_header_subtitle">dakbayaknow.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_profile">My Profile</string>
+    <string name="menu_scan">Scan Document</string>
+    <string name="menu_notification">Notification Settings</string>
+    <string name="menu_about">About DakbayaKnow</string>
+    <string name="menu_logout">Logout</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_main2">MainActivity2</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+
+    <string name="text">Interested in taking a trip?</string>
+    <string name="text1">Find out about your destination travel requirement</string>
+    <string name="text2">Check Restrictions</string>
+    <string name="text3">Find out about the quarantine status of your destination</string>
+    <string name="text4">Contact your LGU</string>
+    <string name="text5">Find inquiries and questions about your application status</string>
+
+    <!-- Strings related to LGU Contacts -->
+    <string name="LGUcol1">City/Municipality</string>
+    <string name="LGUcol2">Contact Number</string>
+    <string name="LGUrow1_1">ASTURIAS, CEBU</string>
+    <string name="LGUrow1_2">09778211150</string>
+    <string name="LGUrow2_1">ASTURIAS, CEBU</string>
+    <string name="LGUrow2_2">09175913989</string>
+    <string name="LGUrow3_1">ASTURIAS, CEBU</string>
+    <string name="LGUrow3_2">09202138159</string>
+    <string name="LGUrow4_1">TOLEDO CITY, CEBU</string>
+    <string name="LGUrow4_2">09567897165</string>
+    <string name="LGUrow5_1">TUDELA, CEBU</string>
+    <string name="LGUrow5_2">09567138566</string>
+    <string name="LGUrow6_1">TABOGON, CEBU</string>
+    <string name="LGUrow6_2">09297585087</string>
+    <string name="LGUrow7_1">CONSOLACION CEBU</string>
+    <string name="LGUrow7_2">09086775391/09703375888</string>
+
+    <!-- Strings related to travel restrictions -->
+    <string name="CRcol1">LGU</string>
+    <string name="CRcol2">Policy</string>
+    <string name="CRcol3">Status</string>
+    <string name="CRrow1_1">Cebu City</string>
+    <string name="CRrow1_2">Restricted</string>
+    <string name="CRrow1_3">Level 2</string>
+
+    <string name="level5">Alert Level 5</string>
+    <string name="lvl5">Bus services, taxi services, e-hailing and private motor vehicles may operate at restricted times,
+                        with limitations on vehicle capacity and stringent hygiene requirements</string>
+    <string name="level4">Alert Level 4</string>
+    <string name="lvl4">Passenger rail, bus services, taxi services, e- hailing and private motor vehicles may operate
+                        subject to directions.</string>
+    <string name="level3">Alert Level 3</string>
+    <string name="lvl3">Limited domestic air travel, with a restriction on the number of flights per day and
+                        authorization based on the reason for travel</string>
+    <string name="level2">Alert Level 2</string>
+    <string name="lvl2">Limited domestic air travel, with a restriction on the number of flights per day
+                        and authorization  based on the reason for travel</string>
+    <string name="level1">Alert Level 1</string>
+    <string name="lvl1">Domestic air travel restored</string>
+    <string name="textview">TextView</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+</resources>

@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context=".ui.home.HomeFragment">
+
+    <LinearLayout
+        android:layout_width="350dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bordergray"
+        android:layout_marginBottom="20dp"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp">
+
+            <ImageButton
+                android:id="@+id/myApplicationsButton"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:backgroundTint="#00FFFFFF"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/myapplications" />
+
+            <ImageButton
+                android:id="@+id/HDFButton"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:backgroundTint="#00FFFFFF"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/hdf" />
+
+            <ImageButton
+                android:id="@+id/travelPermitButton"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:backgroundTint="#00FFFFFF"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/travelpermit" />
+
+            <ImageButton
+                android:id="@+id/usersFeedbackButton"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:backgroundTint="#00FFFFFF"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/ic_feedback" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="10dp">
+
+            <TextView
+                android:id="@+id/textView85"
+                android:layout_width="80dp"
+                android:layout_height="60dp"
+                android:fontFamily="@font/nexabold"
+                android:text="My
+                Applications"
+                android:textAlignment="center"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/textView92"
+                android:layout_width="80dp"
+                android:layout_height="60dp"
+                android:fontFamily="@font/nexabold"
+                android:text="@string/health_declaration_form"
+                android:textAlignment="center"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/textView851"
+                android:layout_width="80dp"
+                android:layout_height="60dp"
+                android:fontFamily="@font/nexabold"
+                android:text="Travel
+                Permit"
+                android:textAlignment="center"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/textView8512"
+                android:layout_width="80dp"
+                android:layout_height="60dp"
+                android:fontFamily="@font/nexabold"
+                android:text="Users
+                Feedback"
+                android:textAlignment="center"
+                android:textSize="12sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="350dp"
+        android:layout_height="120dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/bordergray"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView922"
+            android:layout_width="220dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/nexablack"
+            android:gravity="center"
+            android:text="@string/text"
+            android:textAlignment="center"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/textView923"
+            android:layout_width="220dp"
+            android:layout_height="60dp"
+            android:layout_below="@+id/textView922"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/nexalight"
+            android:gravity="top"
+            android:text="@string/text1"
+            android:textSize="14sp" />
+
+        <ImageButton
+            android:id="@+id/travelRequirementsButton"
+            android:layout_width="114dp"
+            android:layout_height="93dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="right"
+            android:backgroundTint="#00FFFFFF"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/trip" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="350dp"
+        android:layout_height="120dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/bordergray"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView9222"
+            android:layout_width="220dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/nexablack"
+            android:gravity="center"
+            android:text="@string/text2"
+            android:textAlignment="center"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/textView9232"
+            android:layout_width="220dp"
+            android:layout_height="60dp"
+            android:layout_below="@+id/textView9222"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/nexalight"
+            android:gravity="top"
+            android:text="@string/text3"
+            android:textSize="14sp" />
+
+        <ImageButton
+            android:id="@+id/restrictionsButton"
+            android:layout_width="114dp"
+            android:layout_height="93dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="right"
+            android:backgroundTint="#00FFFFFF"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/restriction" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="350dp"
+        android:layout_height="120dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/bordergray"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView9224"
+            android:layout_width="220dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="10dp"
+            android:fontFamily="@font/nexablack"
+            android:gravity="center"
+            android:text="@string/text4"
+            android:textAlignment="center"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/textView9235"
+            android:layout_width="220dp"
+            android:layout_height="60dp"
+            android:layout_below="@+id/textView9224"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="20dp"
+            android:fontFamily="@font/nexalight"
+            android:gravity="top"
+            android:text="@string/text5"
+            android:textSize="14sp" />
+
+        <ImageButton
+            android:id="@+id/LGUButton"
+            android:layout_width="89dp"
+            android:layout_height="80dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="right"
+            android:layout_marginTop="18dp"
+            android:layout_marginEnd="14dp"
+            android:layout_marginBottom="19dp"
+            android:backgroundTint="#00FFFFFF"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/contact" />
+    </RelativeLayout>
+
+</LinearLayout>
