@@ -74,6 +74,10 @@
             android:exported="true"
             android:parentActivityName=".MainActivity" />
         <activity
+            android:name=".UsersFeedback"
+            android:exported="true"
+            android:parentActivityName=".MainActivity" />
+        <activity
             android:name=".TravelPermit"
             android:exported="true"
             android:parentActivityName=".MainActivity" />

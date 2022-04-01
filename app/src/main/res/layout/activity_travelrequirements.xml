@@ -16,20 +16,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/travelRequirements"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="40dp"
-                android:layout_marginEnd="20dp"
-                android:fontFamily="@font/nexablack"
-                android:gravity="center"
-                android:paddingStart="20dp"
-                android:paddingEnd="0dp"
-                android:text="Travel Requirements"
-                android:textSize="24sp" />
-
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/searchView"
                 android:layout_width="match_parent"
