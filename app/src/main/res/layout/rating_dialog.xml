@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:gravity="center"
+    android:orientation="vertical"
     android:padding="12dp">
 
     <androidx.cardview.widget.CardView
@@ -16,39 +16,65 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center"
             android:layout_gravity="center"
+            android:orientation="vertical"
             android:padding="20dp">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal"
+                android:layout_marginBottom="20dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="20dp"
+                    android:id="@+id/profImage"/>
+
+                <TextView
+                    android:id="@+id/fullname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nexablack"
+                    android:text="Username"
+                    android:textSize="24dp" />
+            </LinearLayout>
+
+            <TextView
                 android:id="@+id/rating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nexabold"
                 android:text="Rate us"
                 android:textSize="24dp" />
 
             <RatingBar
+                android:id="@+id/ratingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/ratingBar"
-                android:stepSize="0.5"
+                android:layout_marginTop="16dp"
                 android:numStars="5"
-                android:layout_marginTop="16dp" />
+                android:stepSize="0.5" />
 
             <TextView
+                android:id="@+id/ratingNum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/ratingNum"
+                android:layout_gravity="center"
+                android:fontFamily="@font/nexalight"
                 android:text="(0.0)"
                 android:textSize="24dp" />
 
             <Button
+                android:id="@+id/submitButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/submitButton"
-                android:text="Submit"
-                android:layout_marginTop="20dp"/>
+                android:layout_gravity="center"
+                android:layout_marginTop="20dp"
+                android:fontFamily="@font/nexablack"
+                android:text="Submit" />
 
         </LinearLayout>
 
