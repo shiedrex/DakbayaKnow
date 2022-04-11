@@ -1,6 +1,7 @@
 package com.example.dakbayaknow;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -58,6 +59,8 @@ public class TravelForm_Unvacc extends AppCompatActivity {
 
     DatePickerDialog.OnDateSetListener setListener, setListener2;
 
+    Dialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,6 +106,8 @@ public class TravelForm_Unvacc extends AppCompatActivity {
         value = new TravelFormDetails();
 
         reference = database.getInstance().getReference("users").child(fAuth.getCurrentUser().getUid()).child("travelform");
+
+        dialog = new Dialog(this);
 
         Calendar calendar = Calendar.getInstance();
         final int year = calendar.get(Calendar.YEAR);
@@ -1388,8 +1393,21 @@ public class TravelForm_Unvacc extends AppCompatActivity {
                     return;
                 }
 
-                Toast.makeText(TravelForm_Unvacc.this, "Travel Form submitted successfully!", Toast.LENGTH_SHORT).show();
                 reference.child(String.valueOf(fAuth.getCurrentUser().getUid())).setValue(value);
+
+                dialog.setContentView(R.layout.travelform_success_dialog);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                Button ok = dialog.findViewById(R.id.okButton);
+                dialog.show();
+
+                ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                        startActivity(new Intent(TravelForm_Unvacc.this, TravelForm_Submit.class));
+                    }
+                });
             }
         });
     }

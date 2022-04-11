@@ -1,7 +1,10 @@
 package com.example.dakbayaknow;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
@@ -49,6 +52,8 @@ public class HealthDeclarationForm extends AppCompatActivity {
 
     AutoCompleteTextView spinner_gender, spinner_symptoms;
 
+    Dialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -88,6 +93,8 @@ public class HealthDeclarationForm extends AppCompatActivity {
 
         value = new HDFDetails();
         reference = database.getInstance().getReference("users").child(fAuth.getCurrentUser().getUid()).child("hdf");
+
+        dialog = new Dialog(this);
 
         List<String> Categories = new ArrayList<>();
         Categories.add("Male");
@@ -253,30 +260,65 @@ public class HealthDeclarationForm extends AppCompatActivity {
 //
 //                            }
 //                        });
-
-                Toast.makeText(HealthDeclarationForm.this, "Health Declaration Form submitted successfully!", Toast.LENGTH_SHORT).show();
                 reference.child(String.valueOf(fAuth.getCurrentUser().getUid())).setValue(value);
-                submit();
+
+                DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("users").child(fAuth.getCurrentUser().getUid()).child("hdf");
+                rootRef.addValueEventListener(new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+                        Boolean found, found2, found3, found4;
+                        String search = "NO", search2 = "No";
+
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            String symptoms = ds.child("symptoms").getValue(String.class);
+                            String sick = ds.child("sick").getValue(String.class);
+                            String covid = ds.child("covid").getValue(String.class);
+                            String animal = ds.child("animal").getValue(String.class);
+
+                            found = symptoms.contains(search);
+                            found2 = sick.contains(search2);
+                            found3 = covid.contains(search2);
+                            found4 = animal.contains(search2);
+
+                            if (found == true && found2 == true && found3 == true && found4 == true) {
+                                dialog.setContentView(R.layout.hdf_success_dialog);
+                                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                                Button ok = dialog.findViewById(R.id.okButton);
+                                dialog.show();
+
+                                ok.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        dialog.dismiss();
+                                        finish();
+                                    }
+                                });
+                            } else {
+                                dialog.setContentView(R.layout.hdf_failed_dialog);
+                                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                                Button ok = dialog.findViewById(R.id.okButton);
+                                dialog.show();
+
+                                ok.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        dialog.dismiss();
+                                        finish();
+                                    }
+                                });
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                        // Failed, how to handle?
+                    }
+                });
             }
         });
-    }
-
-    private void submit() {
-        AlertDialog.Builder builder=new AlertDialog.Builder(HealthDeclarationForm.this);
-        builder.setCancelable(false);
-        builder.setIcon(R.drawable.dklogo2);
-        builder.setTitle("Successfully Submitted!");
-        builder.setMessage("You are safe to travel.");
-        builder.setInverseBackgroundForced(true);
-
-        builder.setPositiveButton("Ok",new DialogInterface.OnClickListener(){
-            @Override
-            public void onClick(DialogInterface dialog, int which){
-                dialog.dismiss();
-                finish();
-            }
-        });
-        AlertDialog alert=builder.create();
-        alert.show();
     }
 }

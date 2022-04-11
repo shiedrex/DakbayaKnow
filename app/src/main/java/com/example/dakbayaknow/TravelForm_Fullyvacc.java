@@ -2,6 +2,7 @@ package com.example.dakbayaknow;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -61,6 +62,8 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
 
     DatePickerDialog.OnDateSetListener setListener, setListener2;
 
+    Dialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,6 +109,8 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
         value = new TravelFormDetails();
 
         reference = database.getInstance().getReference("users").child(fAuth.getCurrentUser().getUid()).child("travelform");
+
+        dialog = new Dialog(this);
 
         Calendar calendar = Calendar.getInstance();
         final int year = calendar.get(Calendar.YEAR);
@@ -1390,9 +1395,21 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
                     return;
                 }
 
-                Toast.makeText(TravelForm_Fullyvacc.this, "Travel Form submitted successfully!", Toast.LENGTH_SHORT).show();
                 reference.child(String.valueOf(fAuth.getCurrentUser().getUid())).setValue(value);
-                submit();
+
+                dialog.setContentView(R.layout.travelform_success_dialog);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                Button ok = dialog.findViewById(R.id.okButton);
+                dialog.show();
+
+                ok.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                        startActivity(new Intent(TravelForm_Fullyvacc.this, TravelForm_Submit.class));
+                    }
+                });
             }
         });
 
@@ -1442,24 +1459,5 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
         arrayAdapter_Municipality = new ArrayAdapter<>(this, R.layout.textview_gray, arrayList_Municipality);
         arrayAdapter_Municipality.setDropDownViewResource(R.layout.textview_gray);
         spinner_dMunicipality.setAdapter(arrayAdapter_Municipality);
-    }
-
-    private void submit() {
-        AlertDialog.Builder builder=new AlertDialog.Builder(TravelForm_Fullyvacc.this);
-        builder.setCancelable(false);
-        builder.setIcon(R.drawable.dklogo2);
-        builder.setTitle("Successfully Submitted!");
-        builder.setMessage("You are on its way!");
-        builder.setInverseBackgroundForced(true);
-
-        builder.setPositiveButton("Ok",new DialogInterface.OnClickListener(){
-            @Override
-            public void onClick(DialogInterface dialog, int which){
-                dialog.dismiss();
-                startActivity(new Intent(TravelForm_Fullyvacc.this, TravelForm_Submit.class));
-            }
-        });
-        AlertDialog alert=builder.create();
-        alert.show();
     }
 }
