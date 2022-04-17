@@ -85,7 +85,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="20dp"
-        android:backgroundTint="#FF9800"
+        android:backgroundTint="#FEA400 "
         android:fontFamily="@font/nexablack"
         android:text="Login" />
 
@@ -120,7 +120,7 @@
         android:layout_marginTop="10dp">
 
         <TextView
-            android:id="@+id/forgotPassowrdButton"
+            android:id="@+id/forgotPasswordButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"

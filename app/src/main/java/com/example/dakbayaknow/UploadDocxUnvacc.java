@@ -1,8 +1,12 @@
 package com.example.dakbayaknow;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -13,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -54,28 +59,34 @@ import java.util.List;
 import java.util.Map;
 
 public class UploadDocxUnvacc extends AppCompatActivity {
-    private Button RTPCRButton, otherFilesButton, submitButton;
+    private Button govIdButton, RTPCRButton, otherFilesButton, submitButton;
 
-    CheckBox captchaCheckbox;
     String SITE_KEY = "6LeQMXkeAAAAAOmnUZ2R7k0AV-FLhnOWQj3HyriO";
     String SECRET_KEY = "6LeQMXkeAAAAAC-iU02tSyfJsxo7xhYRCuVaB0Zl";
     RequestQueue queue;
 
     FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference, govIdRef, vaccCardRef, travelRef;
+    DatabaseReference databaseReference, travelRef, govIdRef, rtcprRef, otherfilesRef;
 
     FirebaseAuth fAuth;
     StorageReference storageReference;
     FirebaseUser firebaseUser;
 
-    TextView govId, vaccCard,
-            fullname, currentAddress, destinationAddress, departure, arrival;
+    TextView fullname, currentAddress, destinationAddress, departure, arrival,
+            govIDRequired, govIdImageRequired, rtcprImageRequired, otherfilesImageRequired;
+
+    ImageView govIdImage, rtcprImage, otherfilesImage;
 
     TextInputEditText govIdNumber;
     AutoCompleteTextView spinner_govId;
 
     Docx value;
+
+    Dialog dialog;
+    ProgressDialog progressDialog;
+
+    Uri govIdImageUri, rtcprImageUri, otherfilesImageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,12 +104,13 @@ public class UploadDocxUnvacc extends AppCompatActivity {
         databaseReference = firebaseDatabase.getReference("users").child(firebaseUser.getUid()).child("uploadDocx");
 
         travelRef = firebaseDatabase.getReference("users").child(firebaseAuth.getCurrentUser().getUid()).child("travelform");
-        govIdRef = firebaseDatabase.getInstance().getReference("users").child(firebaseUser.getUid()).child("uploadDocx").child("govId");
-        vaccCardRef = firebaseDatabase.getInstance().getReference("users").child(firebaseUser.getUid()).child("uploadDocx").child("vaccCard");
+        govIdRef = firebaseDatabase.getInstance().getReference("users").child(firebaseUser.getUid()).child("uploadDocx").child(firebaseAuth.getCurrentUser().getUid()).child("govIdImage");
+        rtcprRef = firebaseDatabase.getInstance().getReference("users").child(firebaseUser.getUid()).child("uploadDocx").child(firebaseAuth.getCurrentUser().getUid()).child("rtcprImage");
+        otherfilesRef = firebaseDatabase.getInstance().getReference("users").child(firebaseUser.getUid()).child("uploadDocx").child(firebaseAuth.getCurrentUser().getUid()).child("otherfilemage");
 
-        captchaCheckbox = findViewById(R.id.captchaCheckbox);
         queue = Volley.newRequestQueue(getApplicationContext());
         //button
+        govIdButton = findViewById((R.id.govIdButton));
         RTPCRButton = findViewById((R.id.RTPCRButton));
         otherFilesButton = findViewById(R.id.othersFileButton);
         submitButton = findViewById(R.id.submitButton);
@@ -106,6 +118,15 @@ public class UploadDocxUnvacc extends AppCompatActivity {
         spinner_govId = findViewById(R.id.spinner_govId);
         //text input
         govIdNumber = findViewById(R.id.govIdNumber);
+        //imageview
+        govIdImage = findViewById(R.id.govIdImage);
+        rtcprImage = findViewById(R.id.rtcprImage);
+        otherfilesImage = findViewById(R.id.otherFilesImage);
+        //required
+        govIDRequired = findViewById(R.id.govIDRequired);
+        govIdImageRequired = findViewById(R.id.govIdImageRequired);
+        rtcprImageRequired = findViewById(R.id.rtpcrImageRequired);
+        otherfilesImageRequired = findViewById(R.id.otherFilesImageRequired);
 
         //retrieve from database
         fullname = findViewById(R.id.fullnameText);
@@ -118,6 +139,9 @@ public class UploadDocxUnvacc extends AppCompatActivity {
 
         fAuth = FirebaseAuth.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
+
+        dialog = new Dialog(this);
+        progressDialog = new ProgressDialog(this);
 
         List<String> Categories = new ArrayList<>();
         Categories.add("UMID");
@@ -133,14 +157,7 @@ public class UploadDocxUnvacc extends AppCompatActivity {
         dataAdapter.setDropDownViewResource(R.layout.textview_gray);
         spinner_govId.setAdapter(dataAdapter);
 
-        captchaCheckbox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                verifyGoogleReCAPTCHA();
-            }
-        });
-
-        RTPCRButton.setOnClickListener(new View.OnClickListener() {
+        govIdButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -148,7 +165,7 @@ public class UploadDocxUnvacc extends AppCompatActivity {
             }
         });
 
-      otherFilesButton.setOnClickListener(new View.OnClickListener() {
+        RTPCRButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
@@ -156,14 +173,59 @@ public class UploadDocxUnvacc extends AppCompatActivity {
             }
         });
 
+        otherFilesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                startActivityForResult(openGalleryIntent, 3000);
+            }
+        });
+
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                value.setGovId(spinner_govId.getText().toString().trim());
-                value.setGovIdNumber(govIdNumber.getText().toString().trim());
+                String govId = spinner_govId.getText().toString().trim();
+                String govIdNum = govIdNumber.getText().toString().trim();
 
-                Toast.makeText(UploadDocxUnvacc.this, "Documents uploaded successfully!", Toast.LENGTH_SHORT).show();
-                databaseReference.child(String.valueOf(fAuth.getCurrentUser().getUid())).setValue(value);
+                if (govId.isEmpty()) {
+                    govIDRequired.setText("Government ID is required!");
+                    spinner_govId.requestFocus();
+                    return;
+                } else {
+                    govIDRequired.setText(null);
+                }
+
+                if (govIdNum.isEmpty()) {
+                    govIdNumber.setError("Government ID Number is required!");
+                    govIdNumber.requestFocus();
+                    return;
+                }
+
+                if (govIdImage.getDrawable() == null) {
+                    govIdImageRequired.setText("Government ID Photo is required");
+                    govIdImageRequired.requestFocus();
+                    return;
+                } else {
+                    govIdImageRequired.setText(null);
+                }
+
+                if (rtcprImage.getDrawable() == null) {
+                    rtcprImageRequired.setText("RTPCR Test Result Photo is required");
+                    rtcprImageRequired.requestFocus();
+                    return;
+                } else {
+                    rtcprImageRequired.setText(null);
+                }
+
+                if (otherfilesImage.getDrawable() == null) {
+                    otherfilesImageRequired.setText("Other Files Photo is required");
+                    otherfilesImageRequired.requestFocus();
+                    return;
+                } else {
+                    otherfilesImageRequired.setText(null);
+                }
+
+                verifyGoogleReCAPTCHA();
             }
         });
 
@@ -174,7 +236,9 @@ public class UploadDocxUnvacc extends AppCompatActivity {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     // Retrieving Data from firebase
                     String fn = "" + dataSnapshot1.child("firstname").getValue();
+                    String mi = "" + dataSnapshot1.child("middleinitial").getValue();
                     String ln = "" + dataSnapshot1.child("lastname").getValue();
+                    String sn = "" + dataSnapshot1.child("suffixname").getValue();
                     String cAdd = "" + dataSnapshot1.child("cAddress").getValue();
                     String cMuni = "" + dataSnapshot1.child("cMunicipality").getValue();
                     String cProv = "" + dataSnapshot1.child("cProvince").getValue();
@@ -185,7 +249,7 @@ public class UploadDocxUnvacc extends AppCompatActivity {
                     String arriv = "" + dataSnapshot1.child("arrival").getValue();
 
                     // setting data to our text view
-                    fullname.setText(fn + " " + ln);
+                    fullname.setText(fn + " " + mi + " " + ln + " " + sn);
                     currentAddress.setText(cAdd + ", " + cMuni + ", " + cProv);
                     destinationAddress.setText(dAdd + ", " + dMuni + ", " + dProv);
                     departure.setText(depart);
@@ -257,6 +321,29 @@ public class UploadDocxUnvacc extends AppCompatActivity {
                                 // if the response is successful then we are
                                 // showing below toast message.
                                 Toast.makeText(UploadDocxUnvacc.this, "User verified with reCAPTCHA", Toast.LENGTH_SHORT).show();
+
+                                value.setGovId(spinner_govId.getText().toString().trim());
+                                value.setGovIdNumber(govIdNumber.getText().toString().trim());
+
+                                uploadToFirebase();
+                                uploadToFirebase2();
+                                uploadToFirebase3();
+
+                                databaseReference.child(String.valueOf(fAuth.getCurrentUser().getUid())).setValue(value);
+
+                                dialog.setContentView(R.layout.uploaddocx_success_dialog);
+                                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                                Button ok = dialog.findViewById(R.id.okButton);
+                                dialog.show();
+
+                                ok.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        dialog.dismiss();
+                                        startActivity(new Intent(UploadDocxUnvacc.this, MainActivity.class));
+                                    }
+                                });
                             } else {
                                 // if the response if failure we are displaying
                                 // a below toast message.
@@ -307,29 +394,55 @@ public class UploadDocxUnvacc extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1000) {
             if (resultCode == Activity.RESULT_OK) {
-                Uri imageUri = data.getData();
-                uploadToFirebase(imageUri);
+                govIdImageUri = data.getData();
+                govIdImage.setImageURI(govIdImageUri);
             }
         }
         if (requestCode == 2000) {
             if (resultCode == Activity.RESULT_OK) {
-                Uri imageUri = data.getData();
-                uploadToFirebase2(imageUri);
+                rtcprImageUri = data.getData();
+                rtcprImage.setImageURI(rtcprImageUri);
+            }
+        }
+        if (requestCode == 3000) {
+            if (resultCode == Activity.RESULT_OK) {
+                otherfilesImageUri = data.getData();
+                otherfilesImage.setImageURI(otherfilesImageUri);
             }
         }
     }
 
-    private void uploadToFirebase(Uri imageUri) {
-        final StorageReference fileRef = storageReference.child("users/" + fAuth.getCurrentUser().getUid() + "RTPCR.jpg");
-        fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+    private void uploadToFirebase() {
+        final StorageReference fileRef = storageReference.child("users/" + fAuth.getCurrentUser().getUid() + "govId.jpg");
+        fileRef.putFile(govIdImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
                         GovId image = new GovId(uri.toString());
-//                        String imageId = reference.push().toString();
                         govIdRef.setValue(image);
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(UploadDocxUnvacc.this, "Failed.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void uploadToFirebase2() {
+        final StorageReference fileRef = storageReference.child("users/" + fAuth.getCurrentUser().getUid() + "RTPCR.jpg");
+        fileRef.putFile(rtcprImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        RTCPR image = new RTCPR(uri.toString());
+                        rtcprRef.setValue(image);
                         Toast.makeText(UploadDocxUnvacc.this, "RT-PCR Test uploaded successfully!", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -342,18 +455,17 @@ public class UploadDocxUnvacc extends AppCompatActivity {
         });
     }
 
-    private void uploadToFirebase2(Uri imageUri) {
+    private void uploadToFirebase3() {
         final StorageReference fileRef = storageReference.child("users/" + fAuth.getCurrentUser().getUid() + "otherFile.jpg");
 
-        fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        fileRef.putFile(otherfilesImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        VaccCard image = new VaccCard(uri.toString());
-//                        String imageId = reference.push().toString();
-                        vaccCardRef.setValue(image);
+                        OtherFiles image = new OtherFiles(uri.toString());
+                        otherfilesRef.setValue(image);
                         Toast.makeText(UploadDocxUnvacc.this, "File uploaded successfully!", Toast.LENGTH_SHORT).show();
                     }
                 });

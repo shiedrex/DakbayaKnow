@@ -2,9 +2,7 @@ package com.example.dakbayaknow.ui.scan;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -16,34 +14,24 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
 
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
 import com.budiyev.android.codescanner.ScanMode;
-import com.bumptech.glide.Glide;
-import com.example.dakbayaknow.Capture;
 import com.example.dakbayaknow.R;
-import com.example.dakbayaknow.databinding.FragmentScanBinding;
 import com.google.zxing.BinaryBitmap;
 import com.google.zxing.MultiFormatReader;
 import com.google.zxing.NotFoundException;
 import com.google.zxing.RGBLuminanceSource;
 import com.google.zxing.Result;
 import com.google.zxing.common.HybridBinarizer;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -53,7 +41,7 @@ public class ScanFragment extends Fragment {
     private CodeScanner codeScanner;
     private CodeScannerView scannerView;
     private TextView text;
-    Button scanImage;
+    Button importQR;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -63,8 +51,8 @@ public class ScanFragment extends Fragment {
         scannerView = root.findViewById(R.id.scanner_view);
         text = root.findViewById(R.id.text);
 
-        scanImage = root.findViewById(R.id.scanImage);
-        scanImage.setOnClickListener(new View.OnClickListener() {
+        importQR = root.findViewById(R.id.importQR);
+        importQR.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent pickIntent = new Intent(Intent.ACTION_PICK);

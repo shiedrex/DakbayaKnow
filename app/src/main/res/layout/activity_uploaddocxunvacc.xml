@@ -179,18 +179,31 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
                 android:fontFamily="@font/nexabold"
                 android:paddingStart="10dp"
                 android:paddingEnd="0dp"
                 android:text="Identification"
                 android:textSize="18sp" />
 
+            <TextView
+                android:id="@+id/govIDRequired"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/nexalight"
+                android:paddingStart="10dp"
+                android:paddingEnd="0dp"
+                android:text="*required"
+                android:textColor="@color/red"
+                android:textSize="14sp" />
+
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
                 android:fontFamily="@font/nexalight"
                 android:hint="Government ID"
                 app:boxStrokeColor="@color/orange"
@@ -236,11 +249,25 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
                 android:fontFamily="@font/nexabold"
                 android:paddingStart="10dp"
                 android:paddingEnd="0dp"
                 android:text="Upload a Photo of the ID"
                 android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/govIdImageRequired"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/nexalight"
+                android:paddingStart="10dp"
+                android:paddingEnd="0dp"
+                android:text="*required"
+                android:textColor="@color/red"
+                android:textSize="14sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -251,26 +278,20 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
-                    android:backgroundTint="#FF9800"
+                    android:backgroundTint="#FEA400 "
                     android:fontFamily="@font/nexablack"
                     android:text="CHOOSE FILE"
                     android:textColorLink="#FFC107" />
 
-                <TextView
-                    android:id="@+id/govId"
+                <ImageView
+                    android:id="@+id/govIdImage"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
-                    android:fontFamily="@font/nexalight"
                     android:paddingStart="10dp"
-                    android:paddingEnd="0dp"
-                    android:text=""
-                    android:textSize="18sp" />
-
+                    android:paddingEnd="0dp" />
             </LinearLayout>
 
             <TextView
@@ -303,23 +324,50 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
                 android:fontFamily="@font/nexalight"
                 android:paddingStart="10dp"
                 android:paddingEnd="0dp"
                 android:text="Upload a photo/pdf of the RT-PCR/MCC results taken 72hrs prior."
                 android:textSize="18sp" />
 
-            <Button
-                android:id="@+id/RTPCRButton"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/rtpcrImageRequired"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
-                android:backgroundTint="#FF9800"
-                android:fontFamily="@font/nexablack"
-                android:text="CHOOSE FILE"
-                android:textColorLink="#FFC107" />
+                android:fontFamily="@font/nexalight"
+                android:paddingStart="10dp"
+                android:paddingEnd="0dp"
+                android:text="*required"
+                android:textColor="@color/red"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/RTPCRButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:backgroundTint="#FEA400 "
+                    android:fontFamily="@font/nexablack"
+                    android:text="CHOOSE FILE"
+                    android:textColorLink="#FFC107" />
+
+                <ImageView
+                    android:id="@+id/rtcprImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="0dp" />
+            </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
@@ -339,85 +387,63 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
                 android:fontFamily="@font/nexalight"
                 android:paddingStart="10dp"
                 android:paddingEnd="0dp"
                 android:text="Upload a photo/pdf of the file"
                 android:textSize="18sp" />
 
-            <Button
-                android:id="@+id/othersFileButton"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/otherFilesImageRequired"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
-                android:backgroundTint="#FF9800"
-                android:fontFamily="@font/nexablack"
-                android:text="CHOOSE FILE"
-                android:textColorLink="#FFC107" />
+                android:fontFamily="@font/nexalight"
+                android:paddingStart="10dp"
+                android:paddingEnd="0dp"
+                android:text="*required"
+                android:textColor="@color/red"
+                android:textSize="14sp" />
 
             <LinearLayout
-                android:layout_width="240dp"
-                android:layout_height="100dp"
-                android:layout_gravity="center"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/border"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-                <LinearLayout
+                <Button
+                    android:id="@+id/othersFileButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:backgroundTint="#FEA400 "
+                    android:fontFamily="@font/nexablack"
+                    android:text="CHOOSE FILE"
+                    android:textColorLink="#FFC107" />
 
-                    <CheckBox
-                        android:id="@+id/captchaCheckbox"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginBottom="10dp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:fontFamily="@font/nexalight"
-                        android:text="I'm not a robot"
-                        android:textSize="18sp" />
-                </LinearLayout>
-
-                <LinearLayout
+                <ImageView
+                    android:id="@+id/otherFilesImage"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="100dp"
-                        android:fontFamily="@font/nexabold"
-                        android:text="reCAPTCHA"
-                        android:textSize="18sp" />
-                </LinearLayout>
-
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="0dp" />
             </LinearLayout>
 
             <Button
                 android:id="@+id/submitButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
-                android:layout_marginBottom="40dp"
                 android:layout_marginEnd="20dp"
-                android:backgroundTint="#FF9800"
+                android:layout_marginBottom="40dp"
+                android:backgroundTint="#FEA400 "
                 android:fontFamily="@font/nexablack"
                 android:text="SUBMIT"
-                android:layout_gravity="center"
                 android:textColorLink="#FFC107" />
 
         </LinearLayout>

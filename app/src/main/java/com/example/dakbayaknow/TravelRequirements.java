@@ -54,28 +54,6 @@ public class TravelRequirements extends AppCompatActivity {
         recyclerView = findViewById(R.id.rv);
         searchView = findViewById(R.id.searchView);
 
-        fullyVaccinatedButton = (Button) findViewById(R.id.fullyVaccinatedButton);
-        fullyVaccinatedButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openFullyVaccinated();
-            }
-        });
-        unvaccinatedButton = (Button) findViewById(R.id.unvaccinatedButton);
-        unvaccinatedButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openUnvaccinated();
-            }
-        });
-        recoveredButton = (Button) findViewById(R.id.recoveredButton);
-        recoveredButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openRecovered();
-            }
-        });
-
     }
 
     @Override
@@ -90,7 +68,7 @@ public class TravelRequirements extends AppCompatActivity {
                         for(DataSnapshot ds : snapshot.getChildren()){
                             list.add(ds.getValue(Requirements.class));
                         }
-                        AdapterClass3 adapterClass = new AdapterClass3(list);
+                        AdapterClass3 adapterClass = new AdapterClass3(list, getApplicationContext());
                         recyclerView.setAdapter(adapterClass);
                     }
                 }
@@ -123,23 +101,7 @@ public class TravelRequirements extends AppCompatActivity {
                 myList.add(object);
             }
         }
-        AdapterClass3 adapterClass = new AdapterClass3(myList);
+        AdapterClass3 adapterClass = new AdapterClass3(myList, getApplicationContext());
         recyclerView.setAdapter(adapterClass);
     }
-
-    public void openFullyVaccinated(){
-        Intent intent = new Intent(this, FullyVaccinated.class);
-        startActivity(intent);
-    }
-
-    public void openUnvaccinated() {
-        Intent intent = new Intent(this, Unvaccinated.class);
-        startActivity(intent);
-    }
-
-    public void openRecovered() {
-        Intent intent = new Intent(this, Recovered.class);
-        startActivity(intent);
-    }
-
 }

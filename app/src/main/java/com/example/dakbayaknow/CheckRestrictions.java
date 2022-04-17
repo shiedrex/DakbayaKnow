@@ -47,7 +47,7 @@ public class CheckRestrictions extends AppCompatActivity {
                         for(DataSnapshot ds : snapshot.getChildren()){
                             list.add(ds.getValue(Restrictions.class));
                         }
-                        AdapterClass2 adapterClass = new AdapterClass2(list);
+                        AdapterClass2 adapterClass = new AdapterClass2(list, getApplicationContext());
                         recyclerView.setAdapter(adapterClass);
                     }
                 }
@@ -80,7 +80,7 @@ public class CheckRestrictions extends AppCompatActivity {
                 myList.add(object);
             }
         }
-        AdapterClass2 adapterClass = new AdapterClass2(myList);
+        AdapterClass2 adapterClass = new AdapterClass2(myList, getApplicationContext());
         recyclerView.setAdapter(adapterClass);
     }
 }

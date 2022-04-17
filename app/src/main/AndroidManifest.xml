@@ -36,19 +36,23 @@
         <activity
             android:name=".UploadDocx2"
             android:exported="true"
-            android:parentActivityName=".TravelForm_Unvacc" />
+            android:parentActivityName=".TravelForm_Submit_Unvacc" />
         <activity
             android:name=".UploadDocx"
             android:exported="true"
-            android:parentActivityName=".TravelForm_Submit" />
+            android:parentActivityName=".TravelForm_Submit_FullyVacc" />
         <activity
             android:name=".BookTicket"
             android:exported="true"
-            android:parentActivityName=".TravelForm_Submit" />
-        <activity
-            android:name=".TravelForm_Submit"
-            android:exported="true"
             android:parentActivityName=".TravelRequirements" />
+        <activity
+            android:name=".TravelForm_Submit_Unvacc"
+            android:exported="true"
+            android:parentActivityName=".TravelForm_Unvacc" />
+        <activity
+            android:name=".TravelForm_Submit_FullyVacc"
+            android:exported="true"
+            android:parentActivityName=".TravelForm_Fullyvacc" />
         <activity
             android:name=".TravelForm_Unvacc"
             android:exported="true"
@@ -93,6 +97,10 @@
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/title_activity_main"
+            android:theme="@style/Theme.DakbayaKnow.NoActionBar" />
+        <activity
+            android:name=".WelcomeUser"
+            android:exported="true"
             android:theme="@style/Theme.DakbayaKnow.NoActionBar" />
         <activity
             android:name=".Register"

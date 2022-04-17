@@ -1,11 +1,18 @@
 package com.example.dakbayaknow.ui.profile;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -14,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.MimeTypeMap;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -25,6 +33,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.bumptech.glide.Glide;
@@ -45,6 +54,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 
 public class ProfileFragment extends Fragment {
@@ -62,6 +72,8 @@ public class ProfileFragment extends Fragment {
     FirebaseUser firebaseUser;
 
     ImageButton editProfile, editLastname, editGender, editAge, editEmail, editRegion, editProvince, editMunicipality, editAddress, editClientType;
+    Dialog dialog;
+    Uri camUri, galleryUri;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -107,14 +119,50 @@ public class ProfileFragment extends Fragment {
 
         fAuth = FirebaseAuth.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
+        dialog = new Dialog(getContext());
 
-        profileImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(openGalleryIntent, 1000);
-            }
-        });
+        int PERMISSION_ALL = 1;
+        String[] PERMISSIONS = {Manifest.permission.CAMERA};
+
+        if(!hasPermissions(getActivity(),PERMISSIONS)) {
+            ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, PERMISSION_ALL);
+        }
+        else {
+            profileImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.setContentView(R.layout.pick_image_dialog);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                    Button cam = dialog.findViewById(R.id.camera);
+                    Button gall = dialog.findViewById(R.id.gallery);
+                    ImageButton close = dialog.findViewById(R.id.closeButton);
+                    dialog.show();
+
+                    cam.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            pick_camera();
+                        }
+                    });
+
+                    gall.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            pick_gallery();
+                        }
+                    });
+
+                    close.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialog.dismiss();
+                            getActivity().finish();
+                        }
+                    });
+                }
+            });
+        }
 
         editProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -252,16 +300,27 @@ public class ProfileFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1000) {
             if(resultCode == Activity.RESULT_OK) {
-                Uri imageUri = data.getData();
-                profileImage.setImageURI(imageUri);
-                uploadToFirebase(imageUri);
+                camUri = data.getData();
+                pd.setMessage("Changing Profile...Please Wait");
+                pd.show();
+                dialog.dismiss();
+                onCaptureImageResult(data);
+            }
+        }
+        if (requestCode == 2000) {
+            if(resultCode == Activity.RESULT_OK) {
+                galleryUri = data.getData();
+                pd.setMessage("Changing Profile...Please Wait");
+                pd.show();
+                dialog.dismiss();
+                uploadToFirebase2();
             }
         }
     }
 
-    private void uploadToFirebase(Uri imageUri) {
+    private void uploadToFirebase(byte[] bb) {
         final StorageReference fileRef = storageReference.child("users/"+fAuth.getCurrentUser().getUid()+"profile.jpg");
-        fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        fileRef.putBytes(bb).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -270,6 +329,33 @@ public class ProfileFragment extends Fragment {
                         Image image = new Image(uri.toString());
 //                        String imageId = reference.push().toString();
                         reference.setValue(image);
+                        pd.dismiss();
+                        dialog.dismiss();
+                        Toast.makeText(getContext(), "Profile changed successfully!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getContext(), "Failed.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void uploadToFirebase2() {
+        final StorageReference fileRef = storageReference.child("users/"+fAuth.getCurrentUser().getUid()+"profile.jpg");
+        fileRef.putFile(galleryUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        Image image = new Image(uri.toString());
+//                        String imageId = reference.push().toString();
+                        reference.setValue(image);
+                        pd.dismiss();
+                        dialog.dismiss();
                         Toast.makeText(getContext(), "Profile changed successfully!", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -287,6 +373,36 @@ public class ProfileFragment extends Fragment {
         ContentResolver cr = getContext().getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cr.getType(mUri));
+    }
+
+    public void pick_camera() {
+        Intent openGalleryIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(openGalleryIntent, 1000);
+    }
+    public void pick_gallery() {
+        Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(openGalleryIntent, 2000);
+    }
+
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (context!=null && permissions!=null){
+            for(String permission : permissions) {
+                if(ActivityCompat.checkSelfPermission(context,permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private void onCaptureImageResult(Intent data){
+        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+        byte bb[] = bytes.toByteArray();
+        profileImage.setImageBitmap(bitmap);
+
+        uploadToFirebase(bb);
     }
 
     private void showFirstnameUpdate(final String fn) {

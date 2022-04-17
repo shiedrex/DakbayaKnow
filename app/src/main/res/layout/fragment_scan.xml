@@ -5,13 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center"
     tools:context=".ui.scan.ScanFragment">
 
     <com.budiyev.android.codescanner.CodeScannerView
         android:id="@+id/scanner_view"
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="600dp"
         app:autoFocusButtonColor="@android:color/white"
         app:autoFocusButtonVisible="true"
         app:flashButtonColor="@android:color/white"
@@ -26,14 +25,14 @@
         app:maskColor="#77000000"/>
 
     <Button
-        android:id="@+id/scanImage"
+        android:id="@+id/importQR"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Scan Image"
         android:layout_gravity="center"
         android:layout_marginStart="80dp"
         android:layout_marginEnd="80dp"
-        android:layout_marginTop="20dp"/>
+        android:backgroundTint="#FEA400 "
+        android:text="Import QR from Gallery" />
 
     <TextView
         android:id="@+id/text"

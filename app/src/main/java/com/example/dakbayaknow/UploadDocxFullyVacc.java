@@ -1,10 +1,19 @@
 package com.example.dakbayaknow;
 
+import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -13,12 +22,16 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -48,6 +61,7 @@ import com.google.firebase.storage.UploadTask;
 
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,7 +70,6 @@ import java.util.Map;
 public class UploadDocxFullyVacc extends AppCompatActivity {
     private Button govIdButton, vaccCardButton, submitButton;
 
-    CheckBox captchaCheckbox;
     String SITE_KEY = "6LeQMXkeAAAAAOmnUZ2R7k0AV-FLhnOWQj3HyriO";
     String SECRET_KEY = "6LeQMXkeAAAAAC-iU02tSyfJsxo7xhYRCuVaB0Zl";
     RequestQueue queue;
@@ -69,14 +82,21 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
     StorageReference storageReference;
     FirebaseUser firebaseUser;
 
-    TextView govId, vaccCard,
-            fullname, currentAddress, destinationAddress, departure, arrival,
-            govIDRequired;
+    ImageView govIdImage, vaccCardImage;
+
+    TextView fullname, currentAddress, destinationAddress, departure, arrival,
+            govIDRequired, govIdImageRequired, vaccCardImageRequired;
 
     TextInputEditText govIdNumber;
     AutoCompleteTextView spinner_govId;
 
     Docx value;
+    Uri govIdImageUri, vaccCardImageUri;
+
+    Dialog dialog;
+    ProgressDialog progressDialog;
+
+    byte[] bb, bb2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,10 +114,9 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
         databaseReference = firebaseDatabase.getReference("users").child(firebaseUser.getUid()).child("uploadDocx");
 
         travelRef = firebaseDatabase.getReference("users").child(firebaseAuth.getCurrentUser().getUid()).child("travelform");
-        govIdRef = firebaseDatabase.getInstance().getReference("users").child(firebaseUser.getUid()).child("uploadDocx").child("govId");
-        vaccCardRef = firebaseDatabase.getInstance().getReference("users").child(firebaseUser.getUid()).child("uploadDocx").child("vaccCard");
+        govIdRef = firebaseDatabase.getInstance().getReference("users").child(firebaseUser.getUid()).child("uploadDocx").child(firebaseAuth.getCurrentUser().getUid()).child("govIdImage");
+        vaccCardRef = firebaseDatabase.getInstance().getReference("users").child(firebaseUser.getUid()).child("uploadDocx").child(firebaseAuth.getCurrentUser().getUid()).child("vaccCardImage");
 
-        captchaCheckbox = findViewById(R.id.captchaCheckbox);
         queue = Volley.newRequestQueue(getApplicationContext());
         //button
         govIdButton = findViewById((R.id.govIdButton));
@@ -107,8 +126,13 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
         spinner_govId = findViewById(R.id.spinner_govId);
         //text input
         govIdNumber = findViewById(R.id.govIdNumber);
-
+        //imageview
+        govIdImage = findViewById(R.id.govIdImage);
+        vaccCardImage = findViewById(R.id.vaccCardImage);
+        //required
         govIDRequired = findViewById(R.id.govIDRequired);
+        govIdImageRequired = findViewById(R.id.govIdImageRequired);
+        vaccCardImageRequired = findViewById(R.id.vaccCardImageRequired);
 
         //retrieve from database
         fullname = findViewById(R.id.fullnameText);
@@ -121,6 +145,9 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
 
         fAuth = FirebaseAuth.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
+
+        dialog = new Dialog(this);
+        progressDialog = new ProgressDialog(this);
 
         List<String> Categories = new ArrayList<>();
         Categories.add("UMID");
@@ -136,35 +163,86 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
         dataAdapter.setDropDownViewResource(R.layout.textview_gray);
         spinner_govId.setAdapter(dataAdapter);
 
-        captchaCheckbox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                verifyGoogleReCAPTCHA();
-            }
-        });
+        int PERMISSION_ALL = 1;
+        String[] PERMISSIONS = {Manifest.permission.CAMERA};
 
-        govIdButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(openGalleryIntent, 1000);
-            }
-        });
+        if(!hasPermissions(this,PERMISSIONS)) {
+            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
+        }
+        else {
+            govIdButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.setContentView(R.layout.pick_image_dialog);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        vaccCardButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(openGalleryIntent, 2000);
-            }
-        });
+                    Button cam = dialog.findViewById(R.id.camera);
+                    Button gall = dialog.findViewById(R.id.gallery);
+                    ImageButton close = dialog.findViewById(R.id.closeButton);
+                    dialog.show();
+
+                    cam.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            pick_camera_govid();
+                        }
+                    });
+
+                    gall.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            pick_gallery_govid();
+                        }
+                    });
+
+                    close.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    });
+                }
+            });
+            vaccCardButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dialog.setContentView(R.layout.pick_image_dialog);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                    Button cam = dialog.findViewById(R.id.camera);
+                    Button gall = dialog.findViewById(R.id.gallery);
+                    ImageButton close = dialog.findViewById(R.id.closeButton);
+                    dialog.show();
+
+                    cam.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            pick_camera_vacccard();
+                        }
+                    });
+
+                    gall.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            pick_gallery_vacccard();
+                        }
+                    });
+
+                    close.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialog.dismiss();
+                            finish();
+                        }
+                    });
+                }
+            });
+        }
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                value.setGovId(spinner_govId.getText().toString().trim());
-                value.setGovIdNumber(govIdNumber.getText().toString().trim());
-
                 String govId = spinner_govId.getText().toString().trim();
                 String govIdNum = govIdNumber.getText().toString().trim();
 
@@ -172,7 +250,7 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
                     govIDRequired.setText("Government ID is required!");
                     spinner_govId.requestFocus();
                     return;
-                }else{
+                } else {
                     govIDRequired.setText(null);
                 }
 
@@ -182,8 +260,23 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
                     return;
                 }
 
-                Toast.makeText(UploadDocxFullyVacc.this, "Documents uploaded successfully!", Toast.LENGTH_SHORT).show();
-                databaseReference.child(String.valueOf(fAuth.getCurrentUser().getUid())).setValue(value);
+                if (govIdImage.getDrawable() == null) {
+                    govIdImageRequired.setText("Government ID Photo is required");
+                    govIdImageRequired.requestFocus();
+                    return;
+                } else {
+                    govIdImageRequired.setText(null);
+                }
+
+                if (vaccCardImage.getDrawable() == null) {
+                    vaccCardImageRequired.setText("Vaccine Card Photo is required");
+                    vaccCardImageRequired.requestFocus();
+                    return;
+                } else {
+                    vaccCardImageRequired.setText(null);
+                }
+
+                verifyGoogleReCAPTCHA();
             }
         });
 
@@ -194,7 +287,9 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     // Retrieving Data from firebase
                     String fn = "" + dataSnapshot1.child("firstname").getValue();
+                    String mi = "" + dataSnapshot1.child("middleinitial").getValue();
                     String ln = "" + dataSnapshot1.child("lastname").getValue();
+                    String sn = "" + dataSnapshot1.child("suffixname").getValue();
                     String cAdd = "" + dataSnapshot1.child("cAddress").getValue();
                     String cMuni = "" + dataSnapshot1.child("cMunicipality").getValue();
                     String cProv = "" + dataSnapshot1.child("cProvince").getValue();
@@ -205,7 +300,7 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
                     String arriv = "" + dataSnapshot1.child("arrival").getValue();
 
                     // setting data to our text view
-                    fullname.setText(fn + " " + ln);
+                    fullname.setText(fn + " " + mi + " " + ln + " " + sn);
                     currentAddress.setText(cAdd + ", " + cMuni + ", " + cProv);
                     destinationAddress.setText(dAdd + ", " + dMuni + ", " + dProv);
                     departure.setText(depart);
@@ -277,6 +372,39 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
                                 // if the response is successful then we are
                                 // showing below toast message.
                                 Toast.makeText(UploadDocxFullyVacc.this, "User verified with reCAPTCHA", Toast.LENGTH_SHORT).show();
+
+                                progressDialog.setMessage("Submitting...Please Wait");
+                                progressDialog.show();
+
+                                value.setGovId(spinner_govId.getText().toString().trim());
+                                value.setGovIdNumber(govIdNumber.getText().toString().trim());
+
+                                uploadToFirebase();
+                                uploadToFirebase2();
+                                uploadToFirebaseFromCamera();
+                                uploadToFirebaseFromCamera2();
+
+                                databaseReference.child(String.valueOf(fAuth.getCurrentUser().getUid())).setValue(value);
+
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        progressDialog.dismiss();
+                                        dialog.setContentView(R.layout.uploaddocx_success_dialog);
+                                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                                        Button ok = dialog.findViewById(R.id.okButton);
+                                        dialog.show();
+
+                                        ok.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                dialog.dismiss();
+                                                startActivity(new Intent(UploadDocxFullyVacc.this, MainActivity.class));
+                                            }
+                                        });
+                                    }
+                                }, 3000);
                             } else {
                                 // if the response if failure we are displaying
                                 // a below toast message.
@@ -327,30 +455,48 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1000) {
             if (resultCode == Activity.RESULT_OK) {
-                Uri imageUri = data.getData();
-                uploadToFirebase(imageUri);
+                govIdImageUri = data.getData();
+                govIdImage.setImageURI(govIdImageUri);
+                dialog.dismiss();
             }
         }
         if (requestCode == 2000) {
             if (resultCode == Activity.RESULT_OK) {
-                Uri imageUri = data.getData();
-                uploadToFirebase2(imageUri);
+                vaccCardImageUri = data.getData();
+                vaccCardImage.setImageURI(vaccCardImageUri);
+                dialog.dismiss();
+            }
+        }
+        if (requestCode == 3000) {
+            if (resultCode == Activity.RESULT_OK) {
+                govIdImageUri = data.getData();
+                govIdImage.setImageURI(govIdImageUri);
+                dialog.dismiss();
+                onCaptureImageResult(data);
+
+            }
+        }
+        if (requestCode == 4000) {
+            if (resultCode == Activity.RESULT_OK) {
+                vaccCardImageUri = data.getData();
+                vaccCardImage.setImageURI(vaccCardImageUri);
+                dialog.dismiss();
+                onCaptureImageResult2(data);
+
             }
         }
     }
 
-    private void uploadToFirebase(Uri imageUri) {
+    private void uploadToFirebase() {
         final StorageReference fileRef = storageReference.child("users/" + fAuth.getCurrentUser().getUid() + "govId.jpg");
-        fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        fileRef.putFile(govIdImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
                         GovId image = new GovId(uri.toString());
-//                        String imageId = reference.push().toString();
                         govIdRef.setValue(image);
-                        Toast.makeText(UploadDocxFullyVacc.this, "Government ID uploaded successfully!", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -362,19 +508,17 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
         });
     }
 
-    private void uploadToFirebase2(Uri imageUri) {
+    private void uploadToFirebase2() {
         final StorageReference fileRef = storageReference.child("users/" + fAuth.getCurrentUser().getUid() + "vaccCard.jpg");
 
-        fileRef.putFile(imageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        fileRef.putFile(vaccCardImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
                         VaccCard image = new VaccCard(uri.toString());
-//                        String imageId = reference.push().toString();
                         vaccCardRef.setValue(image);
-                        Toast.makeText(UploadDocxFullyVacc.this, "Vaccination Card uploaded successfully!", Toast.LENGTH_SHORT).show();
                     }
                 });
             }
@@ -386,11 +530,102 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
         });
     }
 
-    private String getFileExtension(Uri mUri) {
+    private void uploadToFirebaseFromCamera() {
+        final StorageReference fileRef = storageReference.child("users/" + fAuth.getCurrentUser().getUid() + "govId.jpg");
+        fileRef.putBytes(bb).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        GovId image = new GovId(uri.toString());
+                        govIdRef.setValue(image);
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(UploadDocxFullyVacc.this, "Failed.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
+    private void uploadToFirebaseFromCamera2() {
+        final StorageReference fileRef = storageReference.child("users/" + fAuth.getCurrentUser().getUid() + "vaccCard.jpg");
+
+        fileRef.putBytes(bb2).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        VaccCard image = new VaccCard(uri.toString());
+                        vaccCardRef.setValue(image);
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(UploadDocxFullyVacc.this, "Failed.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+
+    private String getFileExtension(Uri mUri) {
         ContentResolver cr = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cr.getType(mUri));
+    }
 
+    public void pick_gallery_govid() {
+        Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(openGalleryIntent, 1000);
+    }
+    public void pick_gallery_vacccard() {
+        Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(openGalleryIntent, 2000);
+    }
+    public void pick_camera_govid() {
+        Intent openGalleryIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(openGalleryIntent, 3000);
+    }
+    public void pick_camera_vacccard() {
+        Intent openGalleryIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(openGalleryIntent, 4000);
+    }
+
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (context!=null && permissions!=null){
+            for(String permission : permissions) {
+                if(ActivityCompat.checkSelfPermission(context,permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    private void onCaptureImageResult(Intent data){
+        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+        bb = bytes.toByteArray();
+        govIdImage.setImageBitmap(bitmap);
+
+        uploadToFirebaseFromCamera();
+    }
+
+    private void onCaptureImageResult2(Intent data){
+        Bitmap bitmap = (Bitmap) data.getExtras().get("data");
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
+        bb2 = bytes.toByteArray();
+        vaccCardImage.setImageBitmap(bitmap);
+
+        uploadToFirebaseFromCamera2();
     }
 }

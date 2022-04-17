@@ -48,8 +48,6 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
     ArrayList<String> arrayList_Region, arrayList_Province, arrayList_Municipality;
     ArrayAdapter<String> arrayAdapter_Region, arrayAdapter_Province, arrayAdapter_Municipality;
 
-    private ProgressBar progressBar;
-
     TextView gender, clientType;
     private android.widget.Spinner spinner, spinner2;
     FirebaseDatabase database;
@@ -93,7 +91,6 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         spinner_province= findViewById(R.id.spinner_province);
         spinner_municipality = findViewById(R.id.spinner_municipality);
 
-        progressBar = findViewById(R.id.progressBar);
         dialog = new Dialog(this);
 
         List<String> Categories = new ArrayList<>();
@@ -815,54 +812,60 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
 
                     }
                 });
-
-        progressBar.setVisibility(View.VISIBLE);
-        mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            User user = new User(firstname, lastname, gender, age, email, phone, region, province, municipality, address, clientType);
-
-                            FirebaseDatabase.getInstance().getReference("users")
-                                    .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                                    .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        Toast.makeText(Register.this, "User has been registered successfully!", Toast.LENGTH_LONG).show();
-                                        progressBar.setVisibility(View.GONE);
-                                        submit();
-                                    } else {
-                                        Toast.makeText(Register.this, "Failed to register! Try Again!", Toast.LENGTH_LONG).show();
-                                        progressBar.setVisibility(View.GONE);
-                                    }
-                                }
-                            });
-                        } else {
-                            Toast.makeText(Register.this, "Failed to register! Try Again!", Toast.LENGTH_LONG).show();
-                            progressBar.setVisibility(View.GONE);
-                        }
-                    }
-                });
+        submit();
     }
     private void submit() {
-        AlertDialog.Builder builder=new AlertDialog.Builder(Register.this);
-        builder.setCancelable(false);
-        builder.setIcon(R.drawable.dklogo2);
-        builder.setTitle("Successfully Registered");
-        builder.setMessage("Press OK to login.");
-        builder.setInverseBackgroundForced(true);
+        dialog.setContentView(R.layout.terms_conditions_dialog);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-        builder.setPositiveButton("Ok",new DialogInterface.OnClickListener(){
+        Button agree = dialog.findViewById(R.id.agreeButton);
+        dialog.show();
+
+        agree.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which){
+            public void onClick(View view) {
+                String firstname = firstnameText.getText().toString().trim();
+                String lastname = lastnameText.getText().toString().trim();
+                String gender = genderText.getText().toString().trim();
+                String age = ageText.getText().toString().trim();
+                String email = emailText.getText().toString().trim();
+                String password = passwordText.getText().toString().trim();
+                String confirmPassword = confirmPasswordText.getText().toString().trim();
+                String phone = phoneText.getText().toString().trim();
+                String region = spinner_region.getSelectedItem().toString();
+                String province = spinner_province.getSelectedItem().toString();
+                String municipality = spinner_municipality.getSelectedItem().toString();
+                String address = addressText.getText().toString().trim();
+                String clientType = clientTypeText.getText().toString().trim();
+
+                mAuth.createUserWithEmailAndPassword(email, password)
+                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (task.isSuccessful()) {
+                                    User user = new User(firstname, lastname, gender, age, email, phone, region, province, municipality, address, clientType);
+
+                                    FirebaseDatabase.getInstance().getReference("users")
+                                            .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                            .setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if (task.isSuccessful()) {
+                                                Toast.makeText(Register.this, "User has been registered successfully!", Toast.LENGTH_LONG).show();
+                                            } else {
+                                                Toast.makeText(Register.this, "Failed to register! Try Again!", Toast.LENGTH_LONG).show();
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    Toast.makeText(Register.this, "Failed to register! Try Again!", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
                 dialog.dismiss();
                 finish();
             }
         });
-        AlertDialog alert=builder.create();
-        alert.show();
     }
 
     public void init() {

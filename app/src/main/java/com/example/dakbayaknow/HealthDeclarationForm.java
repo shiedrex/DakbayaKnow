@@ -2,10 +2,12 @@ package com.example.dakbayaknow;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -37,7 +39,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HealthDeclarationForm extends AppCompatActivity {
-    private EditText  countryText, cityText;
+    private EditText countryText, cityText;
     private RadioButton sYes, sNo, cYes, cNo, aYes, aNo;
 
     private TextInputEditText firstnameText, middlenameText, lastnameText, nationalityText, ageText, contactNumberText, emailText, presentAddressText;
@@ -53,6 +55,7 @@ public class HealthDeclarationForm extends AppCompatActivity {
     AutoCompleteTextView spinner_gender, spinner_symptoms;
 
     Dialog dialog;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +98,7 @@ public class HealthDeclarationForm extends AppCompatActivity {
         reference = database.getInstance().getReference("users").child(fAuth.getCurrentUser().getUid()).child("hdf");
 
         dialog = new Dialog(this);
+        progressDialog = new ProgressDialog(this);
 
         List<String> Categories = new ArrayList<>();
         Categories.add("Male");
@@ -125,8 +129,8 @@ public class HealthDeclarationForm extends AppCompatActivity {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    maxid = (int)snapshot.getChildrenCount();
+                if (snapshot.exists()) {
+                    maxid = (int) snapshot.getChildrenCount();
                 }
             }
 
@@ -137,7 +141,6 @@ public class HealthDeclarationForm extends AppCompatActivity {
         });
 
         submitButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View view) {
                 //radiobutton
@@ -162,21 +165,21 @@ public class HealthDeclarationForm extends AppCompatActivity {
                 value.setGender(spinner_gender.getText().toString());
                 value.setSymptoms(spinner_symptoms.getText().toString());
 
-                if(sYes.isChecked()){
+                if (sYes.isChecked()) {
                     value.setSick(s1);
-                }else{
+                } else {
                     value.setSick(s2);
                 }
 
-                if(cYes.isChecked()){
+                if (cYes.isChecked()) {
                     value.setCovid(c1);
-                }else{
+                } else {
                     value.setCovid(c2);
                 }
 
-                if(aYes.isChecked()){
+                if (aYes.isChecked()) {
                     value.setAnimal(a1);
-                }else{
+                } else {
                     value.setAnimal(a2);
                 }
 
@@ -260,6 +263,10 @@ public class HealthDeclarationForm extends AppCompatActivity {
 //
 //                            }
 //                        });
+
+                progressDialog.setMessage("Submitting...Please Wait");
+                progressDialog.show();
+
                 reference.child(String.valueOf(fAuth.getCurrentUser().getUid())).setValue(value);
 
                 DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("users").child(fAuth.getCurrentUser().getUid()).child("hdf");
@@ -282,33 +289,46 @@ public class HealthDeclarationForm extends AppCompatActivity {
                             found4 = animal.contains(search2);
 
                             if (found == true && found2 == true && found3 == true && found4 == true) {
-                                dialog.setContentView(R.layout.hdf_success_dialog);
-                                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-                                Button ok = dialog.findViewById(R.id.okButton);
-                                dialog.show();
-
-                                ok.setOnClickListener(new View.OnClickListener() {
+                                new Handler().postDelayed(new Runnable() {
                                     @Override
-                                    public void onClick(View view) {
-                                        dialog.dismiss();
-                                        finish();
+                                    public void run() {
+                                        progressDialog.dismiss();
+                                        dialog.setContentView(R.layout.hdf_success_dialog);
+                                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                                        Button ok = dialog.findViewById(R.id.okButton);
+                                        dialog.show();
+
+                                        ok.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                dialog.dismiss();
+                                                finish();
+                                            }
+                                        });
                                     }
-                                });
+                                }, 3000);
+
                             } else {
-                                dialog.setContentView(R.layout.hdf_failed_dialog);
-                                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-                                Button ok = dialog.findViewById(R.id.okButton);
-                                dialog.show();
-
-                                ok.setOnClickListener(new View.OnClickListener() {
+                                new Handler().postDelayed(new Runnable() {
                                     @Override
-                                    public void onClick(View view) {
-                                        dialog.dismiss();
-                                        finish();
+                                    public void run() {
+                                        progressDialog.dismiss();
+                                        dialog.setContentView(R.layout.hdf_failed_dialog);
+                                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                                        Button ok = dialog.findViewById(R.id.okButton);
+                                        dialog.show();
+
+                                        ok.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                dialog.dismiss();
+                                                finish();
+                                            }
+                                        });
                                     }
-                                });
+                                }, 3000);
                             }
                         }
                     }

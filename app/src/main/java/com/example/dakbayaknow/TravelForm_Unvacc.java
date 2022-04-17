@@ -2,10 +2,12 @@ package com.example.dakbayaknow;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,7 +16,6 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.RadioButton;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -60,6 +61,7 @@ public class TravelForm_Unvacc extends AppCompatActivity {
     DatePickerDialog.OnDateSetListener setListener, setListener2;
 
     Dialog dialog;
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +110,7 @@ public class TravelForm_Unvacc extends AppCompatActivity {
         reference = database.getInstance().getReference("users").child(fAuth.getCurrentUser().getUid()).child("travelform");
 
         dialog = new Dialog(this);
+        progressDialog = new ProgressDialog(this);
 
         Calendar calendar = Calendar.getInstance();
         final int year = calendar.get(Calendar.YEAR);
@@ -1393,21 +1396,30 @@ public class TravelForm_Unvacc extends AppCompatActivity {
                     return;
                 }
 
+                progressDialog.setMessage("Submitting...Please Wait");
+                progressDialog.show();
+
                 reference.child(String.valueOf(fAuth.getCurrentUser().getUid())).setValue(value);
 
-                dialog.setContentView(R.layout.travelform_success_dialog);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-                Button ok = dialog.findViewById(R.id.okButton);
-                dialog.show();
-
-                ok.setOnClickListener(new View.OnClickListener() {
+                new Handler().postDelayed(new Runnable() {
                     @Override
-                    public void onClick(View view) {
-                        dialog.dismiss();
-                        startActivity(new Intent(TravelForm_Unvacc.this, TravelForm_Submit.class));
+                    public void run() {
+                        progressDialog.dismiss();
+                        dialog.setContentView(R.layout.travelform_success_dialog);
+                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                        Button ok = dialog.findViewById(R.id.okButton);
+                        dialog.show();
+
+                        ok.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                dialog.dismiss();
+                                startActivity(new Intent(TravelForm_Unvacc.this, TravelForm_Submit_Unvacc.class));
+                            }
+                        });
                     }
-                });
+                }, 3000);
             }
         });
     }
