@@ -174,7 +174,6 @@ public class ProfileFragment extends Fragment {
                 EditText gender = dialog.findViewById(R.id.gender);
                 EditText age = dialog.findViewById(R.id.age);
                 EditText phone = dialog.findViewById(R.id.phone);
-                EditText email = dialog.findViewById(R.id.email);
                 EditText region = dialog.findViewById(R.id.region);
                 EditText province = dialog.findViewById(R.id.province);
                 EditText municipality = dialog.findViewById(R.id.municipality);
@@ -219,7 +218,6 @@ public class ProfileFragment extends Fragment {
                             String Gender = "" + dataSnapshot1.child("gender").getValue();
                             String Age = "" + dataSnapshot1.child("age").getValue();
                             String Phone = "" + dataSnapshot1.child("phone").getValue();
-                            String Email = "" + dataSnapshot1.child("email").getValue();
                             String Region = "" + dataSnapshot1.child("region").getValue();
                             String prov = "" + dataSnapshot1.child("province").getValue();
                             String muni = "" + dataSnapshot1.child("municipality").getValue();
@@ -232,7 +230,6 @@ public class ProfileFragment extends Fragment {
                             gender.setText(Gender);
                             age.setText(Age);
                             phone.setText(Phone);
-                            email.setText(Email);
                             region.setText(Region);
                             province.setText(prov);
                             municipality.setText(muni);
@@ -438,6 +435,7 @@ public class ProfileFragment extends Fragment {
             public void onComplete(@NonNull Task task) {
                 if(task.isSuccessful()){
                     Toast.makeText(getContext(), "Successfully Updated", Toast.LENGTH_SHORT).show();
+                    dialog.dismiss();
                 }else{
                     Toast.makeText(getContext(), "Failed To Update", Toast.LENGTH_SHORT).show();
                 }

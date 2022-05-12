@@ -32,6 +32,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nexalight"
+                android:maxLines="1"
+                android:inputType="text"
                 android:hint="First Name"/>
 
             <EditText
@@ -39,6 +41,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nexalight"
+                android:maxLines="1"
+                android:inputType="text"
                 android:hint="Last Name"/>
 
             <EditText
@@ -46,6 +50,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nexalight"
+                android:maxLines="1"
+                android:inputType="text"
                 android:hint="Gender"/>
 
             <EditText
@@ -53,6 +59,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nexalight"
+                android:maxLines="1"
+                android:maxLength="2"
+                android:inputType="number"
                 android:hint="Age"/>
 
             <EditText
@@ -60,14 +69,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nexalight"
+                android:maxLines="1"
+                android:inputType="phone"
                 android:hint="Phone Number"/>
-
-            <EditText
-                android:id="@+id/email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/nexalight"
-                android:hint="Email"/>
 
             <EditText
                 android:id="@+id/region"
@@ -81,6 +85,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nexalight"
+                android:maxLines="1"
+                android:inputType="text"
                 android:hint="Province"/>
 
             <EditText
@@ -88,6 +94,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nexalight"
+                android:maxLines="1"
+                android:inputType="text"
                 android:hint="Municipality"/>
 
             <EditText
@@ -95,6 +103,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nexalight"
+                android:maxLines="1"
+                android:inputType="text"
                 android:hint="Address"/>
 
             <EditText
@@ -102,6 +112,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nexalight"
+                android:maxLines="1"
+                android:inputType="text"
                 android:hint="Client Type"/>
 
             <LinearLayout

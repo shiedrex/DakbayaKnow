@@ -306,24 +306,6 @@ public class HealthDeclarationForm extends AppCompatActivity {
                     animalRequired.setVisibility(View.INVISIBLE);
                 }
 
-//                fAuth.fetchSignInMethodsForEmail(email)
-//                        .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
-//                            @Override
-//                            public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
-//
-//                                boolean isNewUser = task.getResult().getSignInMethods().isEmpty();
-//
-//                                if (isNewUser) {
-//                                    Log.e("TAG", "Email Address do not exist");
-//                                    emailText.setError("Email Address must be same with your Registered Email Address!");
-//                                    emailText.requestFocus();
-//                                    return;
-//                                } else {
-//                                    Log.e("TAG", "Email Address Exist!");
-//                                }
-//
-//                            }
-//                        });
                 //submit values to database
                 //text
                 value.setFirstname(firstnameText.getText().toString().trim());
