@@ -167,15 +167,17 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                             // if user enters wrong email.
                             catch (FirebaseAuthInvalidUserException invalidEmail)
                             {
-                                Toast.makeText(Login.this, "Invalid Email not registered", Toast.LENGTH_SHORT).show();
                                 Log.d("TAG", "onComplete: invalid_email");
+                                emailText.setError("Invalid Email not registered");
+                                emailText.requestFocus();
                                 progressDialog.dismiss();
                             }
                             // if user enters wrong password.
                             catch (FirebaseAuthInvalidCredentialsException wrongPassword)
                             {
-                                Toast.makeText(Login.this, "Wrong Password", Toast.LENGTH_SHORT).show();
                                 Log.d("TAG", "onComplete: wrong_password");
+                                passwordText.setError("Wrong Password");
+                                passwordText.requestFocus();
                                 progressDialog.dismiss();
                             }
                             catch (Exception e)

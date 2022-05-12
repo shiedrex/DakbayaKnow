@@ -837,9 +837,8 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                             }
                             catch (FirebaseAuthUserCollisionException existEmail)
                             {
-                                Toast.makeText(Register.this, "Email Exists", Toast.LENGTH_LONG).show();
                                 Log.d("TAG", "onComplete: exist_email");
-                                emailText.setError("Email exists");
+                                emailText.setError("Email already exists");
                                 emailText.requestFocus();
                             }
                             catch (Exception e)
