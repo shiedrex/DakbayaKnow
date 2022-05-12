@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/FERNANDEZ-Android/DakbayaKnow/app/src/main/res/layout/activity_bookticket.xml" value="0.35885416666666664" />
+        <entry key="..\:/FERNANDEZ-Android/DakbayaKnow/app/src/main/res/layout/activity_profile_review.xml" value="0.35885416666666664" />
+        <entry key="..\:/FERNANDEZ-Android/DakbayaKnow/app/src/main/res/menu/main.xml" value="0.35885416666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.22135416666666666" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/drawable/alertlevel1.xml" value="0.3828125" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/drawable/alertlevel5.xml" value="0.3828125" />
@@ -153,6 +156,7 @@
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/menu/main.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.3828125" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.3828125" />
+        <entry key="..\:/Users/SHIED/Desktop/DakbayaKnow/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
       </map>
     </option>
   </component>
