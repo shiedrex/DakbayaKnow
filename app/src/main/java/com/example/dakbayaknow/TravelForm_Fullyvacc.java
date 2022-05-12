@@ -16,10 +16,13 @@ import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.RadioButton;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -30,7 +33,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class TravelForm_Fullyvacc extends AppCompatActivity {
 
@@ -44,10 +49,11 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
     private Button submitButton;
 
     FirebaseDatabase database;
-    DatabaseReference reference;
+    DatabaseReference reference, ref2;
     FirebaseAuth fAuth;
 
     TravelFormDetails value;
+    Applications value2;
 
     int maxid = 1;
 
@@ -107,8 +113,10 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
         fAuth = FirebaseAuth.getInstance();
 
         value = new TravelFormDetails();
+        value2 = new Applications();
 
         reference = database.getInstance().getReference("users").child(fAuth.getCurrentUser().getUid()).child("travelform");
+        ref2 = database.getInstance().getReference("applications");
 
         dialog = new Dialog(this);
         progressDialog = new ProgressDialog(this);
@@ -1360,6 +1368,11 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
                     emailText.requestFocus();
                     return;
                 }
+                if(!email.matches(fAuth.getCurrentUser().getEmail())){
+                    emailText.setError("Incorrect Email!");
+                    emailText.requestFocus();
+                    return;
+                }
                 if (contactNumber.isEmpty()) {
                     contactNumberText.setError("Contact Number is required!");
                     contactNumberText.requestFocus();
@@ -1399,7 +1412,23 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
                 progressDialog.setMessage("Submitting...Please Wait");
                 progressDialog.show();
 
+                String vax = "vaccinated";
+                value.setVaccineStatus(vax);
+
                 reference.child(String.valueOf(fAuth.getCurrentUser().getUid())).setValue(value);
+
+                String stat = "Please upload required requirements (vaccinated)";
+                String travType = spinner_travellerType.getText().toString();
+                String orig = cAddressText.getText().toString().trim() + ", " +
+                        spinner_cMunicipality.getSelectedItem().toString() + ", " +
+                        spinner_cProvince.getSelectedItem().toString();
+                String des = dAddressText.getText().toString().trim() + ", " +
+                        spinner_dMunicipality.getSelectedItem().toString() + ", " +
+                        spinner_dProvince.getSelectedItem().toString();
+                String travDate = departureText.getText().toString();
+                String arrivDate = arrivalText.getText().toString();
+
+                updateStatus(stat, travType, orig, des, travDate, arrivDate);
 
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -1469,5 +1498,26 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
         arrayAdapter_Municipality = new ArrayAdapter<>(this, R.layout.textview_gray, arrayList_Municipality);
         arrayAdapter_Municipality.setDropDownViewResource(R.layout.textview_gray);
         spinner_dMunicipality.setAdapter(arrayAdapter_Municipality);
+    }
+
+    private void updateStatus(String stat, String travType, String orig, String des, String travDate, String arrivDate) {
+        HashMap user = new HashMap();
+        user.put("status", stat);
+        user.put("travellerType", travType);
+        user.put("origin", orig);
+        user.put("destination", des);
+        user.put("departure", travDate);
+        user.put("arrival", arrivDate);
+
+        ref2.child(fAuth.getCurrentUser().getUid()).updateChildren(user).addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(TravelForm_Fullyvacc.this, "Success", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(TravelForm_Fullyvacc.this, "Failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }

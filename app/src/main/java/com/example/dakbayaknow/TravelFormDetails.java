@@ -5,13 +5,18 @@ public class TravelFormDetails {
             emergencyContactPerson, emergencyContactNumber,
             cRegion, cProvince, cMunicipality, cAddress,
             dRegion, dProvince, dMunicipality, dAddress,
-            departure, arrival;
+            departure, arrival, status, vaccineStatus;
 
     public TravelFormDetails() {
 
     }
 
-    public TravelFormDetails(String travellerType, String title, String firstname, String middleinitial, String lastname, String suffixname, String email, String contactNumber, String gender, String emergencyContactPerson, String emergencyContactNumber, String cRegion, String cProvince, String cMunicipality, String cAddress, String dRegion, String dProvince, String dMunicipality, String dAddress, String departure, String arrival) {
+    public TravelFormDetails(String travellerType, String title, String firstname, String middleinitial, String lastname,
+                             String suffixname, String email, String contactNumber, String gender, String emergencyContactPerson,
+                             String emergencyContactNumber, String cRegion, String cProvince, String cMunicipality, String cAddress,
+                             String dRegion, String dProvince, String dMunicipality, String dAddress, String departure, String arrival,
+                             String status, String vaccineStatus) {
+
         this.travellerType = travellerType;
         this.title = title;
         this.firstname = firstname;
@@ -33,6 +38,8 @@ public class TravelFormDetails {
         this.dAddress = dAddress;
         this.departure = departure;
         this.arrival = arrival;
+        this.status = status;
+        this.vaccineStatus = vaccineStatus;
     }
 
     public String getTravellerType() {
@@ -201,5 +208,21 @@ public class TravelFormDetails {
 
     public void setArrival(String arrival) {
         this.arrival = arrival;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getVaccineStatus() {
+        return vaccineStatus;
+    }
+
+    public void setVaccineStatus(String vaccineStatus) {
+        this.vaccineStatus = vaccineStatus;
     }
 }

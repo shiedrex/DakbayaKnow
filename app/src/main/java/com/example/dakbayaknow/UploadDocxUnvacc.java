@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -36,8 +37,10 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.safetynet.SafetyNet;
 import com.google.android.gms.safetynet.SafetyNetApi;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -67,7 +70,7 @@ public class UploadDocxUnvacc extends AppCompatActivity {
 
     FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference, travelRef, govIdRef, rtcprRef, otherfilesRef;
+    DatabaseReference databaseReference, travelRef, govIdRef, rtcprRef, otherfilesRef, appref;
 
     FirebaseAuth fAuth;
     StorageReference storageReference;
@@ -82,6 +85,7 @@ public class UploadDocxUnvacc extends AppCompatActivity {
     AutoCompleteTextView spinner_govId;
 
     Docx value;
+    Applications value2;
 
     Dialog dialog;
     ProgressDialog progressDialog;
@@ -104,9 +108,10 @@ public class UploadDocxUnvacc extends AppCompatActivity {
         databaseReference = firebaseDatabase.getReference("users").child(firebaseUser.getUid()).child("uploadDocx");
 
         travelRef = firebaseDatabase.getReference("users").child(firebaseAuth.getCurrentUser().getUid()).child("travelform");
-        govIdRef = firebaseDatabase.getInstance().getReference("users").child(firebaseUser.getUid()).child("uploadDocx").child(firebaseAuth.getCurrentUser().getUid()).child("govIdImage");
-        rtcprRef = firebaseDatabase.getInstance().getReference("users").child(firebaseUser.getUid()).child("uploadDocx").child(firebaseAuth.getCurrentUser().getUid()).child("rtcprImage");
-        otherfilesRef = firebaseDatabase.getInstance().getReference("users").child(firebaseUser.getUid()).child("uploadDocx").child(firebaseAuth.getCurrentUser().getUid()).child("otherfilemage");
+        govIdRef = firebaseDatabase.getReference("users").child(firebaseUser.getUid()).child("uploadDocx").child(firebaseAuth.getCurrentUser().getUid()).child("govIdImage");
+        rtcprRef = firebaseDatabase.getReference("users").child(firebaseUser.getUid()).child("uploadDocx").child(firebaseAuth.getCurrentUser().getUid()).child("rtcprImage");
+        otherfilesRef = firebaseDatabase.getReference("users").child(firebaseUser.getUid()).child("uploadDocx").child(firebaseAuth.getCurrentUser().getUid()).child("otherfilemage");
+        appref = FirebaseDatabase.getInstance().getReference("applications");
 
         queue = Volley.newRequestQueue(getApplicationContext());
         //button
@@ -136,6 +141,7 @@ public class UploadDocxUnvacc extends AppCompatActivity {
         arrival = findViewById(R.id.arrivalText);
 
         value = new Docx();
+        value2 = new Applications();
 
         fAuth = FirebaseAuth.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
@@ -329,21 +335,30 @@ public class UploadDocxUnvacc extends AppCompatActivity {
                                 uploadToFirebase2();
                                 uploadToFirebase3();
 
-                                databaseReference.child(String.valueOf(fAuth.getCurrentUser().getUid())).setValue(value);
+                                databaseReference.child(String.valueOf(firebaseAuth.getCurrentUser().getUid())).setValue(value);
+                                String stat = "Pending";
+                                String govId = spinner_govId.getText().toString().trim();
+                                updateStatus(stat, govId);
 
-                                dialog.setContentView(R.layout.uploaddocx_success_dialog);
-                                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-                                Button ok = dialog.findViewById(R.id.okButton);
-                                dialog.show();
-
-                                ok.setOnClickListener(new View.OnClickListener() {
+                                new Handler().postDelayed(new Runnable() {
                                     @Override
-                                    public void onClick(View view) {
-                                        dialog.dismiss();
-                                        startActivity(new Intent(UploadDocxUnvacc.this, MainActivity.class));
+                                    public void run() {
+                                        progressDialog.dismiss();
+                                        dialog.setContentView(R.layout.uploaddocx_success_dialog);
+                                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                                        Button ok = dialog.findViewById(R.id.okButton);
+                                        dialog.show();
+
+                                        ok.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                dialog.dismiss();
+                                                startActivity(new Intent(UploadDocxUnvacc.this, MainActivity.class));
+                                            }
+                                        });
                                     }
-                                });
+                                }, 3000);
                             } else {
                                 // if the response if failure we are displaying
                                 // a below toast message.
@@ -484,5 +499,22 @@ public class UploadDocxUnvacc extends AppCompatActivity {
         MimeTypeMap mime = MimeTypeMap.getSingleton();
         return mime.getExtensionFromMimeType(cr.getType(mUri));
 
+    }
+
+    private void updateStatus(String stat, String govId) {
+        HashMap user = new HashMap();
+        user.put("status", stat);
+        user.put("govId", govId);
+
+        appref.child(fAuth.getCurrentUser().getUid()).updateChildren(user).addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(UploadDocxUnvacc.this, "Success", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(UploadDocxUnvacc.this, "Failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }

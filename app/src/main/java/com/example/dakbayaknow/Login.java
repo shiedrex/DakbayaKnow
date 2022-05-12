@@ -31,6 +31,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.SignInMethodQueryResult;
 import com.google.firebase.database.DataSnapshot;
@@ -127,49 +129,64 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             return;
         }
 
-        mAuth.fetchSignInMethodsForEmail(email)
-                .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+//        mAuth.fetchSignInMethodsForEmail(email)
+//                .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
+//
+//                        boolean isNewUser = task.getResult().getSignInMethods().isEmpty();
+//
+//                        if (isNewUser) {
+//                            Log.e("TAG", "User does not exist!");
+//                            emailText.setError("Email is not registered. Register Now!");
+//                            emailText.requestFocus();
+//                            progressDialog.dismiss();
+//                            return;
+//                        } else {
+//                            Log.e("TAG", "User Exist!");
+//                        }
+//
+//                    }
+//                });
+        progressDialog.setMessage("Logging in...Please Wait");
+        progressDialog.show();
 
-                        boolean isNewUser = task.getResult().getSignInMethods().isEmpty();
-
-                        if (isNewUser) {
-                            Log.e("TAG", "User does not exist!");
-                            emailText.setError("Email is not registered. Register Now!");
-                            emailText.requestFocus();
-                            progressDialog.dismiss();
-                            return;
-                        } else {
-                            Log.e("TAG", "User Exist!");
-                        }
-
-                    }
-                });
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            progressDialog.dismiss();
-
-//                            new Handler().postDelayed(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    progressDialog.dismiss();
-//                                }
-//                            },5000);
-
                             startActivity(new Intent(Login.this, WelcomeUser.class));
-                        } else {
-                            Toast.makeText(Login.this, "Failed to login! Please check your credentials.", Toast.LENGTH_LONG).show();
                             progressDialog.dismiss();
+
+                        } else {
+                            try
+                            {
+                                throw task.getException();
+                            }
+                            // if user enters wrong email.
+                            catch (FirebaseAuthInvalidUserException invalidEmail)
+                            {
+                                Toast.makeText(Login.this, "Invalid Email not registered", Toast.LENGTH_SHORT).show();
+                                Log.d("TAG", "onComplete: invalid_email");
+                                progressDialog.dismiss();
+                            }
+                            // if user enters wrong password.
+                            catch (FirebaseAuthInvalidCredentialsException wrongPassword)
+                            {
+                                Toast.makeText(Login.this, "Wrong Password", Toast.LENGTH_SHORT).show();
+                                Log.d("TAG", "onComplete: wrong_password");
+                                progressDialog.dismiss();
+                            }
+                            catch (Exception e)
+                            {
+                                Toast.makeText(Login.this, "Failed to login!", Toast.LENGTH_LONG).show();
+                                Log.d("TAG", "onComplete: " + e.getMessage());
+                                progressDialog.dismiss();
+                            }
                         }
                     }
                 });
-//        progressbar.setVisibility(View.VISIBLE);
-        progressDialog.setMessage("Logging in...Please Wait");
-        progressDialog.show();
     }
 
     private void forgotPassword() {
@@ -187,7 +204,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 mAuth.sendPasswordResetEmail(email).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        Toast.makeText(Login.this, "Rest link sent to your email.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Login.this, "Reset link sent to your email.", Toast.LENGTH_SHORT).show();
                         dialog.dismiss();
                     }
                 }).addOnFailureListener(new OnFailureListener() {

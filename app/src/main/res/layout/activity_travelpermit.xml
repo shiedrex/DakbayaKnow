@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,9 +13,28 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:fontFamily="@font/nexalight"
+                    android:paddingEnd="0dp"
+                    android:justificationMode="inter_word"
+                    android:text="This Travel Permit is granted to the person listed below to pass at the established Quarantine Control Points (QCPs) Checkpoints and Seaports from point of origin to point of destination and vice versa as if may deemed necessary:"
+                    android:textSize="18sp" />
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -27,11 +46,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:fontFamily="@font/nexablack"
                     android:maxLines="1"
-                    android:paddingStart="20dp"
                     android:paddingEnd="0dp"
                     android:text="Name:"
                     android:textSize="18sp" />
@@ -40,7 +58,7 @@
                     android:id="@+id/fullnameText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:fontFamily="@font/nexalight"
                     android:maxLines="1"
@@ -62,7 +80,6 @@
                     android:layout_marginEnd="20dp"
                     android:fontFamily="@font/nexablack"
                     android:maxLines="1"
-                    android:paddingStart="20dp"
                     android:paddingEnd="0dp"
                     android:text="Traveller Type:"
                     android:textSize="18sp" />
@@ -93,7 +110,6 @@
                     android:layout_marginEnd="20dp"
                     android:fontFamily="@font/nexablack"
                     android:maxLines="1"
-                    android:paddingStart="20dp"
                     android:paddingEnd="0dp"
                     android:text="Origin:"
                     android:textSize="18sp" />
@@ -124,7 +140,6 @@
                     android:layout_marginEnd="20dp"
                     android:fontFamily="@font/nexablack"
                     android:maxLines="1"
-                    android:paddingStart="20dp"
                     android:paddingEnd="0dp"
                     android:text="Destination:"
                     android:textSize="18sp" />
@@ -155,7 +170,6 @@
                     android:layout_marginEnd="20dp"
                     android:fontFamily="@font/nexablack"
                     android:maxLines="1"
-                    android:paddingStart="20dp"
                     android:paddingEnd="0dp"
                     android:text="Date of Travel:"
                     android:textSize="18sp" />
@@ -186,7 +200,6 @@
                     android:layout_marginEnd="20dp"
                     android:fontFamily="@font/nexablack"
                     android:maxLines="1"
-                    android:paddingStart="20dp"
                     android:paddingEnd="0dp"
                     android:text="Date of Expected Arrival:"
                     android:textSize="18sp" />
@@ -218,7 +231,6 @@
                     android:layout_marginEnd="20dp"
                     android:fontFamily="@font/nexablack"
                     android:maxLines="1"
-                    android:paddingStart="20dp"
                     android:paddingEnd="0dp"
                     android:text="Status:"
                     android:textSize="18sp" />
@@ -230,32 +242,31 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:fontFamily="@font/nexalight"
-                    android:maxLines="1"
+                    android:maxLines="2"
                     android:text=""
                     android:textSize="18sp" />
             </LinearLayout>
 
             <ImageView
                 android:id="@+id/qrCode"
-                android:layout_width="330dp"
-                android:layout_height="300dp"
+                android:layout_width="180dp"
+                android:layout_height="180dp"
                 android:layout_marginBottom="20dp"
                 android:scaleType="fitCenter"
                 android:layout_gravity="center"
                 android:adjustViewBounds="true"/>
-
-            <Button
-                android:id="@+id/generateQRCodeButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="20dp"
-                android:backgroundTint="#FF9800"
-                android:fontFamily="@font/nexablack"
-                android:text="SAVE QR CODE" />
         </LinearLayout>
-
     </ScrollView>
 
+    <Button
+        android:id="@+id/saveTravelPermitButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:backgroundTint="#FF9800"
+        android:fontFamily="@font/nexablack"
+        android:text="SAVE TRAVEL PERMIT" />
 
-</LinearLayout>
+</RelativeLayout>

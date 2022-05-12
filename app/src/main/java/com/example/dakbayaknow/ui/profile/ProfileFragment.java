@@ -40,8 +40,10 @@ import com.bumptech.glide.Glide;
 import com.example.dakbayaknow.Image;
 import com.example.dakbayaknow.MainActivity;
 import com.example.dakbayaknow.R;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -63,7 +65,7 @@ public class ProfileFragment extends Fragment {
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference, reference;
 
-    TextView firstnameText, lastnameText, genderText, ageText, emailAddressText, regionText, provinceText, municipalityText, addressText, clientTypeText;
+    TextView usernameText, firstnameText, lastnameText, genderText, ageText, emailAddressText, phoneText, regionText, provinceText, municipalityText, addressText, clientTypeText;
     ProgressDialog pd;
 
     FirebaseAuth fAuth;
@@ -71,7 +73,8 @@ public class ProfileFragment extends Fragment {
     StorageReference storageReference;
     FirebaseUser firebaseUser;
 
-    ImageButton editProfile, editLastname, editGender, editAge, editEmail, editRegion, editProvince, editMunicipality, editAddress, editClientType;
+    ImageButton addprofileimage;
+    Button editprofile;
     Dialog dialog;
     Uri camUri, galleryUri;
 
@@ -87,32 +90,26 @@ public class ProfileFragment extends Fragment {
         firebaseUser = firebaseAuth.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("users");
+        databaseReference.keepSynced(true);
 
         reference = firebaseDatabase.getInstance().getReference("users").child(firebaseUser.getUid()).child("profileImage");
 
         // Initialising the text view and imageview
+        usernameText = view.findViewById(R.id.username);
         firstnameText = view.findViewById(R.id.firstname);
         lastnameText = view.findViewById(R.id.lastname);
         genderText = view.findViewById(R.id.gender);
         ageText = view.findViewById(R.id.age);
         emailAddressText = view.findViewById(R.id.userEmail);
+        phoneText = view.findViewById(R.id.phone);
         regionText = view.findViewById(R.id.region);
         provinceText = view.findViewById(R.id.province);
         municipalityText = view.findViewById(R.id.municipality);
         addressText = view.findViewById(R.id.address);
         clientTypeText = view.findViewById(R.id.clientType);
-        profileImage = view.findViewById(R.id.image);
-
-        editProfile = view.findViewById(R.id.editProfile);
-        editLastname = view.findViewById(R.id.editLastname);
-        editGender = view.findViewById(R.id.editGender);
-        editAge = view.findViewById(R.id.editAge);
-        editEmail = view.findViewById(R.id.editEmail);
-        editRegion = view.findViewById(R.id.editRegion);
-        editProvince = view.findViewById(R.id.editProvince);
-        editMunicipality = view.findViewById(R.id.editMunicipality);
-        editAddress = view.findViewById(R.id.editAddress);
-        editClientType = view.findViewById(R.id.editClientType);
+        profileImage = view.findViewById(R.id.profileimage);
+        addprofileimage = view.findViewById(R.id.addprofile);
+        editprofile = view.findViewById(R.id.editprofile);
 
         pd = new ProgressDialog(getActivity());
         pd.setCanceledOnTouchOutside(false);
@@ -128,7 +125,7 @@ public class ProfileFragment extends Fragment {
             ActivityCompat.requestPermissions(getActivity(), PERMISSIONS, PERMISSION_ALL);
         }
         else {
-            profileImage.setOnClickListener(new View.OnClickListener() {
+            addprofileimage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     dialog.setContentView(R.layout.pick_image_dialog);
@@ -157,93 +154,108 @@ public class ProfileFragment extends Fragment {
                         @Override
                         public void onClick(View view) {
                             dialog.dismiss();
-                            getActivity().finish();
                         }
                     });
                 }
             });
         }
 
-        editProfile.setOnClickListener(new View.OnClickListener() {
+        editprofile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pd.setMessage("Changing First Name");
-                showFirstnameUpdate("firstname");
+                dialog.setContentView(R.layout.editprofile_dialog);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                Button save = dialog.findViewById(R.id.saveButton);
+                Button cancel = dialog.findViewById(R.id.cancelButton);
+
+                EditText firstname = dialog.findViewById(R.id.firstname);
+                EditText lastname = dialog.findViewById(R.id.lastname);
+                EditText gender = dialog.findViewById(R.id.gender);
+                EditText age = dialog.findViewById(R.id.age);
+                EditText phone = dialog.findViewById(R.id.phone);
+                EditText email = dialog.findViewById(R.id.email);
+                EditText region = dialog.findViewById(R.id.region);
+                EditText province = dialog.findViewById(R.id.province);
+                EditText municipality = dialog.findViewById(R.id.municipality);
+                EditText address = dialog.findViewById(R.id.address);
+                EditText clientType = dialog.findViewById(R.id.clientType);
+
+                dialog.show();
+
+                save.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        String fn = firstname.getText().toString();
+                        String ln = lastname.getText().toString();
+                        String gen = gender.getText().toString();
+                        String Age = age.getText().toString();
+                        String phn = phone.getText().toString();
+                        String Reg = region.getText().toString();
+                        String Prov = province.getText().toString();
+                        String muni = municipality.getText().toString();
+                        String add = address.getText().toString();
+                        String ct = clientType.getText().toString();
+
+                        updateData(fn,ln,gen,Age,phn,Reg,Prov,muni,add,ct);
+                    }
+                });
+
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.dismiss();
+                    }
+                });
+
+                Query query = databaseReference.orderByChild("email").equalTo(firebaseUser.getEmail());
+                query.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                            // Retrieving Data from firebase
+                            String fn = "" + dataSnapshot1.child("firstname").getValue();
+                            String ln = "" + dataSnapshot1.child("lastname").getValue();
+                            String Gender = "" + dataSnapshot1.child("gender").getValue();
+                            String Age = "" + dataSnapshot1.child("age").getValue();
+                            String Phone = "" + dataSnapshot1.child("phone").getValue();
+                            String Email = "" + dataSnapshot1.child("email").getValue();
+                            String Region = "" + dataSnapshot1.child("region").getValue();
+                            String prov = "" + dataSnapshot1.child("province").getValue();
+                            String muni = "" + dataSnapshot1.child("municipality").getValue();
+                            String house = "" + dataSnapshot1.child("address").getValue();
+                            String client = "" + dataSnapshot1.child("clientType").getValue();
+
+                            // setting data to our text view
+                            firstname.setText(fn);
+                            lastname.setText(ln);
+                            gender.setText(Gender);
+                            age.setText(Age);
+                            phone.setText(Phone);
+                            email.setText(Email);
+                            region.setText(Region);
+                            province.setText(prov);
+                            municipality.setText(muni);
+                            address.setText(house);
+                            clientType.setText(client);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                    }
+                });
             }
         });
 
-        editLastname.setOnClickListener(new View.OnClickListener() {
+        profileImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                pd.setMessage("Changing Last Name");
-                showLastnameUpdate("lastname");
+                //
             }
         });
-
-        editGender.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                pd.setMessage("Changing Gender");
-                showGenderUpdate("gender");
-            }
-        });
-
-        editAge.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                pd.setMessage("Changing Age");
-                showAgeUpdate("age");
-            }
-        });
-
-        editEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                pd.setMessage("Changing Email Address");
-                showEmailUpdate("email");
-            }
-        });
-
-        editRegion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                pd.setMessage("Changing Region");
-                showRegionUpdate("region");
-            }
-        });
-
-        editProvince.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                pd.setMessage("Changing Province");
-                showProvinceUpdate("province");
-            }
-        });
-
-        editMunicipality.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                pd.setMessage("Changing Municipality");
-                showMunicipalityUpdate("municipality");
-            }
-        });
-
-        editAddress.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                pd.setMessage("Changing Address");
-                showAddressUpdate("address");
-            }
-        });
-
-        editClientType.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                pd.setMessage("Changing Client Type");
-                showClientTypeUpdate("clientType");
-            }
-        });
-
+        //retrieve profile from database
         Query query = databaseReference.orderByChild("email").equalTo(firebaseUser.getEmail());
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -255,6 +267,7 @@ public class ProfileFragment extends Fragment {
                     String Gender = "" + dataSnapshot1.child("gender").getValue();
                     String Age = "" + dataSnapshot1.child("age").getValue();
                     String emailAdd = "" + dataSnapshot1.child("email").getValue();
+                    String Phone = "" + dataSnapshot1.child("phone").getValue();
                     String Region = "" + dataSnapshot1.child("region").getValue();
                     String prov = "" + dataSnapshot1.child("province").getValue();
                     String muni = "" + dataSnapshot1.child("municipality").getValue();
@@ -263,11 +276,13 @@ public class ProfileFragment extends Fragment {
                     String image = "" + dataSnapshot1.child("profileImage").child("imageUrl").getValue();
 
                     // setting data to our text view
+                    usernameText.setText(fn + " " + ln);
                     firstnameText.setText(fn);
                     lastnameText.setText(ln);
                     genderText.setText(Gender);
                     ageText.setText(Age);
                     emailAddressText.setText(emailAdd);
+                    phoneText.setText(Phone);
                     regionText.setText(Region);
                     provinceText.setText(prov);
                     municipalityText.setText(muni);
@@ -400,718 +415,34 @@ public class ProfileFragment extends Fragment {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
         byte bb[] = bytes.toByteArray();
-        profileImage.setImageBitmap(bitmap);
+//        profileImage.setImageBitmap(bitmap);
 
         uploadToFirebase(bb);
     }
 
-    private void showFirstnameUpdate(final String fn) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Update" + fn);
+    private void updateData(String fn, String ln, String gen, String Age, String phn, String Reg, String Prov, String muni, String add, String ct) {
+        HashMap user = new HashMap();
+        user.put("firstname", fn);
+        user.put("lastname", ln);
+        user.put("gender", gen);
+        user.put("age", Age);
+        user.put("phone", phn);
+        user.put("region", Reg);
+        user.put("province", Prov);
+        user.put("municipality", muni);
+        user.put("address", add);
+        user.put("clientType", ct);
 
-        // creating a layout to write the new name
-        LinearLayout layout = new LinearLayout(getContext());
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(10, 10, 10, 10);
-        final EditText editText = new EditText(getContext());
-        editText.setHint("Enter " + fn);
-        layout.addView(editText);
-        builder.setView(layout);
-
-        builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
+        databaseReference.child(fAuth.getCurrentUser().getUid()).updateChildren(user).addOnCompleteListener(new OnCompleteListener() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                final String value = editText.getText().toString().trim();
-                if (!TextUtils.isEmpty(value)) {
-                    pd.show();
-
-                    // Here we are updating the new name
-                    HashMap<String, Object> result = new HashMap<>();
-                    result.put(fn, value);
-                    databaseReference.child(firebaseUser.getUid()).updateChildren(result).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            pd.dismiss();
-
-                            // after updated we will show updated
-                            Toast.makeText(getContext(), " updated ", Toast.LENGTH_LONG).show();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            pd.dismiss();
-                            Toast.makeText(getContext(), "Unable to update", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                    if (fn.equals("firstname")) {
-                        final DatabaseReference database = FirebaseDatabase.getInstance().getReference("users");
-                        Query query = database.orderByChild("email").equalTo(firebaseUser.getEmail());
-                        query.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                                    String child = database.getKey();
-                                    dataSnapshot1.getRef().child("firstname").setValue(value);
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-                    }
-                } else {
-                    Toast.makeText(getContext(), "Unable to update", Toast.LENGTH_LONG).show();
+            public void onComplete(@NonNull Task task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(getContext(), "Successfully Updated", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getContext(), "Failed To Update", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                pd.dismiss();
-            }
-        });
-        builder.create().show();
     }
 
-    private void showLastnameUpdate(final String ln) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Update" + ln);
-
-        // creating a layout to write the new name
-        LinearLayout layout = new LinearLayout(getContext());
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(10, 10, 10, 10);
-        final EditText editText = new EditText(getContext());
-        editText.setHint("Enter " + ln);
-        layout.addView(editText);
-        builder.setView(layout);
-
-        builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                final String value = editText.getText().toString().trim();
-                if (!TextUtils.isEmpty(value)) {
-                    pd.show();
-
-                    // Here we are updating the new name
-                    HashMap<String, Object> result = new HashMap<>();
-                    result.put(ln, value);
-                    databaseReference.child(firebaseUser.getUid()).updateChildren(result).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            pd.dismiss();
-
-                            // after updated we will show updated
-                            Toast.makeText(getContext(), " updated ", Toast.LENGTH_LONG).show();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            pd.dismiss();
-                            Toast.makeText(getContext(), "Unable to update", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                    if (ln.equals("lastname")) {
-                        final DatabaseReference database = FirebaseDatabase.getInstance().getReference("users");
-                        Query query = database.orderByChild("email").equalTo(firebaseUser.getEmail());
-                        query.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                                    String child = database.getKey();
-                                    dataSnapshot1.getRef().child("lastname").setValue(value);
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-                    }
-                } else {
-                    Toast.makeText(getContext(), "Unable to update", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                pd.dismiss();
-            }
-        });
-        builder.create().show();
-    }
-
-    private void showGenderUpdate(final String g) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Update" + g);
-
-        // creating a layout to write the new name
-        LinearLayout layout = new LinearLayout(getContext());
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(10, 10, 10, 10);
-        final EditText editText = new EditText(getContext());
-        editText.setHint("Enter " + g);
-        layout.addView(editText);
-        builder.setView(layout);
-
-        builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                final String value = editText.getText().toString().trim();
-                if (!TextUtils.isEmpty(value)) {
-                    pd.show();
-
-                    // Here we are updating the new name
-                    HashMap<String, Object> result = new HashMap<>();
-                    result.put(g, value);
-                    databaseReference.child(firebaseUser.getUid()).updateChildren(result).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            pd.dismiss();
-
-                            // after updated we will show updated
-                            Toast.makeText(getContext(), " updated ", Toast.LENGTH_LONG).show();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            pd.dismiss();
-                            Toast.makeText(getContext(), "Unable to update", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                    if (g.equals("gender")) {
-                        final DatabaseReference database = FirebaseDatabase.getInstance().getReference("users");
-                        Query query = database.orderByChild("email").equalTo(firebaseUser.getEmail());
-                        query.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                                    String child = database.getKey();
-                                    dataSnapshot1.getRef().child("gender").setValue(value);
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-                    }
-                } else {
-                    Toast.makeText(getContext(), "Unable to update", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                pd.dismiss();
-            }
-        });
-        builder.create().show();
-    }
-
-    private void showAgeUpdate(final String a) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Update" + a);
-
-        // creating a layout to write the new name
-        LinearLayout layout = new LinearLayout(getContext());
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(10, 10, 10, 10);
-        final EditText editText = new EditText(getContext());
-        editText.setHint("Enter " + a);
-        layout.addView(editText);
-        builder.setView(layout);
-
-        builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                final String value = editText.getText().toString().trim();
-                if (!TextUtils.isEmpty(value)) {
-                    pd.show();
-
-                    // Here we are updating the new name
-                    HashMap<String, Object> result = new HashMap<>();
-                    result.put(a, value);
-                    databaseReference.child(firebaseUser.getUid()).updateChildren(result).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            pd.dismiss();
-
-                            // after updated we will show updated
-                            Toast.makeText(getContext(), " updated ", Toast.LENGTH_LONG).show();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            pd.dismiss();
-                            Toast.makeText(getContext(), "Unable to update", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                    if (a.equals("age")) {
-                        final DatabaseReference database = FirebaseDatabase.getInstance().getReference("users");
-                        Query query = database.orderByChild("email").equalTo(firebaseUser.getEmail());
-                        query.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                                    String child = database.getKey();
-                                    dataSnapshot1.getRef().child("age").setValue(value);
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-                    }
-                } else {
-                    Toast.makeText(getContext(), "Unable to update", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                pd.dismiss();
-            }
-        });
-        builder.create().show();
-    }
-
-    private void showEmailUpdate(final String e) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Update" + e);
-
-        // creating a layout to write the new name
-        LinearLayout layout = new LinearLayout(getContext());
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(10, 10, 10, 10);
-        final EditText editText = new EditText(getContext());
-        editText.setHint("Enter " + e);
-        layout.addView(editText);
-        builder.setView(layout);
-
-        builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                final String value = editText.getText().toString().trim();
-                if (!TextUtils.isEmpty(value)) {
-                    pd.show();
-
-                    // Here we are updating the new name
-                    HashMap<String, Object> result = new HashMap<>();
-                    result.put(e, value);
-                    databaseReference.child(firebaseUser.getUid()).updateChildren(result).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            pd.dismiss();
-
-                            // after updated we will show updated
-                            Toast.makeText(getContext(), " updated ", Toast.LENGTH_LONG).show();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            pd.dismiss();
-                            Toast.makeText(getContext(), "Unable to update", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                    if (e.equals("email")) {
-                        final DatabaseReference database = FirebaseDatabase.getInstance().getReference("users");
-                        Query query = database.orderByChild("email").equalTo(firebaseUser.getEmail());
-                        query.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                                    String child = database.getKey();
-                                    dataSnapshot1.getRef().child("email").setValue(value);
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-                    }
-                } else {
-                    Toast.makeText(getContext(), "Unable to update", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                pd.dismiss();
-            }
-        });
-        builder.create().show();
-    }
-
-    private void showRegionUpdate(final String r) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Update" + r);
-
-        // creating a layout to write the new name
-        LinearLayout layout = new LinearLayout(getContext());
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(10, 10, 10, 10);
-        final EditText editText = new EditText(getContext());
-        editText.setHint("Enter " + r);
-        layout.addView(editText);
-        builder.setView(layout);
-
-        builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                final String value = editText.getText().toString().trim();
-                if (!TextUtils.isEmpty(value)) {
-                    pd.show();
-
-                    // Here we are updating the new name
-                    HashMap<String, Object> result = new HashMap<>();
-                    result.put(r, value);
-                    databaseReference.child(firebaseUser.getUid()).updateChildren(result).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            pd.dismiss();
-
-                            // after updated we will show updated
-                            Toast.makeText(getContext(), " updated ", Toast.LENGTH_LONG).show();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            pd.dismiss();
-                            Toast.makeText(getContext(), "Unable to update", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                    if (r.equals("region")) {
-                        final DatabaseReference database = FirebaseDatabase.getInstance().getReference("users");
-                        Query query = database.orderByChild("email").equalTo(firebaseUser.getEmail());
-                        query.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                                    String child = database.getKey();
-                                    dataSnapshot1.getRef().child("region").setValue(value);
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-                    }
-                } else {
-                    Toast.makeText(getContext(), "Unable to update", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                pd.dismiss();
-            }
-        });
-        builder.create().show();
-    }
-
-    private void showProvinceUpdate(final String p) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Update" + p);
-
-        // creating a layout to write the new name
-        LinearLayout layout = new LinearLayout(getContext());
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(10, 10, 10, 10);
-        final EditText editText = new EditText(getContext());
-        editText.setHint("Enter " + p);
-        layout.addView(editText);
-        builder.setView(layout);
-
-        builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                final String value = editText.getText().toString().trim();
-                if (!TextUtils.isEmpty(value)) {
-                    pd.show();
-
-                    // Here we are updating the new name
-                    HashMap<String, Object> result = new HashMap<>();
-                    result.put(p, value);
-                    databaseReference.child(firebaseUser.getUid()).updateChildren(result).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            pd.dismiss();
-
-                            // after updated we will show updated
-                            Toast.makeText(getContext(), " updated ", Toast.LENGTH_LONG).show();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            pd.dismiss();
-                            Toast.makeText(getContext(), "Unable to update", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                    if (p.equals("province")) {
-                        final DatabaseReference database = FirebaseDatabase.getInstance().getReference("users");
-                        Query query = database.orderByChild("email").equalTo(firebaseUser.getEmail());
-                        query.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                                    String child = database.getKey();
-                                    dataSnapshot1.getRef().child("province").setValue(value);
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-                    }
-                } else {
-                    Toast.makeText(getContext(), "Unable to update", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                pd.dismiss();
-            }
-        });
-        builder.create().show();
-    }
-
-    private void showMunicipalityUpdate(final String m) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Update" + m);
-
-        // creating a layout to write the new name
-        LinearLayout layout = new LinearLayout(getContext());
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(10, 10, 10, 10);
-        final EditText editText = new EditText(getContext());
-        editText.setHint("Enter " + m);
-        layout.addView(editText);
-        builder.setView(layout);
-
-        builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                final String value = editText.getText().toString().trim();
-                if (!TextUtils.isEmpty(value)) {
-                    pd.show();
-
-                    // Here we are updating the new name
-                    HashMap<String, Object> result = new HashMap<>();
-                    result.put(m, value);
-                    databaseReference.child(firebaseUser.getUid()).updateChildren(result).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            pd.dismiss();
-
-                            // after updated we will show updated
-                            Toast.makeText(getContext(), " updated ", Toast.LENGTH_LONG).show();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            pd.dismiss();
-                            Toast.makeText(getContext(), "Unable to update", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                    if (m.equals("municipality")) {
-                        final DatabaseReference database = FirebaseDatabase.getInstance().getReference("users");
-                        Query query = database.orderByChild("email").equalTo(firebaseUser.getEmail());
-                        query.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                                    String child = database.getKey();
-                                    dataSnapshot1.getRef().child("municipality").setValue(value);
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-                    }
-                } else {
-                    Toast.makeText(getContext(), "Unable to update", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                pd.dismiss();
-            }
-        });
-        builder.create().show();
-    }
-
-    private void showAddressUpdate(final String add) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Update" + add);
-
-        // creating a layout to write the new name
-        LinearLayout layout = new LinearLayout(getContext());
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(10, 10, 10, 10);
-        final EditText editText = new EditText(getContext());
-        editText.setHint("Enter " + add);
-        layout.addView(editText);
-        builder.setView(layout);
-
-        builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                final String value = editText.getText().toString().trim();
-                if (!TextUtils.isEmpty(value)) {
-                    pd.show();
-
-                    // Here we are updating the new name
-                    HashMap<String, Object> result = new HashMap<>();
-                    result.put(add, value);
-                    databaseReference.child(firebaseUser.getUid()).updateChildren(result).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            pd.dismiss();
-
-                            // after updated we will show updated
-                            Toast.makeText(getContext(), " updated ", Toast.LENGTH_LONG).show();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            pd.dismiss();
-                            Toast.makeText(getContext(), "Unable to update", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                    if (add.equals("address")) {
-                        final DatabaseReference database = FirebaseDatabase.getInstance().getReference("users");
-                        Query query = database.orderByChild("email").equalTo(firebaseUser.getEmail());
-                        query.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                                    String child = database.getKey();
-                                    dataSnapshot1.getRef().child("address").setValue(value);
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-                    }
-                } else {
-                    Toast.makeText(getContext(), "Unable to update", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                pd.dismiss();
-            }
-        });
-        builder.create().show();
-    }
-
-    private void showClientTypeUpdate(final String ct) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Update" + ct);
-
-        // creating a layout to write the new name
-        LinearLayout layout = new LinearLayout(getContext());
-        layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(10, 10, 10, 10);
-        final EditText editText = new EditText(getContext());
-        editText.setHint("Enter " + ct);
-        layout.addView(editText);
-        builder.setView(layout);
-
-        builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                final String value = editText.getText().toString().trim();
-                if (!TextUtils.isEmpty(value)) {
-                    pd.show();
-
-                    // Here we are updating the new name
-                    HashMap<String, Object> result = new HashMap<>();
-                    result.put(ct, value);
-                    databaseReference.child(firebaseUser.getUid()).updateChildren(result).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            pd.dismiss();
-
-                            // after updated we will show updated
-                            Toast.makeText(getContext(), " updated ", Toast.LENGTH_LONG).show();
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            pd.dismiss();
-                            Toast.makeText(getContext(), "Unable to update", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                    if (ct.equals("clientType")) {
-                        final DatabaseReference database = FirebaseDatabase.getInstance().getReference("users");
-                        Query query = database.orderByChild("email").equalTo(firebaseUser.getEmail());
-                        query.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                                    String child = database.getKey();
-                                    dataSnapshot1.getRef().child("clientType").setValue(value);
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
-                    }
-                } else {
-                    Toast.makeText(getContext(), "Unable to update", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
-
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                pd.dismiss();
-            }
-        });
-        builder.create().show();
-    }
 }

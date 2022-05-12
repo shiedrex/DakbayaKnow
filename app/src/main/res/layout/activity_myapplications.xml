@@ -24,17 +24,18 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp">
 
                 <TextView
                     android:id="@+id/travelPermitText"
                     android:layout_width="140dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="20dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginEnd="70dp"
+                    android:layout_marginStart="10dp"
                     android:fontFamily="@font/nexablack"
-                    android:gravity="center"
-                    android:text="Travel Permit"
+                    android:text="Travel Permit:"
                     android:textSize="18sp" />
 
                 <ImageButton
@@ -55,20 +56,19 @@
                 <TextView
                     android:layout_width="140dp"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="20dp"
+                    android:layout_marginStart="10dp"
                     android:fontFamily="@font/nexablack"
-                    android:gravity="center"
-                    android:text="Destination"
+                    android:text="Destination:"
                     android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/destination"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="10dp"
                     android:text="Fill up travel form"
                     android:fontFamily="@font/nexalight"
-                    android:textAlignment="center"
                     android:textSize="18sp" />
             </LinearLayout>
 
@@ -80,20 +80,19 @@
                 <TextView
                     android:layout_width="140dp"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="20dp"
+                    android:layout_marginStart="10dp"
                     android:fontFamily="@font/nexablack"
-                    android:gravity="center"
-                    android:text="Status"
+                    android:text="Status:"
                     android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/status"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
+                    android:layout_marginEnd="10dp"
                     android:fontFamily="@font/nexalight"
                     android:text="No Status Yet"
-                    android:textAlignment="center"
+                    android:layout_marginStart="20dp"
                     android:textSize="18sp"
                     android:textColor="@color/red"/>
             </LinearLayout>
@@ -106,20 +105,19 @@
                 <TextView
                     android:layout_width="140dp"
                     android:layout_height="match_parent"
-                    android:layout_marginStart="20dp"
+                    android:layout_marginStart="10dp"
                     android:fontFamily="@font/nexablack"
-                    android:gravity="center"
-                    android:text="Health"
+                    android:text="Health:"
                     android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/hdfStatus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
+                    android:layout_marginEnd="10dp"
                     android:fontFamily="@font/nexalight"
                     android:text="Fill Up HDF"
-                    android:textAlignment="center"
+                    android:layout_marginStart="20dp"
                     android:textSize="18sp" />
             </LinearLayout>
 

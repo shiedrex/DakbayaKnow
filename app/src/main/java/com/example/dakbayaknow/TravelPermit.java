@@ -1,20 +1,27 @@
 package com.example.dakbayaknow;
 
+import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,17 +40,25 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.TimeUnit;
+
 public class TravelPermit extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
+    DatabaseReference databaseReference, databaseReference2;
 
     TextView fullname, travellerType, origin, destination, dateTravel, expectedArrival, status;
     ProgressDialog pd;
 
     FirebaseUser firebaseUser;
-    Button generateQRButton;
+    Button saveTravelPermit;
     ImageView qrCode;
+
+    LinearLayout linearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +74,7 @@ public class TravelPermit extends AppCompatActivity {
         firebaseUser = firebaseAuth.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("users").child(firebaseAuth.getCurrentUser().getUid()).child("travelform");
+        databaseReference2 = firebaseDatabase.getReference("applications");
 
         // Initialising the text view and imageview
         fullname = findViewById(R.id.fullnameText);
@@ -69,11 +85,29 @@ public class TravelPermit extends AppCompatActivity {
         expectedArrival = findViewById(R.id.expectedArrivalText);
         status = findViewById(R.id.statusText);
 
-        generateQRButton = findViewById(R.id.generateQRCodeButton);
+        saveTravelPermit = findViewById(R.id.saveTravelPermitButton);
         qrCode = findViewById(R.id.qrCode);
+
+        linearLayout = findViewById(R.id.layout);
 
         pd = new ProgressDialog(this);
         pd.setCanceledOnTouchOutside(false);
+
+        status.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(status.getText().toString().contains("Please upload required requirements (vaccinated)")){
+                    Intent intent = new Intent(TravelPermit.this, UploadDocxFullyVacc.class);
+                    startActivity(intent);
+                    finish();
+                }
+                if(status.getText().toString().contains("Please upload required requirements (unvaccinated)")){
+                    Intent intent = new Intent(TravelPermit.this, UploadDocxUnvacc.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
 
         Query query = databaseReference.orderByChild("email").equalTo(firebaseUser.getEmail());
         query.addValueEventListener(new ValueEventListener() {
@@ -92,6 +126,7 @@ public class TravelPermit extends AppCompatActivity {
                     String dProv = "" + dataSnapshot1.child("dProvince").getValue();
                     String depart = "" + dataSnapshot1.child("departure").getValue();
                     String arriv = "" + dataSnapshot1.child("arrival").getValue();
+//                    String stat = "" + dataSnapshot1.child("status").getValue();
 
                     // setting data to our text view
                     fullname.setText(fn+" "+ln);
@@ -100,7 +135,55 @@ public class TravelPermit extends AppCompatActivity {
                     destination.setText(dAdd+", "+dMuni+", "+dProv);
                     dateTravel.setText(depart);
                     expectedArrival.setText(arriv);
-                    status.setText("Pending");
+
+                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users").child(firebaseAuth.getCurrentUser().getUid()).child("travelform");
+                    ref.addValueEventListener(new ValueEventListener() {
+
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
+                            Boolean found, found2;
+                            String search = "vaccinated", search2 = "unvaccinated";
+
+                            for (DataSnapshot ds : snapshot.getChildren()) {
+                                String vax = ds.child("vaccineStatus").getValue(String.class);
+
+                                found = vax.contains(search);
+                                found2 = vax.contains(search2);
+
+                                if (found == true) {
+                                    status.setText("Please upload required requirements (vaccinated)");
+                                    status.setTextColor(Color.parseColor("#008000"));
+                                }
+                                if (found2 == true) {
+                                    status.setText("Please upload required requirements (unvaccinated)");
+                                    status.setTextColor(Color.parseColor("#008000"));
+                                }
+                            }
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError error) {
+                            // Failed, how to handle?
+                        }
+                    });
+
+                    DatabaseReference dr = FirebaseDatabase.getInstance().getReference("users").child(firebaseAuth.getCurrentUser().getUid()).child("uploadDocx");
+                    dr.addValueEventListener(new ValueEventListener() {
+
+                        @Override
+                        public void onDataChange(DataSnapshot snapshot) {
+
+                            if (snapshot.exists()) {
+                                status.setText("Pending");
+                                status.setTextColor(Color.parseColor("#FFFF00"));
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError error) {
+                            // Failed, how to handle?
+                        }
+                    });
+//                    status.setText(stat);
 
                     MultiFormatWriter writer = new MultiFormatWriter();
                     try {
@@ -109,7 +192,8 @@ public class TravelPermit extends AppCompatActivity {
                                                                  "\n\nOrigin: " +cAdd+", "+cMuni+", "+cProv+
                                                                  "\n\nDestination: " +dAdd+", "+dMuni+", "+dProv+
                                                                  "\n\nDeparture: " +depart+
-                                                                 "\n\nArrival: " +arriv,
+                                                                 "\n\nArrival: " +arriv+
+                                                                 "\n\nStatus: " +status,
                                 BarcodeFormat.QR_CODE,350, 350);
                         BarcodeEncoder encoder = new BarcodeEncoder();
                         Bitmap bitmap = encoder.createBitmap(matrix);
@@ -133,12 +217,66 @@ public class TravelPermit extends AppCompatActivity {
             }
         });
 
-        generateQRButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        int PERMISSION_ALL = 1;
+        String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
+        if(!hasPermissions(this,PERMISSIONS)) {
+            ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
+        }else{
+            saveTravelPermit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    saveTP();
+                }
+            });
+        }
+    }
+
+    private void saveTP() {
+        linearLayout.setDrawingCacheEnabled(true);
+        linearLayout.buildDrawingCache();
+        linearLayout.setDrawingCacheQuality(View.DRAWING_CACHE_QUALITY_HIGH);
+
+        Bitmap bitmap = linearLayout.getDrawingCache();
+        save(bitmap);
+    }
+
+    private void save(Bitmap bitmap) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String timeStamp  = dateFormat.format(new Date());
+
+        String root = Environment.getExternalStorageDirectory().getAbsolutePath();
+        File file = new File(root+"/Download");
+        String filename = "TravelPermit";
+        File myfile = new File(file, filename + timeStamp +".jpg");
+
+        if(myfile.exists()){
+            myfile.delete();
+        }
+
+        try{
+            FileOutputStream fileOutputStream = new FileOutputStream(myfile);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fileOutputStream);
+            fileOutputStream.flush();
+            fileOutputStream.close();
+
+            Toast.makeText(this, "Travel Permit Saved", Toast.LENGTH_SHORT).show();
+            linearLayout.setDrawingCacheEnabled(false);
+
+        } catch (Exception e){
+            Toast.makeText(this, "Error: " + e.toString(), Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    public static boolean hasPermissions(Context context, String... permissions) {
+        if (context!=null && permissions!=null){
+            for(String permission : permissions) {
+                if(ActivityCompat.checkSelfPermission(context,permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
             }
-        });
-
+        }
+        return true;
     }
 }

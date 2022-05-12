@@ -44,8 +44,10 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.safetynet.SafetyNet;
 import com.google.android.gms.safetynet.SafetyNetApi;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -76,7 +78,7 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
 
     FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference, govIdRef, vaccCardRef, travelRef;
+    DatabaseReference databaseReference, govIdRef, vaccCardRef, travelRef, appref;
 
     FirebaseAuth fAuth;
     StorageReference storageReference;
@@ -91,6 +93,7 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
     AutoCompleteTextView spinner_govId;
 
     Docx value;
+    Applications value2;
     Uri govIdImageUri, vaccCardImageUri;
 
     Dialog dialog;
@@ -114,8 +117,9 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
         databaseReference = firebaseDatabase.getReference("users").child(firebaseUser.getUid()).child("uploadDocx");
 
         travelRef = firebaseDatabase.getReference("users").child(firebaseAuth.getCurrentUser().getUid()).child("travelform");
-        govIdRef = firebaseDatabase.getInstance().getReference("users").child(firebaseUser.getUid()).child("uploadDocx").child(firebaseAuth.getCurrentUser().getUid()).child("govIdImage");
-        vaccCardRef = firebaseDatabase.getInstance().getReference("users").child(firebaseUser.getUid()).child("uploadDocx").child(firebaseAuth.getCurrentUser().getUid()).child("vaccCardImage");
+        govIdRef = firebaseDatabase.getReference("users").child(firebaseUser.getUid()).child("uploadDocx").child(firebaseAuth.getCurrentUser().getUid()).child("govIdImage");
+        vaccCardRef = firebaseDatabase.getReference("users").child(firebaseUser.getUid()).child("uploadDocx").child(firebaseAuth.getCurrentUser().getUid()).child("vaccCardImage");
+        appref = FirebaseDatabase.getInstance().getReference("applications");
 
         queue = Volley.newRequestQueue(getApplicationContext());
         //button
@@ -142,6 +146,7 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
         arrival = findViewById(R.id.arrivalText);
 
         value = new Docx();
+        value2 = new Applications();
 
         fAuth = FirebaseAuth.getInstance();
         storageReference = FirebaseStorage.getInstance().getReference();
@@ -184,7 +189,8 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
                     cam.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            pick_camera_govid();
+//                            pick_camera_govid();
+                            Toast.makeText(UploadDocxFullyVacc.this, "Under Development", Toast.LENGTH_SHORT).show();
                         }
                     });
 
@@ -199,7 +205,6 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
                         @Override
                         public void onClick(View view) {
                             dialog.dismiss();
-                            finish();
                         }
                     });
                 }
@@ -218,7 +223,8 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
                     cam.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            pick_camera_vacccard();
+                            Toast.makeText(UploadDocxFullyVacc.this, "Under Development", Toast.LENGTH_SHORT).show();
+//                            pick_camera_vacccard();
                         }
                     });
 
@@ -233,7 +239,6 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
                         @Override
                         public void onClick(View view) {
                             dialog.dismiss();
-                            finish();
                         }
                     });
                 }
@@ -381,10 +386,13 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
 
                                 uploadToFirebase();
                                 uploadToFirebase2();
-                                uploadToFirebaseFromCamera();
-                                uploadToFirebaseFromCamera2();
+//                                uploadToFirebaseFromCamera();
+//                                uploadToFirebaseFromCamera2();
 
-                                databaseReference.child(String.valueOf(fAuth.getCurrentUser().getUid())).setValue(value);
+                                databaseReference.child(String.valueOf(firebaseAuth.getCurrentUser().getUid())).setValue(value);
+                                String stat = "Pending";
+                                String govId = spinner_govId.getText().toString().trim();
+                                updateStatus(stat, govId);
 
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
@@ -627,5 +635,22 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
         vaccCardImage.setImageBitmap(bitmap);
 
         uploadToFirebaseFromCamera2();
+    }
+
+    private void updateStatus(String stat, String govId) {
+        HashMap user = new HashMap();
+        user.put("status", stat);
+        user.put("govId", govId);
+
+        appref.child(fAuth.getCurrentUser().getUid()).updateChildren(user).addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(UploadDocxFullyVacc.this, "Success", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(UploadDocxFullyVacc.this, "Failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }

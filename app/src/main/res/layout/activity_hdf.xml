@@ -91,6 +91,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
+                android:layout_marginBottom="20dp"
                 android:fontFamily="@font/nexalight"
                 android:hint="Nationality"
                 android:inputType="text"
@@ -118,7 +119,6 @@
                     android:layout_width="200dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
                     android:fontFamily="@font/nexalight"
                     android:hint="Gender"
                     app:boxStrokeColor="@color/orange"
@@ -138,7 +138,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:fontFamily="@font/nexalight"
                     android:hint="Age"
@@ -159,12 +158,26 @@
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
+            <TextView
+                android:id="@+id/genderRequired"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/nexalight"
+                android:paddingStart="10dp"
+                android:paddingEnd="0dp"
+                android:text="Gender is required!"
+                android:visibility="invisible"
+                android:textColor="@color/red"
+                android:textSize="14sp" />
+
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
                 android:fontFamily="@font/nexalight"
                 android:hint="Contact Number"
@@ -253,6 +266,8 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:fontFamily="@font/nexalight"
+                android:inputType="text"
+                android:maxLines="1"
                 android:maxLength="100"
                 android:paddingStart="20dp"
                 android:paddingEnd="0dp" />
@@ -279,6 +294,8 @@
                 android:layout_marginEnd="20dp"
                 android:fontFamily="@font/nexalight"
                 android:maxLength="100"
+                android:inputType="text"
+                android:maxLines="1"
                 android:paddingStart="20dp"
                 android:paddingEnd="0dp" />
 
@@ -296,7 +313,23 @@
                 android:paddingEnd="0dp"
                 android:textSize="18sp" />
 
+            <TextView
+                android:id="@+id/sickRequired"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/nexalight"
+                android:paddingStart="10dp"
+                android:paddingEnd="0dp"
+                android:text="*required"
+                android:visibility="invisible"
+                android:textColor="@color/red"
+                android:textSize="14sp" />
+
             <RadioGroup
+                android:id="@+id/sick"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -339,7 +372,6 @@
                 android:layout_width="240dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
                 android:fontFamily="@font/nexalight"
                 android:hint="Select"
                 app:boxStrokeColor="@color/orange"
@@ -355,10 +387,24 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
+                android:id="@+id/symptomsRequired"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/nexalight"
+                android:paddingStart="10dp"
+                android:paddingEnd="0dp"
+                android:text="This is required. Please SELECT."
+                android:visibility="invisible"
+                android:textColor="@color/red"
+                android:textSize="14sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:fontFamily="@font/nexalight"
                 android:hint="In the last 14 days, have you been in close contact or exposed to any person suspected of or confirmed with COVID-19? "
@@ -368,7 +414,23 @@
                 android:paddingEnd="0dp"
                 android:textSize="18sp" />
 
+            <TextView
+                android:id="@+id/covidRequired"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/nexalight"
+                android:paddingStart="10dp"
+                android:paddingEnd="0dp"
+                android:text="*required"
+                android:visibility="invisible"
+                android:textColor="@color/red"
+                android:textSize="14sp" />
+
             <RadioGroup
+                android:id="@+id/covid"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -405,7 +467,23 @@
                 android:paddingEnd="0dp"
                 android:textSize="18sp" />
 
+            <TextView
+                android:id="@+id/animalRequired"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="10dp"
+                android:fontFamily="@font/nexalight"
+                android:paddingStart="10dp"
+                android:paddingEnd="0dp"
+                android:text="*required"
+                android:visibility="invisible"
+                android:textColor="@color/red"
+                android:textSize="14sp" />
+
             <RadioGroup
+                android:id="@+id/animal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 

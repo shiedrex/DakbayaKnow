@@ -4,30 +4,21 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
 
 public class MyApplications extends AppCompatActivity {
 
@@ -64,6 +55,42 @@ public class MyApplications extends AppCompatActivity {
         pd = new ProgressDialog(this);
         pd.setCanceledOnTouchOutside(false);
 
+        destination.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(destination.getText().toString().contains("Fill up travel form")){
+                    Intent intent = new Intent(MyApplications.this, TravelRequirements.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
+        status.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(status.getText().toString().contains("Please upload required requirements (vaccinated)")){
+                    Intent intent = new Intent(MyApplications.this, UploadDocxFullyVacc.class);
+                    startActivity(intent);
+                    finish();
+                }
+                if(status.getText().toString().contains("Please upload required requirements (unvaccinated)")){
+                    Intent intent = new Intent(MyApplications.this, UploadDocxUnvacc.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
+        hdfStatus.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(hdfStatus.getText().toString().contains("Fill up HDF")){
+                    Intent intent = new Intent(MyApplications.this, HealthDeclarationForm.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
+
         Query query = databaseReference.orderByChild("email").equalTo(firebaseUser.getEmail());
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -89,28 +116,28 @@ public class MyApplications extends AppCompatActivity {
 
             @Override
             public void onDataChange(DataSnapshot snapshot) {
-                    Boolean found, found2, found3, found4;
-                    String search = "NO", search2 = "No";
+                Boolean found, found2, found3, found4;
+                String search = "NO", search2 = "No";
 
-                    for (DataSnapshot ds : snapshot.getChildren()) {
-                        String symptoms = ds.child("symptoms").getValue(String.class);
-                        String sick = ds.child("sick").getValue(String.class);
-                        String covid = ds.child("covid").getValue(String.class);
-                        String animal = ds.child("animal").getValue(String.class);
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    String symptoms = ds.child("symptoms").getValue(String.class);
+                    String sick = ds.child("sick").getValue(String.class);
+                    String covid = ds.child("covid").getValue(String.class);
+                    String animal = ds.child("animal").getValue(String.class);
 
-                        found = symptoms.contains(search);
-                        found2 = sick.contains(search2);
-                        found3 = covid.contains(search2);
-                        found4 = animal.contains(search2);
+                    found = symptoms.contains(search);
+                    found2 = sick.contains(search2);
+                    found3 = covid.contains(search2);
+                    found4 = animal.contains(search2);
 
-                        if (found == true && found2 == true && found3 == true && found4 == true) {
-                            hdfStatus.setText("Safe");
-                            hdfStatus.setTextColor(Color.parseColor("#008000"));
-                        } else {
-                            hdfStatus.setText("Stay at Home");
-                            hdfStatus.setTextColor(Color.parseColor("#FF0000"));
-                        }
+                    if (found == true && found2 == true && found3 == true && found4 == true) {
+                        hdfStatus.setText("Safe");
+                        hdfStatus.setTextColor(Color.parseColor("#008000"));
+                    } else {
+                        hdfStatus.setText("Stay at Home");
+                        hdfStatus.setTextColor(Color.parseColor("#FF0000"));
                     }
+                }
             }
 
             @Override
@@ -124,13 +151,25 @@ public class MyApplications extends AppCompatActivity {
 
             @Override
             public void onDataChange(DataSnapshot snapshot) {
+                Boolean found, found2;
+                String search = "vaccinated", search2 = "unvaccinated";
 
-                    if (snapshot.exists()) {
-                        status.setText("In-progress");
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    String vax = ds.child("vaccineStatus").getValue(String.class);
+
+                    found = vax.contains(search);
+                    found2 = vax.contains(search2);
+
+                    if (found == true) {
+                        status.setText("Please upload required requirements (vaccinated)");
+                        status.setTextColor(Color.parseColor("#008000"));
+                    }
+                    if (found2 == true) {
+                        status.setText("Please upload required requirements (unvaccinated)");
                         status.setTextColor(Color.parseColor("#008000"));
                     }
                 }
-
+            }
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed, how to handle?
@@ -144,7 +183,7 @@ public class MyApplications extends AppCompatActivity {
             public void onDataChange(DataSnapshot snapshot) {
 
                 if (snapshot.exists()) {
-                    status.setText("Checking");
+                    status.setText("Pending");
                     status.setTextColor(Color.parseColor("#FFFF00"));
                 }
             }
@@ -169,5 +208,4 @@ public class MyApplications extends AppCompatActivity {
         Intent intent = new Intent(this, TravelPermit.class);
         startActivity(intent);
     }
-
 }
