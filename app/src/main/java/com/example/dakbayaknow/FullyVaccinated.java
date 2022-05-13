@@ -28,34 +28,12 @@ public class FullyVaccinated extends AppCompatActivity {
         travelFormButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("hdf");
-                ref.addValueEventListener(new ValueEventListener() {
-
-                    @Override
-                    public void onDataChange(DataSnapshot snapshot) {
-
-                        if (snapshot.exists()) {
-                            openTravelForm();
-                        }
-                        else{
-                            Toast.makeText(FullyVaccinated.this, "Please fill up HDF first", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(FullyVaccinated.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
-
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError error) {
-                        // Failed, how to handle?
-                    }
-                });
-
+                openTravelForm();
             }
         });
     }
-    public void openTravelForm(){
+
+    public void openTravelForm() {
         Intent intent = new Intent(this, TravelForm_Fullyvacc.class);
         startActivity(intent);
     }

@@ -29,23 +29,22 @@
                 android:layout_marginBottom="10dp">
 
                 <TextView
-                    android:id="@+id/travelPermitText"
                     android:layout_width="140dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="70dp"
+                    android:layout_height="match_parent"
                     android:layout_marginStart="10dp"
                     android:fontFamily="@font/nexablack"
-                    android:text="Travel Permit:"
+                    android:text="Health:"
                     android:textSize="18sp" />
 
-                <ImageButton
-                    android:id="@+id/travelPermitButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="-10dp"
-                    android:backgroundTint="#00FFFFFF"
-                    android:src="@drawable/ic_info" />
+                <TextView
+                    android:id="@+id/hdfStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:fontFamily="@font/nexalight"
+                    android:text="Fill Up HDF"
+                    android:layout_marginStart="20dp"
+                    android:textSize="18sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -103,28 +102,25 @@
                 android:layout_marginBottom="10dp">
 
                 <TextView
+                    android:id="@+id/travelPermitText"
                     android:layout_width="140dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="70dp"
                     android:layout_marginStart="10dp"
                     android:fontFamily="@font/nexablack"
-                    android:text="Health:"
+                    android:text="Travel Permit:"
                     android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/hdfStatus"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="10dp"
-                    android:fontFamily="@font/nexalight"
-                    android:text="Fill Up HDF"
-                    android:layout_marginStart="20dp"
-                    android:textSize="18sp" />
+                <ImageButton
+                    android:id="@+id/travelPermitButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+
+                    android:layout_marginStart="-65dp"
+                    android:backgroundTint="#00FFFFFF"
+                    android:src="@drawable/ic_info" />
             </LinearLayout>
 
         </LinearLayout>
-
-
     </LinearLayout>
-
-
 </LinearLayout>

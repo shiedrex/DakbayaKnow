@@ -63,7 +63,35 @@
         <activity
             android:name=".TravelForm_Fullyvacc"
             android:exported="true"
-            android:parentActivityName=".FullyVaccinated" />
+            android:parentActivityName=".FullyVaccinated" />3
+        <activity
+            android:name=".Unvaccinated_Cebu"
+            android:exported="true"
+            android:parentActivityName=".TravelRequirements" />
+        <activity
+            android:name=".FullyVaccinated_Cebu"
+            android:exported="true"
+            android:parentActivityName=".TravelRequirements" />
+        <activity
+            android:name=".Unvaccinated_CDO"
+            android:exported="true"
+            android:parentActivityName=".TravelRequirements" />
+        <activity
+            android:name=".FullyVaccinated_CDO"
+            android:exported="true"
+            android:parentActivityName=".TravelRequirements" />
+        <activity
+            android:name=".Recovered_Manila"
+            android:exported="true"
+            android:parentActivityName=".TravelRequirements" />
+        <activity
+            android:name=".Unvaccinated_Manila"
+            android:exported="true"
+            android:parentActivityName=".TravelRequirements" />
+        <activity
+            android:name=".FullyVaccinated_Manila"
+            android:exported="true"
+            android:parentActivityName=".TravelRequirements" />
         <activity
             android:name=".Recovered"
             android:exported="true"
