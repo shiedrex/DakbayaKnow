@@ -67,6 +67,14 @@
                 android:text="(0.0)"
                 android:textSize="24dp" />
 
+            <TextView
+                android:id="@+id/comment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nexalight"
+                android:text="Comment..."
+                android:textSize="18dp" />
+
             <Button
                 android:id="@+id/submitButton"
                 android:layout_width="wrap_content"

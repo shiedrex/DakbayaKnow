@@ -4,15 +4,16 @@ public class Feedback {
     private String rating;
     private String username;
     private Float star;
-
+    private String comment;
     public Feedback() {
 
     }
 
-    public Feedback(String rating, String username, Float star) {
+    public Feedback(String rating, String username, Float star, String comment) {
         this.rating = rating;
         this.username = username;
         this.star = star;
+        this.comment = comment;
     }
 
     public String getRating() {
@@ -30,6 +31,15 @@ public class Feedback {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
 
     public Float getStar() {
         return star;

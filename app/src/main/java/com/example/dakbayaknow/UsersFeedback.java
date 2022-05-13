@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -120,6 +121,7 @@ public class UsersFeedback extends AppCompatActivity {
         TextView fullname = dialog.findViewById(R.id.fullname);
         Button submit = dialog.findViewById(R.id.submitButton);
         ImageView profImage = dialog.findViewById(R.id.profImage);
+        EditText comment = dialog.findViewById(R.id.comment);
         dialog.show();
 
         Query query = userRef.orderByChild("email").equalTo(firebaseUser.getEmail());
@@ -180,6 +182,7 @@ public class UsersFeedback extends AppCompatActivity {
             public void onClick(View view) {
                 value.setRating(textView.getText().toString().trim());
                 value.setUsername(fullname.getText().toString().trim());
+                value.setComment(comment.getText().toString().trim());
                 ratingBar.setRating(0);
 
                 ref.setValue(value);

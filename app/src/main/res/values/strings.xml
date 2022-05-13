@@ -24,7 +24,7 @@
 
     <string name="menu_home">Home</string>
     <string name="menu_profile">My Profile</string>
-    <string name="menu_scan">Scan Document</string>
+    <string name="menu_scan">Scan QR Code</string>
     <string name="menu_notification">Notification Settings</string>
     <string name="menu_about">About DakbayaKnow</string>
     <string name="menu_logout">Logout</string>

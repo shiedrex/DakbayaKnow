@@ -9,7 +9,7 @@
         android:id="@+id/textView29"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/nexablack"
+        android:fontFamily="@font/nexabold"
         android:text="For COVID-19 Fully Vaccinated Individuals "
         android:textAlignment="center"
         android:textSize="24sp"
@@ -39,7 +39,7 @@
         android:id="@+id/textView41"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/nexalight"
+        android:fontFamily="@font/nexablack"
         android:text="1. S+ PASS registration (https://s-pass.ph)"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -71,6 +71,7 @@
         android:fontFamily="@font/nexalight"
         android:text="The traveler is still required to contact the respective focal persons of their receiving LGU for coordination and appropriate action/approval of their DakbayaKnow travel permit application."
         android:textSize="16sp"
+        android:justificationMode="inter_word"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
@@ -96,22 +97,24 @@
         android:id="@+id/textView43"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/nexalight"
+        android:fontFamily="@font/nexablack"
         android:text="2. OPCoorS registration\n(services.cagayandeoro.gov.ph/cdotabangtravelers)\n*advised to contact respective BHERT"
-        android:textSize="16sp"
+        android:textSize="15sp"
+        android:justificationMode="inter_word"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.262" />
+        app:layout_constraintVertical_bias="0.27" />
 
     <TextView
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/nexalight"
+        android:fontFamily="@font/nexablack"
         android:text="3. Contact Tracing Apps\nhttps://higala.cagayandeoro.gov.ph | www.staysafe.ph |\nAirports and Seaports contact tracing app https://traze.ph)"
-        android:textSize="16sp"
+        android:textSize="15sp"
+        android:justificationMode="inter_word"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
@@ -151,7 +154,7 @@
     <TextView
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/nexalight"
+        android:fontFamily="@font/nexablack"
         android:text="2. Contact Tracing Apps (www.staysafe.ph)"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -164,7 +167,7 @@
     <TextView
         android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/nexalight"
+        android:fontFamily="@font/nexablack"
         android:text="1. S+ PASS registration (https://s-pass.ph)"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -183,9 +186,8 @@
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.482"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.483" />
+        app:layout_constraintVertical_bias="0.469" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
