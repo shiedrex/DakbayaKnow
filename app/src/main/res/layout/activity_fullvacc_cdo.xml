@@ -129,6 +129,7 @@
         android:fontFamily="@font/nexablack"
         android:text="IMPORTANT:"
         android:textAlignment="center"
+        android:textColor="@color/red"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
