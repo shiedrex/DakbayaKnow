@@ -163,21 +163,30 @@
         <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_fullvacc_cdo.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_fullvacc_cebu.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_fullvacc_manila.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_hdf.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_lgucontacts.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_travelform_fullyvacc.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_myapplications.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_profile_review.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_recovered.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_travelform_fullyvacc.xml" value="0.3389504092441021" />
         <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_travelform_submit.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_travelform_unvacc.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_travelform_unvacc.xml" value="0.3389504092441021" />
         <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_travelrequirements.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_unvacc.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_unvacc_cdo.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_unvacc_cebu.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_unvacc_manila.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_uploaddocx.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_uploaddocx2.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_usersfeedback.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_welcomeuser.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/card_holder4.xml" value="0.2861111111111111" />
+        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/hdf_success_dialog.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/nav_header_main.xml" value="0.1527777777777778" />
         <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/rating_dialog.xml" value="0.6280487804878049" />
+        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/requirements_dialog.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/travelform_success_dialog.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/menu/activity_main_drawer.xml" value="0.36666666666666664" />
       </map>
     </option>

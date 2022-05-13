@@ -38,9 +38,8 @@ public class AdapterClass4 extends RecyclerView.Adapter<AdapterClass4.myViewHold
     }
 
     class myViewHolder extends RecyclerView.ViewHolder {
-        TextView rate, user;
+        TextView rate, user, comm;
         RatingBar star;
-        EditText comm;
         public myViewHolder(@NonNull View itemView) {
             super(itemView);
             rate = itemView.findViewById(R.id.rating);
