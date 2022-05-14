@@ -3,8 +3,9 @@ package com.example.dakbayaknow;
 public class Feedback {
     private String rating;
     private String username;
-    private Float star;
     private String comment;
+    private Float star;
+
     public Feedback() {
 
     }
@@ -24,14 +25,13 @@ public class Feedback {
         this.rating = rating;
     }
 
-    public String getUsername() { return username; }
+    public String getUsername() {
+        return username;
+    }
 
-    public void setUsername(String username) { this.username = username; }
-
-    public String getComment() { return comment; }
-
-    public void setComment(String comment) { this.comment = comment; }
-
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public Float getStar() {
         return star;
@@ -39,5 +39,13 @@ public class Feedback {
 
     public void setStar(Float star) {
         this.star = star;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 }

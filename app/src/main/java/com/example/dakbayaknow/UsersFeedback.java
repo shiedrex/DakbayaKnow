@@ -36,8 +36,7 @@ public class UsersFeedback extends AppCompatActivity {
     FloatingActionButton addFeedback;
     Button submitButton;
     RatingBar ratingBar;
-    TextView ratingNum, fullname;
-    String temp, name;
+    TextView ratingNum;
     float rateValue;
 
     FirebaseDatabase database;

@@ -69,7 +69,7 @@
 
             <EditText
                 android:id="@+id/comment"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/nexalight"
                 android:hint="Comment..."
@@ -85,8 +85,6 @@
                 android:text="Submit" />
 
         </LinearLayout>
-
-
     </androidx.cardview.widget.CardView>
 
 </RelativeLayout>

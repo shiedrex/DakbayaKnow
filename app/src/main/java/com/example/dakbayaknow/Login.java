@@ -54,6 +54,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
     ProgressBar progressbar;
 
     Dialog dialog;
+    private long backPressedTime;
+    private Toast backToast;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,25 +131,6 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             return;
         }
 
-//        mAuth.fetchSignInMethodsForEmail(email)
-//                .addOnCompleteListener(new OnCompleteListener<SignInMethodQueryResult>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<SignInMethodQueryResult> task) {
-//
-//                        boolean isNewUser = task.getResult().getSignInMethods().isEmpty();
-//
-//                        if (isNewUser) {
-//                            Log.e("TAG", "User does not exist!");
-//                            emailText.setError("Email is not registered. Register Now!");
-//                            emailText.requestFocus();
-//                            progressDialog.dismiss();
-//                            return;
-//                        } else {
-//                            Log.e("TAG", "User Exist!");
-//                        }
-//
-//                    }
-//                });
         progressDialog.setMessage("Logging in...Please Wait");
         progressDialog.show();
 
@@ -157,6 +140,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             startActivity(new Intent(Login.this, WelcomeUser.class));
+                            finish();
                             progressDialog.dismiss();
 
                         } else {
@@ -218,5 +202,18 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 });
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (backPressedTime + 2000 > System.currentTimeMillis()) {
+            backToast.cancel();
+            super.onBackPressed();
+            return;
+        } else {
+            backToast = Toast.makeText(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT);
+            backToast.show();
+        }
+        backPressedTime = System.currentTimeMillis();
     }
 }
