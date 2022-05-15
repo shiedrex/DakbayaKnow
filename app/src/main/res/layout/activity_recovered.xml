@@ -8,7 +8,7 @@
         android:id="@+id/textView31"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/nexablack"
+        android:fontFamily="@font/nexabold"
         android:text="For Recovered COVID-19 positive travelers within 3 months from positive swab test results "
         android:textAlignment="center"
         android:textSize="24sp"
@@ -37,7 +37,7 @@
         android:id="@+id/textView51"
         android:layout_width="300dp"
         android:layout_height="32dp"
-        android:fontFamily="@font/nexalight"
+        android:fontFamily="@font/nexablack"
         android:text="2. Government-Issued Identification Card; and"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -45,7 +45,7 @@
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.432" />
+        app:layout_constraintVertical_bias="0.449" />
 
     <TextView
         android:id="@+id/textView57"
@@ -70,6 +70,7 @@
         android:text="IMPORTANT:"
         android:textAlignment="center"
         android:textSize="20sp"
+        android:textColor="@color/red"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.189"
@@ -81,20 +82,21 @@
         android:id="@+id/textView49"
         android:layout_width="300dp"
         android:layout_height="39dp"
-        android:fontFamily="@font/nexalight"
+        android:fontFamily="@font/nexablack"
         android:text="3. APPROVED DakbayaKnow Travel Permit"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.477"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.521" />
 
     <TextView
         android:id="@+id/textView52"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:fontFamily="@font/nexalight"
+        android:fontFamily="@font/nexablack"
         android:text="For PARTIALLY OR UNVACCINATED persons and those 5yrs old and above:"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -108,7 +110,7 @@
         android:id="@+id/textView50"
         android:layout_width="300dp"
         android:layout_height="50dp"
-        android:fontFamily="@font/nexalight"
+        android:fontFamily="@font/nexablack"
         android:text="1. Valid negative RT-PCR test result taken 72hrs prior departure to Cagayan De Oro"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -116,7 +118,7 @@
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.35" />
+        app:layout_constraintVertical_bias="0.37" />
 
     <TextView
         android:id="@+id/textView60"
@@ -125,6 +127,7 @@
         android:fontFamily="@font/nexalight"
         android:text="The traveler is still required to contact the respective focal persons of their receiving LGU for coordination and appropriate action/approval of their DakbayaKnow travel permit application."
         android:textSize="16sp"
+        android:justificationMode="inter_word"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"

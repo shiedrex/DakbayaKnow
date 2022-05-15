@@ -7,10 +7,10 @@
 
     <TextView
         android:id="@+id/textView29"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="413dp"
+        android:layout_height="58dp"
         android:fontFamily="@font/nexabold"
-        android:text="For COVID-19 Fully Vaccinated Individuals "
+        android:text="For COVID-19 Fully \nVaccinated Individuals "
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -72,6 +72,7 @@
         android:text="IMPORTANT:"
         android:textAlignment="center"
         android:textSize="20sp"
+        android:textColor="@color/red"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.198"

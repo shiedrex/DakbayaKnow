@@ -6,10 +6,10 @@
 
     <TextView
         android:id="@+id/textView30"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="413dp"
+        android:layout_height="81dp"
         android:fontFamily="@font/nexabold"
-        android:text="For Unvaccinated or Incompletely Vaccinated Individuals "
+        android:text="For Unvaccinated or \nIncompletely Vaccinated \nIndividuals "
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"

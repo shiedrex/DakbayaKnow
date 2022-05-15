@@ -7,18 +7,17 @@
 
     <TextView
         android:id="@+id/textView29"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="413dp"
+        android:layout_height="58dp"
         android:fontFamily="@font/nexabold"
-        android:text="For COVID-19 Fully Vaccinated Individuals "
+        android:text="For COVID-19 Fully \nVaccinated Individuals "
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.063" />
+        app:layout_constraintVertical_bias="0.062" />
 
     <TextView
         android:id="@+id/textView55"
@@ -33,14 +32,14 @@
         app:layout_constraintHorizontal_bias="0.214"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.633" />
+        app:layout_constraintVertical_bias="0.622" />
 
     <TextView
         android:id="@+id/textView41"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/nexablack"
-        android:text="1. S+ PASS registration (https://s-pass.ph)"
+        android:text="1. DakbayaKnow application registration"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -69,7 +68,7 @@
         android:layout_width="300dp"
         android:layout_height="85dp"
         android:fontFamily="@font/nexalight"
-        android:text="The traveler is still required to contact the respective focal persons of their receiving LGU for coordination and appropriate action/approval of their DakbayaKnow travel permit application."
+        android:text="The traveler is still required to contact the respective local persons of their receiving LGU for coordination and appropriate action/approval of their DakbayaKnow travel permit application."
         android:textSize="16sp"
         android:justificationMode="inter_word"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -156,7 +155,7 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/nexablack"
-        android:text="2. Contact Tracing Apps (www.staysafe.ph)"
+        android:text="2. DakbayaKnow HDF"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -169,7 +168,7 @@
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:fontFamily="@font/nexablack"
-        android:text="1. S+ PASS registration (https://s-pass.ph)"
+        android:text="1. DakbayaKnow application"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -189,6 +188,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.469" />
+        app:layout_constraintVertical_bias="0.483" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
