@@ -16,6 +16,7 @@
             android:id="@+id/layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/light_gray"
             android:orientation="vertical">
 
             <LinearLayout
@@ -30,9 +31,10 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:fontFamily="@font/nexalight"
-                    android:paddingEnd="0dp"
                     android:justificationMode="inter_word"
+                    android:paddingEnd="0dp"
                     android:text="This Travel Permit is granted to the person listed below to pass at the established Quarantine Control Points (QCPs) Checkpoints and Seaports from point of origin to point of destination and vice versa as if may deemed necessary:"
+                    android:textColor="#000000"
                     android:textSize="18sp" />
             </LinearLayout>
 
@@ -52,6 +54,7 @@
                     android:maxLines="1"
                     android:paddingEnd="0dp"
                     android:text="Name:"
+                    android:textColor="#000000"
                     android:textSize="18sp" />
 
                 <TextView
@@ -61,8 +64,9 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:fontFamily="@font/nexalight"
-                    android:maxLines="1"
+                    android:maxLines="2"
                     android:text=""
+                    android:textColor="#000000"
                     android:textSize="18sp" />
             </LinearLayout>
 
@@ -82,6 +86,7 @@
                     android:maxLines="1"
                     android:paddingEnd="0dp"
                     android:text="Traveller Type:"
+                    android:textColor="#000000"
                     android:textSize="18sp" />
 
                 <TextView
@@ -91,8 +96,9 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:fontFamily="@font/nexalight"
-                    android:maxLines="1"
+                    android:maxLines="2"
                     android:text=""
+                    android:textColor="#000000"
                     android:textSize="18sp" />
             </LinearLayout>
 
@@ -112,6 +118,7 @@
                     android:maxLines="1"
                     android:paddingEnd="0dp"
                     android:text="Origin:"
+                    android:textColor="#000000"
                     android:textSize="18sp" />
 
                 <TextView
@@ -121,8 +128,9 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:fontFamily="@font/nexalight"
-                    android:maxLines="1"
+                    android:maxLines="2"
                     android:text=""
+                    android:textColor="#000000"
                     android:textSize="18sp" />
             </LinearLayout>
 
@@ -142,6 +150,7 @@
                     android:maxLines="1"
                     android:paddingEnd="0dp"
                     android:text="Destination:"
+                    android:textColor="#000000"
                     android:textSize="18sp" />
 
                 <TextView
@@ -151,8 +160,9 @@
                     android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
                     android:fontFamily="@font/nexalight"
-                    android:maxLines="1"
+                    android:maxLines="2"
                     android:text=""
+                    android:textColor="#000000"
                     android:textSize="18sp" />
             </LinearLayout>
 
@@ -172,6 +182,7 @@
                     android:maxLines="1"
                     android:paddingEnd="0dp"
                     android:text="Date of Travel:"
+                    android:textColor="#000000"
                     android:textSize="18sp" />
 
                 <TextView
@@ -183,6 +194,7 @@
                     android:fontFamily="@font/nexalight"
                     android:maxLines="1"
                     android:text=""
+                    android:textColor="#000000"
                     android:textSize="18sp" />
             </LinearLayout>
 
@@ -202,6 +214,7 @@
                     android:maxLines="1"
                     android:paddingEnd="0dp"
                     android:text="Date of Expected Arrival:"
+                    android:textColor="#000000"
                     android:textSize="18sp" />
 
                 <TextView
@@ -213,14 +226,15 @@
                     android:fontFamily="@font/nexalight"
                     android:maxLines="1"
                     android:text=""
+                    android:textColor="#000000"
                     android:textSize="18sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginBottom="20dp">
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/status"
@@ -233,6 +247,7 @@
                     android:maxLines="1"
                     android:paddingEnd="0dp"
                     android:text="Status:"
+                    android:textColor="#000000"
                     android:textSize="18sp" />
 
                 <TextView
@@ -244,6 +259,7 @@
                     android:fontFamily="@font/nexalight"
                     android:maxLines="2"
                     android:text=""
+                    android:textColor="#000000"
                     android:textSize="18sp" />
             </LinearLayout>
 
@@ -251,10 +267,28 @@
                 android:id="@+id/qrCode"
                 android:layout_width="180dp"
                 android:layout_height="180dp"
-                android:layout_marginBottom="20dp"
-                android:scaleType="fitCenter"
                 android:layout_gravity="center"
-                android:adjustViewBounds="true"/>
+                android:layout_marginBottom="10dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/dakbayaknow" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/dklogo2" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
@@ -264,9 +298,32 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="10dp"
         android:backgroundTint="#FF9800"
         android:fontFamily="@font/nexablack"
         android:text="SAVE TRAVEL PERMIT" />
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/noTravelPermit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="NO TRAVEL PERMIT"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:fontFamily="@font/nexablack"
+        android:textSize="40dp"/>
+
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/fillUp"
+        android:layout_below="@+id/noTravelPermit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Fill up Travel Form first"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:fontFamily="@font/nexablack"
+        android:textSize="20dp"/>
 
 </RelativeLayout>

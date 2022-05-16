@@ -7,10 +7,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -24,7 +27,7 @@ public class MyApplications extends AppCompatActivity {
 
     private FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference;
+    DatabaseReference databaseReference, appref;
 
     TextView destination, status, hdfStatus;
     ProgressDialog pd;
@@ -46,6 +49,7 @@ public class MyApplications extends AppCompatActivity {
         firebaseUser = firebaseAuth.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("users").child(firebaseAuth.getCurrentUser().getUid()).child("travelform");
+        appref = firebaseDatabase.getReference("applications");
 
         // Initialising the text view
         destination = findViewById(R.id.destination);
@@ -111,6 +115,36 @@ public class MyApplications extends AppCompatActivity {
             }
         });
 
+        Query query2 = appref.orderByChild("email").equalTo(firebaseUser.getEmail());
+        query2.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    // Retrieving Data from firebase
+                    String stat = "" + dataSnapshot1.child("status").getValue();
+                    // setting data to our text view
+                    status.setText(stat);
+
+                    if(stat.contains("Approved")){
+                        status.setTextColor(Color.parseColor("#008000"));
+                    } else if(stat.contains("Declined")){
+                        status.setTextColor(Color.parseColor("#FF0000"));
+                    } else if(stat.contains("Please upload required requirements (vaccinated)")){
+                        status.setTextColor(Color.parseColor("#FF0000"));
+                    } else if(stat.contains("Please upload required requirements (unvaccinated)")){
+                        status.setTextColor(Color.parseColor("#FFA500"));
+                    } else if(stat.contains("Pending")){
+                        status.setTextColor(Color.parseColor("#FFFF00"));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("users").child(firebaseAuth.getCurrentUser().getUid()).child("hdf");
         rootRef.addValueEventListener(new ValueEventListener() {
 
@@ -146,55 +180,7 @@ public class MyApplications extends AppCompatActivity {
             }
         });
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users").child(firebaseAuth.getCurrentUser().getUid()).child("travelform");
-        ref.addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-                Boolean found, found2;
-                String search = "vaccinated", search2 = "unvaccinated";
-
-                for (DataSnapshot ds : snapshot.getChildren()) {
-                    String vax = ds.child("vaccineStatus").getValue(String.class);
-
-                    found = vax.contains(search);
-                    found2 = vax.contains(search2);
-
-                    if (found == true) {
-                        status.setText("Please upload required requirements (vaccinated)");
-                        status.setTextColor(Color.parseColor("#008000"));
-                    }
-                    if (found2 == true) {
-                        status.setText("Please upload required requirements (unvaccinated)");
-                        status.setTextColor(Color.parseColor("#008000"));
-                    }
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed, how to handle?
-            }
-        });
-
-        DatabaseReference dr = FirebaseDatabase.getInstance().getReference("users").child(firebaseAuth.getCurrentUser().getUid()).child("uploadDocx");
-        dr.addValueEventListener(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
-
-                if (snapshot.exists()) {
-                    status.setText("Pending");
-                    status.setTextColor(Color.parseColor("#FFFF00"));
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed, how to handle?
-            }
-        });
-
-        travelPermitButton = (ImageButton) findViewById(R.id.travelPermitButton);
+        travelPermitButton = findViewById(R.id.travelPermitButton);
         travelPermitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -217,23 +217,33 @@ public class TravelForm_Unvacc extends AppCompatActivity {
                 switch (position) {
                     case 0:
                         arrayList_Province = new ArrayList<>();
+                        arrayList_Province.add("City of Manila");
+                        loadProvince(arrayList_Province);
+                        break;
+                    case 1:
+                        arrayList_Province = new ArrayList<>();
                         arrayList_Province.add("Aklan");
                         arrayList_Province.add("Antique");
                         arrayList_Province.add("Capiz");
                         arrayList_Province.add("Guimaras");
                         arrayList_Province.add("Iloilo");
                         arrayList_Province.add("Negros Occidental");
+                        arrayList_Province.add("Bacolod City");
+                        arrayList_Province.add("Iloilo City");
                         loadProvince(arrayList_Province);
                         break;
-                    case 1:
+                    case 2:
                         arrayList_Province = new ArrayList<>();
                         arrayList_Province.add("Bohol");
                         arrayList_Province.add("Cebu");
                         arrayList_Province.add("Negros Oriental");
                         arrayList_Province.add("Siquijor");
+                        arrayList_Province.add("Cebu City");
+                        arrayList_Province.add("Lapu-Lapu City");
+                        arrayList_Province.add("Mandaue City");
                         loadProvince(arrayList_Province);
                         break;
-                    case 2:
+                    case 3:
                         arrayList_Province = new ArrayList<>();
                         arrayList_Province.add("Biliran");
                         arrayList_Province.add("Eastern Samar");
@@ -241,6 +251,13 @@ public class TravelForm_Unvacc extends AppCompatActivity {
                         arrayList_Province.add("Northern Samar");
                         arrayList_Province.add("Samar");
                         arrayList_Province.add("Southern Leyte");
+                        arrayList_Province.add("Tacloban City");
+                        arrayList_Province.add("Ormoc City");
+                        loadProvince(arrayList_Province);
+                        break;
+                    case 4:
+                        arrayList_Province = new ArrayList<>();
+                        arrayList_Province.add("Cagayan De Oro City");
                         loadProvince(arrayList_Province);
                         break;
                 }
@@ -257,6 +274,12 @@ public class TravelForm_Unvacc extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i , long l) {
                 String item = adapterView.getSelectedItem().toString();
                 switch (item) {
+                    //NCR
+                    case "City of Manila":
+                        arrayList_Municipality = new ArrayList<>();
+                        arrayList_Municipality.add("City of Manila");
+                        loadMunicipality(arrayList_Municipality);
+                        break;
                     //region 6
                     case "Aklan":
                         arrayList_Municipality = new ArrayList<>();
@@ -353,7 +376,6 @@ public class TravelForm_Unvacc extends AppCompatActivity {
                         arrayList_Municipality.add("Estancia");
                         arrayList_Municipality.add("Guimbal");
                         arrayList_Municipality.add("Igbaras");
-                        arrayList_Municipality.add("Iloilo City");
                         arrayList_Municipality.add("Janiuay");
                         arrayList_Municipality.add("Lambunao");
                         arrayList_Municipality.add("Leganes");
@@ -413,6 +435,16 @@ public class TravelForm_Unvacc extends AppCompatActivity {
                         arrayList_Municipality.add("Toboso");
                         arrayList_Municipality.add("Valladolid");
                         arrayList_Municipality.add("Victorias");
+                        loadMunicipality(arrayList_Municipality);
+                        break;
+                    case "Bacolod City":
+                        arrayList_Municipality = new ArrayList<>();
+                        arrayList_Municipality.add("Bacolod City");
+                        loadMunicipality(arrayList_Municipality);
+                        break;
+                    case "Iloilo City":
+                        arrayList_Municipality = new ArrayList<>();
+                        arrayList_Municipality.add("Iloilo City");
                         loadMunicipality(arrayList_Municipality);
                         break;
 
@@ -487,7 +519,6 @@ public class TravelForm_Unvacc extends AppCompatActivity {
                         arrayList_Municipality.add("Carcar");
                         arrayList_Municipality.add("Carmen");
                         arrayList_Municipality.add("Catmon");
-                        arrayList_Municipality.add("Cebu City");
                         arrayList_Municipality.add("Compostela");
                         arrayList_Municipality.add("Consolacion");
                         arrayList_Municipality.add("Cordova");
@@ -496,11 +527,9 @@ public class TravelForm_Unvacc extends AppCompatActivity {
                         arrayList_Municipality.add("Danao");
                         arrayList_Municipality.add("Dumanjug");
                         arrayList_Municipality.add("Ginatilan");
-                        arrayList_Municipality.add("Lapu-Lapu");
                         arrayList_Municipality.add("Liloan");
                         arrayList_Municipality.add("Madridejos");
                         arrayList_Municipality.add("Malabuyoc");
-                        arrayList_Municipality.add("Mandaue");
                         arrayList_Municipality.add("Medellin");
                         arrayList_Municipality.add("Minglanilla");
                         arrayList_Municipality.add("Moalboal");
@@ -563,6 +592,21 @@ public class TravelForm_Unvacc extends AppCompatActivity {
                         arrayList_Municipality.add("Maria");
                         arrayList_Municipality.add("San Juan");
                         arrayList_Municipality.add("Siquijor");
+                        loadMunicipality(arrayList_Municipality);
+                        break;
+                    case "Cebu City":
+                        arrayList_Municipality = new ArrayList<>();
+                        arrayList_Municipality.add("Cebu City");
+                        loadMunicipality(arrayList_Municipality);
+                        break;
+                    case "Lapu-Lapu City":
+                        arrayList_Municipality = new ArrayList<>();
+                        arrayList_Municipality.add("Lapu-Lapu City");
+                        loadMunicipality(arrayList_Municipality);
+                        break;
+                    case "Mandaue City":
+                        arrayList_Municipality = new ArrayList<>();
+                        arrayList_Municipality.add("Mandaue City");
                         loadMunicipality(arrayList_Municipality);
                         break;
 
@@ -637,7 +681,6 @@ public class TravelForm_Unvacc extends AppCompatActivity {
                         arrayList_Municipality.add("Matalom");
                         arrayList_Municipality.add("Mayorga");
                         arrayList_Municipality.add("Merida");
-                        arrayList_Municipality.add("Ormoc");
                         arrayList_Municipality.add("Palo");
                         arrayList_Municipality.add("Palompon");
                         arrayList_Municipality.add("Pastrana");
@@ -646,7 +689,6 @@ public class TravelForm_Unvacc extends AppCompatActivity {
                         arrayList_Municipality.add("Santa Fe");
                         arrayList_Municipality.add("Tabango");
                         arrayList_Municipality.add("Tabontabon");
-                        arrayList_Municipality.add("Tacloban");
                         arrayList_Municipality.add("Tanauan");
                         arrayList_Municipality.add("Tolosa");
                         arrayList_Municipality.add("Tunga");
@@ -732,6 +774,22 @@ public class TravelForm_Unvacc extends AppCompatActivity {
                         arrayList_Municipality.add("Silago");
                         arrayList_Municipality.add("Sogod");
                         arrayList_Municipality.add("Tomas Oppus");
+                        loadMunicipality(arrayList_Municipality);
+                        break;
+                    case "Tacloban City":
+                        arrayList_Municipality = new ArrayList<>();
+                        arrayList_Municipality.add("Tacloban City");
+                        loadMunicipality(arrayList_Municipality);
+                        break;
+                    case "Ormoc City":
+                        arrayList_Municipality = new ArrayList<>();
+                        arrayList_Municipality.add("Ormoc City");
+                        loadMunicipality(arrayList_Municipality);
+                        break;
+                    //Region 10
+                    case "Cagayan De Oro City":
+                        arrayList_Municipality = new ArrayList<>();
+                        arrayList_Municipality.add("Cagayan De Oro City");
                         loadMunicipality(arrayList_Municipality);
                         break;
                 }
@@ -752,23 +810,33 @@ public class TravelForm_Unvacc extends AppCompatActivity {
                 switch (position) {
                     case 0:
                         arrayList_Province = new ArrayList<>();
+                        arrayList_Province.add("City of Manila");
+                        load_dProvince(arrayList_Province);
+                        break;
+                    case 1:
+                        arrayList_Province = new ArrayList<>();
                         arrayList_Province.add("Aklan");
                         arrayList_Province.add("Antique");
                         arrayList_Province.add("Capiz");
                         arrayList_Province.add("Guimaras");
                         arrayList_Province.add("Iloilo");
                         arrayList_Province.add("Negros Occidental");
+                        arrayList_Province.add("Bacolod City");
+                        arrayList_Province.add("Iloilo City");
                         load_dProvince(arrayList_Province);
                         break;
-                    case 1:
+                    case 2:
                         arrayList_Province = new ArrayList<>();
                         arrayList_Province.add("Bohol");
                         arrayList_Province.add("Cebu");
                         arrayList_Province.add("Negros Oriental");
                         arrayList_Province.add("Siquijor");
+                        arrayList_Province.add("Cebu City");
+                        arrayList_Province.add("Lapu-Lapu City");
+                        arrayList_Province.add("Mandaue City");
                         load_dProvince(arrayList_Province);
                         break;
-                    case 2:
+                    case 3:
                         arrayList_Province = new ArrayList<>();
                         arrayList_Province.add("Biliran");
                         arrayList_Province.add("Eastern Samar");
@@ -776,6 +844,13 @@ public class TravelForm_Unvacc extends AppCompatActivity {
                         arrayList_Province.add("Northern Samar");
                         arrayList_Province.add("Samar");
                         arrayList_Province.add("Southern Leyte");
+                        arrayList_Province.add("Tacloban City");
+                        arrayList_Province.add("Ormoc City");
+                        load_dProvince(arrayList_Province);
+                        break;
+                    case 4:
+                        arrayList_Province = new ArrayList<>();
+                        arrayList_Province.add("Cagayan De Oro City");
                         load_dProvince(arrayList_Province);
                         break;
                 }
@@ -792,6 +867,12 @@ public class TravelForm_Unvacc extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i , long l) {
                 String item = adapterView.getSelectedItem().toString();
                 switch (item) {
+                    //NCR
+                    case "City of Manila":
+                        arrayList_Municipality = new ArrayList<>();
+                        arrayList_Municipality.add("City of Manila");
+                        load_dMunicipality(arrayList_Municipality);
+                        break;
                     //region 6
                     case "Aklan":
                         arrayList_Municipality = new ArrayList<>();
@@ -888,7 +969,6 @@ public class TravelForm_Unvacc extends AppCompatActivity {
                         arrayList_Municipality.add("Estancia");
                         arrayList_Municipality.add("Guimbal");
                         arrayList_Municipality.add("Igbaras");
-                        arrayList_Municipality.add("Iloilo City");
                         arrayList_Municipality.add("Janiuay");
                         arrayList_Municipality.add("Lambunao");
                         arrayList_Municipality.add("Leganes");
@@ -948,6 +1028,16 @@ public class TravelForm_Unvacc extends AppCompatActivity {
                         arrayList_Municipality.add("Toboso");
                         arrayList_Municipality.add("Valladolid");
                         arrayList_Municipality.add("Victorias");
+                        load_dMunicipality(arrayList_Municipality);
+                        break;
+                    case "Bacolod City":
+                        arrayList_Municipality = new ArrayList<>();
+                        arrayList_Municipality.add("Bacolod City");
+                        load_dMunicipality(arrayList_Municipality);
+                        break;
+                    case "Iloilo City":
+                        arrayList_Municipality = new ArrayList<>();
+                        arrayList_Municipality.add("Iloilo City");
                         load_dMunicipality(arrayList_Municipality);
                         break;
 
@@ -1022,7 +1112,6 @@ public class TravelForm_Unvacc extends AppCompatActivity {
                         arrayList_Municipality.add("Carcar");
                         arrayList_Municipality.add("Carmen");
                         arrayList_Municipality.add("Catmon");
-                        arrayList_Municipality.add("Cebu City");
                         arrayList_Municipality.add("Compostela");
                         arrayList_Municipality.add("Consolacion");
                         arrayList_Municipality.add("Cordova");
@@ -1031,11 +1120,9 @@ public class TravelForm_Unvacc extends AppCompatActivity {
                         arrayList_Municipality.add("Danao");
                         arrayList_Municipality.add("Dumanjug");
                         arrayList_Municipality.add("Ginatilan");
-                        arrayList_Municipality.add("Lapu-Lapu");
                         arrayList_Municipality.add("Liloan");
                         arrayList_Municipality.add("Madridejos");
                         arrayList_Municipality.add("Malabuyoc");
-                        arrayList_Municipality.add("Mandaue");
                         arrayList_Municipality.add("Medellin");
                         arrayList_Municipality.add("Minglanilla");
                         arrayList_Municipality.add("Moalboal");
@@ -1098,6 +1185,21 @@ public class TravelForm_Unvacc extends AppCompatActivity {
                         arrayList_Municipality.add("Maria");
                         arrayList_Municipality.add("San Juan");
                         arrayList_Municipality.add("Siquijor");
+                        load_dMunicipality(arrayList_Municipality);
+                        break;
+                    case "Cebu City":
+                        arrayList_Municipality = new ArrayList<>();
+                        arrayList_Municipality.add("Cebu City");
+                        load_dMunicipality(arrayList_Municipality);
+                        break;
+                    case "Lapu-Lapu City":
+                        arrayList_Municipality = new ArrayList<>();
+                        arrayList_Municipality.add("Lapu-Lapu City");
+                        load_dMunicipality(arrayList_Municipality);
+                        break;
+                    case "Mandaue City":
+                        arrayList_Municipality = new ArrayList<>();
+                        arrayList_Municipality.add("Mandaue City");
                         load_dMunicipality(arrayList_Municipality);
                         break;
 
@@ -1172,7 +1274,6 @@ public class TravelForm_Unvacc extends AppCompatActivity {
                         arrayList_Municipality.add("Matalom");
                         arrayList_Municipality.add("Mayorga");
                         arrayList_Municipality.add("Merida");
-                        arrayList_Municipality.add("Ormoc");
                         arrayList_Municipality.add("Palo");
                         arrayList_Municipality.add("Palompon");
                         arrayList_Municipality.add("Pastrana");
@@ -1181,7 +1282,6 @@ public class TravelForm_Unvacc extends AppCompatActivity {
                         arrayList_Municipality.add("Santa Fe");
                         arrayList_Municipality.add("Tabango");
                         arrayList_Municipality.add("Tabontabon");
-                        arrayList_Municipality.add("Tacloban");
                         arrayList_Municipality.add("Tanauan");
                         arrayList_Municipality.add("Tolosa");
                         arrayList_Municipality.add("Tunga");
@@ -1267,6 +1367,22 @@ public class TravelForm_Unvacc extends AppCompatActivity {
                         arrayList_Municipality.add("Silago");
                         arrayList_Municipality.add("Sogod");
                         arrayList_Municipality.add("Tomas Oppus");
+                        load_dMunicipality(arrayList_Municipality);
+                        break;
+                    case "Tacloban City":
+                        arrayList_Municipality = new ArrayList<>();
+                        arrayList_Municipality.add("Tacloban City");
+                        load_dMunicipality(arrayList_Municipality);
+                        break;
+                    case "Ormoc City":
+                        arrayList_Municipality = new ArrayList<>();
+                        arrayList_Municipality.add("Ormoc City");
+                        load_dMunicipality(arrayList_Municipality);
+                        break;
+                    //Region 10
+                    case "Cagayan De Oro City":
+                        arrayList_Municipality = new ArrayList<>();
+                        arrayList_Municipality.add("Cagayan De Oro City");
                         load_dMunicipality(arrayList_Municipality);
                         break;
                 }
@@ -1416,6 +1532,8 @@ public class TravelForm_Unvacc extends AppCompatActivity {
                 reference.child(String.valueOf(fAuth.getCurrentUser().getUid())).setValue(value);
 
                 String stat = "Please upload required requirements (unvaccinated)";
+                value.setStatus(stat);
+
                 String travType = spinner_travellerType.getText().toString();
                 String orig = cAddressText.getText().toString().trim() + ", " +
                         spinner_cMunicipality.getSelectedItem().toString() + ", " +
@@ -1426,7 +1544,7 @@ public class TravelForm_Unvacc extends AppCompatActivity {
                 String travDate = departureText.getText().toString();
                 String arrivDate = arrivalText.getText().toString();
 
-                updateStatus(stat, travType, orig, des, travDate, arrivDate);
+                updateStatus(stat, travType, orig, des, travDate, arrivDate, email);
 
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -1453,9 +1571,11 @@ public class TravelForm_Unvacc extends AppCompatActivity {
 
     public void init() {
         arrayList_Region = new ArrayList<>();
+        arrayList_Region.add("National Capital Region (NCR)");
         arrayList_Region.add("Western Visayas (Region VI)");
         arrayList_Region.add("Central Visayas (Region VII)");
         arrayList_Region.add("Eastern Visayas (Region VIII)");
+        arrayList_Region.add("Northern Mindanao (Region X)");
         loadRegion(arrayList_Region);
     }
     public void loadRegion(ArrayList<String> arrayList_Region) {
@@ -1476,9 +1596,11 @@ public class TravelForm_Unvacc extends AppCompatActivity {
 
     public void init2() {
         arrayList_Region = new ArrayList<>();
+        arrayList_Region.add("National Capital Region (NCR)");
         arrayList_Region.add("Western Visayas (Region VI)");
         arrayList_Region.add("Central Visayas (Region VII)");
         arrayList_Region.add("Eastern Visayas (Region VIII)");
+        arrayList_Region.add("Northern Mindanao (Region X)");
         load_dRegion(arrayList_Region);
     }
     public void load_dRegion(ArrayList<String> arrayList_Region) {
@@ -1497,7 +1619,7 @@ public class TravelForm_Unvacc extends AppCompatActivity {
         spinner_dMunicipality.setAdapter(arrayAdapter_Municipality);
     }
 
-    private void updateStatus(String stat, String travType, String orig, String des, String travDate, String arrivDate) {
+    private void updateStatus(String stat, String travType, String orig, String des, String travDate, String arrivDate, String email) {
         HashMap user = new HashMap();
         user.put("status", stat);
         user.put("travellerType", travType);
@@ -1505,6 +1627,7 @@ public class TravelForm_Unvacc extends AppCompatActivity {
         user.put("destination", des);
         user.put("departure", travDate);
         user.put("arrival", arrivDate);
+        user.put("email", email);
 
         ref2.child(fAuth.getCurrentUser().getUid()).updateChildren(user).addOnCompleteListener(new OnCompleteListener() {
             @Override

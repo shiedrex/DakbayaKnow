@@ -1,8 +1,10 @@
 package com.example.dakbayaknow;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -12,10 +14,8 @@ import android.os.Environment;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,8 +32,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
@@ -44,14 +42,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 public class TravelPermit extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference, databaseReference2;
 
-    TextView fullname, travellerType, origin, destination, dateTravel, expectedArrival, status;
+    TextView fullname, travellerType, origin, destination, dateTravel, expectedArrival, status, noTravelPermit, fillUp;
     ProgressDialog pd;
 
     FirebaseUser firebaseUser;
@@ -84,11 +81,17 @@ public class TravelPermit extends AppCompatActivity {
         dateTravel = findViewById(R.id.dateTravelText);
         expectedArrival = findViewById(R.id.expectedArrivalText);
         status = findViewById(R.id.statusText);
+        noTravelPermit = findViewById(R.id.noTravelPermit);
+        fillUp = findViewById(R.id.fillUp);
 
         saveTravelPermit = findViewById(R.id.saveTravelPermitButton);
         qrCode = findViewById(R.id.qrCode);
 
         linearLayout = findViewById(R.id.layout);
+        linearLayout.setVisibility(View.GONE);
+        saveTravelPermit.setVisibility(View.GONE);
+        noTravelPermit.setVisibility(View.VISIBLE);
+        fillUp.setVisibility(View.VISIBLE);
 
         pd = new ProgressDialog(this);
         pd.setCanceledOnTouchOutside(false);
@@ -126,8 +129,7 @@ public class TravelPermit extends AppCompatActivity {
                     String dProv = "" + dataSnapshot1.child("dProvince").getValue();
                     String depart = "" + dataSnapshot1.child("departure").getValue();
                     String arriv = "" + dataSnapshot1.child("arrival").getValue();
-//                    String stat = "" + dataSnapshot1.child("status").getValue();
-
+                    String stat = "" + dataSnapshot1.child("status").getValue();
                     // setting data to our text view
                     fullname.setText(fn+" "+ln);
                     travellerType.setText(traveller);
@@ -136,51 +138,38 @@ public class TravelPermit extends AppCompatActivity {
                     dateTravel.setText(depart);
                     expectedArrival.setText(arriv);
 
-                    DatabaseReference ref = FirebaseDatabase.getInstance().getReference("users").child(firebaseAuth.getCurrentUser().getUid()).child("travelform");
-                    ref.addValueEventListener(new ValueEventListener() {
+                    linearLayout.setVisibility(View.VISIBLE);
+                    saveTravelPermit.setVisibility(View.VISIBLE);
+                    noTravelPermit.setVisibility(View.GONE);
+                    fillUp.setVisibility(View.GONE);
 
+                    Query query2 = databaseReference2.orderByChild("email").equalTo(firebaseUser.getEmail());
+                    query2.addValueEventListener(new ValueEventListener() {
                         @Override
-                        public void onDataChange(DataSnapshot snapshot) {
-                            Boolean found, found2;
-                            String search = "vaccinated", search2 = "unvaccinated";
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                                // Retrieving Data from firebase
+                                String stat = "" + dataSnapshot1.child("status").getValue();
+                                // setting data to our text view
+                                status.setText(stat);
 
-                            for (DataSnapshot ds : snapshot.getChildren()) {
-                                String vax = ds.child("vaccineStatus").getValue(String.class);
-
-                                found = vax.contains(search);
-                                found2 = vax.contains(search2);
-
-                                if (found == true) {
-                                    status.setText("Please upload required requirements (vaccinated)");
+                                if(stat.contains("Approved")){
                                     status.setTextColor(Color.parseColor("#008000"));
+                                } else if(stat.contains("Declined")){
+                                    status.setTextColor(Color.parseColor("#FF0000"));
+                                } else if(stat.contains("Please upload required requirements (vaccinated)")){
+                                    status.setTextColor(Color.parseColor("#FF0000"));
+                                } else if(stat.contains("Please upload required requirements (unvaccinated)")){
+                                    status.setTextColor(Color.parseColor("#FFA500"));
+                                } else if(stat.contains("Pending")){
+                                    status.setTextColor(Color.parseColor("#FFFF00"));
                                 }
-                                if (found2 == true) {
-                                    status.setText("Please upload required requirements (unvaccinated)");
-                                    status.setTextColor(Color.parseColor("#008000"));
-                                }
-                            }
-                        }
-                        @Override
-                        public void onCancelled(DatabaseError error) {
-                            // Failed, how to handle?
-                        }
-                    });
-
-                    DatabaseReference dr = FirebaseDatabase.getInstance().getReference("users").child(firebaseAuth.getCurrentUser().getUid()).child("uploadDocx");
-                    dr.addValueEventListener(new ValueEventListener() {
-
-                        @Override
-                        public void onDataChange(DataSnapshot snapshot) {
-
-                            if (snapshot.exists()) {
-                                status.setText("Pending");
-                                status.setTextColor(Color.parseColor("#FFFF00"));
                             }
                         }
 
                         @Override
-                        public void onCancelled(DatabaseError error) {
-                            // Failed, how to handle?
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
                         }
                     });
 //                    status.setText(stat);
@@ -193,7 +182,7 @@ public class TravelPermit extends AppCompatActivity {
                                                                  "\n\nDestination: " +dAdd+", "+dMuni+", "+dProv+
                                                                  "\n\nDeparture: " +depart+
                                                                  "\n\nArrival: " +arriv+
-                                                                 "\n\nStatus: " +status,
+                                                                 "\n\nStatus: " +stat,
                                 BarcodeFormat.QR_CODE,350, 350);
                         BarcodeEncoder encoder = new BarcodeEncoder();
                         Bitmap bitmap = encoder.createBitmap(matrix);

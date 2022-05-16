@@ -78,7 +78,7 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
 
     FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
-    DatabaseReference databaseReference, govIdRef, vaccCardRef, travelRef, appref;
+    DatabaseReference databaseReference, govIdRef, vaccCardRef, travelRef, appref, app_govIdRef, app_vaccCardRef;
 
     FirebaseAuth fAuth;
     StorageReference storageReference;
@@ -120,6 +120,8 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
         govIdRef = firebaseDatabase.getReference("users").child(firebaseUser.getUid()).child("uploadDocx").child(firebaseAuth.getCurrentUser().getUid()).child("govIdImage");
         vaccCardRef = firebaseDatabase.getReference("users").child(firebaseUser.getUid()).child("uploadDocx").child(firebaseAuth.getCurrentUser().getUid()).child("vaccCardImage");
         appref = FirebaseDatabase.getInstance().getReference("applications");
+        app_govIdRef = firebaseDatabase.getReference("applications").child(firebaseUser.getUid()).child("govIdImage");
+        app_vaccCardRef = firebaseDatabase.getReference("applications").child(firebaseUser.getUid()).child("vaccCardImage");
 
         queue = Volley.newRequestQueue(getApplicationContext());
         //button
@@ -391,6 +393,8 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
 
                                 databaseReference.child(String.valueOf(firebaseAuth.getCurrentUser().getUid())).setValue(value);
                                 String stat = "Pending";
+                                value.setStatus(stat);
+
                                 String govId = spinner_govId.getText().toString().trim();
                                 updateStatus(stat, govId);
 
@@ -505,6 +509,7 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
                     public void onSuccess(Uri uri) {
                         GovId image = new GovId(uri.toString());
                         govIdRef.setValue(image);
+                        app_govIdRef.setValue(image);
                     }
                 });
             }
@@ -527,6 +532,7 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
                     public void onSuccess(Uri uri) {
                         VaccCard image = new VaccCard(uri.toString());
                         vaccCardRef.setValue(image);
+                        app_vaccCardRef.setValue(image);
                     }
                 });
             }
@@ -548,6 +554,7 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
                     public void onSuccess(Uri uri) {
                         GovId image = new GovId(uri.toString());
                         govIdRef.setValue(image);
+                        app_govIdRef.setValue(image);
                     }
                 });
             }
@@ -570,6 +577,7 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
                     public void onSuccess(Uri uri) {
                         VaccCard image = new VaccCard(uri.toString());
                         vaccCardRef.setValue(image);
+                        app_vaccCardRef.setValue(image);
                     }
                 });
             }

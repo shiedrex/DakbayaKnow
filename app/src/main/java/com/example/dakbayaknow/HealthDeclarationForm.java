@@ -370,7 +370,8 @@ public class HealthDeclarationForm extends AppCompatActivity {
                             if (found == true && found2 == true && found3 == true && found4 == true) {
                                 String fullname = firstnameText.getText().toString().trim() + " " + lastnameText.getText().toString().trim();
                                 String health = "Safe";
-                                updateStatus(fullname, health);
+                                String email = emailText.getText().toString().trim();
+                                updateStatus(fullname, health, email);
 
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
@@ -395,7 +396,8 @@ public class HealthDeclarationForm extends AppCompatActivity {
                             } else {
                                 String fullname = firstnameText.getText().toString().trim() + " " + lastnameText.getText().toString().trim();
                                 String health = "Stay at Home";
-                                updateStatus(fullname, health);
+                                String email = emailText.getText().toString().trim();
+                                updateStatus(fullname, health, email);
 
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
@@ -428,10 +430,11 @@ public class HealthDeclarationForm extends AppCompatActivity {
             }
         });
     }
-    private void updateStatus(String fullname, String health) {
+    private void updateStatus(String fullname, String health, String email) {
         HashMap user = new HashMap();
         user.put("fullname", fullname);
         user.put("health", health);
+        user.put("email", email);
 
         ref2.child(fAuth.getCurrentUser().getUid()).updateChildren(user).addOnCompleteListener(new OnCompleteListener() {
             @Override
