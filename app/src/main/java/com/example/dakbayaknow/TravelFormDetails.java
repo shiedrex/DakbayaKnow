@@ -5,7 +5,7 @@ public class TravelFormDetails {
             emergencyContactPerson, emergencyContactNumber,
             cRegion, cProvince, cMunicipality, cAddress,
             dRegion, dProvince, dMunicipality, dAddress,
-            departure, arrival, status, vaccineStatus;
+            departure, arrival, status, vaccineStatus, dateToday;
 
     public TravelFormDetails() {
 
@@ -15,7 +15,7 @@ public class TravelFormDetails {
                              String suffixname, String email, String contactNumber, String gender, String emergencyContactPerson,
                              String emergencyContactNumber, String cRegion, String cProvince, String cMunicipality, String cAddress,
                              String dRegion, String dProvince, String dMunicipality, String dAddress, String departure, String arrival,
-                             String status, String vaccineStatus) {
+                             String status, String vaccineStatus, String dateToday) {
 
         this.travellerType = travellerType;
         this.title = title;
@@ -40,6 +40,7 @@ public class TravelFormDetails {
         this.arrival = arrival;
         this.status = status;
         this.vaccineStatus = vaccineStatus;
+        this.dateToday = dateToday;
     }
 
     public String getTravellerType() {
@@ -224,5 +225,13 @@ public class TravelFormDetails {
 
     public void setVaccineStatus(String vaccineStatus) {
         this.vaccineStatus = vaccineStatus;
+    }
+
+    public String getDateToday() {
+        return dateToday;
+    }
+
+    public void setDateToday(String dateToday) {
+        this.dateToday = dateToday;
     }
 }

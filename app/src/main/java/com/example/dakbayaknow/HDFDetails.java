@@ -1,9 +1,9 @@
 package com.example.dakbayaknow;
 
 public class HDFDetails {
-    private String gender, firstname, middlename, lastname, nationality, age, email, contactNumber, presentAddress, country, city, symptoms, sick, covid, animal;
+    private String gender, firstname, middlename, lastname, nationality, age, email, contactNumber, presentAddress, country, city, arrival, symptoms, sick, covid, animal;
 
-    public HDFDetails(String gender, String firstname, String middlename, String lastname, String nationality, String age, String email, String contactNumber, String presentAddress, String country, String city, String symptoms, String sick, String covid, String animal) {
+    public HDFDetails(String gender, String firstname, String middlename, String lastname, String nationality, String age, String email, String contactNumber, String presentAddress, String country, String city, String arrival, String symptoms, String sick, String covid, String animal) {
         this.gender = gender;
         this.firstname = firstname;
         this.middlename = middlename;
@@ -14,6 +14,7 @@ public class HDFDetails {
         this.contactNumber = contactNumber;
         this.country = country;
         this.city = city;
+        this.arrival = arrival;
         this.symptoms = symptoms;
         this.sick = sick;
         this.covid = covid;
@@ -143,5 +144,13 @@ public class HDFDetails {
 
     public void setAnimal(String animal) {
         this.animal = animal;
+    }
+
+    public String getArrival() {
+        return arrival;
+    }
+
+    public void setArrival(String arrival) {
+        this.arrival = arrival;
     }
 }

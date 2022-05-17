@@ -31,8 +31,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,7 +46,8 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
     private TextInputEditText firstnameText, middleInitialText, lastnameText, suffixnameText, emailText, contactNumberText,
             emergencyContactPersonText, emergencyContactNumberText,
             cAddressText, dAddressText,
-            departureText, arrivalText;
+            departureText, arrivalText,
+            dateTodayText;
 
     private Button submitButton;
 
@@ -90,8 +93,10 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
 
         cAddressText = findViewById(R.id.cAddress);
         dAddressText = findViewById(R.id.dAddress);
+
         departureText = findViewById(R.id.departure);
         arrivalText = findViewById(R.id.arrival);
+        dateTodayText = findViewById(R.id.datetoday);
 
         //spinner
         spinner_travellerType = findViewById(R.id.spinner_travellerType);
@@ -163,6 +168,11 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
                 arrivalText.setText(date);
             }
         };
+
+        Date today = Calendar.getInstance().getTime();//getting date
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");//formating according to my need
+        String date = formatter.format(today);
+        dateTodayText.setText(date);
 
         List<String> Categories = new ArrayList<>();
         Categories.add("Student");
@@ -1433,6 +1443,7 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
                 value.setdAddress(dAddressText.getText().toString().trim());
                 value.setDeparture(departureText.getText().toString().trim());
                 value.setArrival(arrivalText.getText().toString().trim());
+                value.setDateToday(dateTodayText.getText().toString().trim());
                 //spinner
                 value.setTravellerType(spinner_travellerType.getText().toString());
                 value.setTitle(spinner_title.getText().toString());
@@ -1462,6 +1473,7 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
                 String dAddress = dAddressText.getText().toString().trim();
                 String departure = departureText.getText().toString().trim();
                 String arrival = arrivalText.getText().toString().trim();
+                String datetoday  = dateTodayText.getText().toString().trim();
 
                 //required
                 if (firstname.isEmpty()) {
@@ -1524,6 +1536,11 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
                     arrivalText.requestFocus();
                     return;
                 }
+                if (datetoday.isEmpty()) {
+                    arrivalText.setError("Date Today is required!");
+                    arrivalText.requestFocus();
+                    return;
+                }
 
                 progressDialog.setMessage("Submitting...Please Wait");
                 progressDialog.show();
@@ -1545,8 +1562,9 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
                         spinner_dProvince.getSelectedItem().toString();
                 String travDate = departureText.getText().toString();
                 String arrivDate = arrivalText.getText().toString();
+                String dateToday = dateTodayText.getText().toString().trim();
 
-                updateStatus(stat, travType, orig, des, travDate, arrivDate, email);
+                updateStatus(stat, travType, orig, des, travDate, arrivDate, email, dateToday);
 
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -1622,7 +1640,7 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
         spinner_dMunicipality.setAdapter(arrayAdapter_Municipality);
     }
 
-    private void updateStatus(String stat, String travType, String orig, String des, String travDate, String arrivDate, String email) {
+    private void updateStatus(String stat, String travType, String orig, String des, String travDate, String arrivDate, String email, String dateToday) {
         HashMap user = new HashMap();
         user.put("status", stat);
         user.put("travellerType", travType);
@@ -1631,6 +1649,7 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
         user.put("departure", travDate);
         user.put("arrival", arrivDate);
         user.put("email", email);
+        user.put("dateToday", dateToday);
 
         ref2.child(fAuth.getCurrentUser().getUid()).updateChildren(user).addOnCompleteListener(new OnCompleteListener() {
             @Override

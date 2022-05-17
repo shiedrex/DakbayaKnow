@@ -120,8 +120,8 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
         govIdRef = firebaseDatabase.getReference("users").child(firebaseUser.getUid()).child("uploadDocx").child(firebaseAuth.getCurrentUser().getUid()).child("govIdImage");
         vaccCardRef = firebaseDatabase.getReference("users").child(firebaseUser.getUid()).child("uploadDocx").child(firebaseAuth.getCurrentUser().getUid()).child("vaccCardImage");
         appref = FirebaseDatabase.getInstance().getReference("applications");
-        app_govIdRef = firebaseDatabase.getReference("applications").child(firebaseUser.getUid()).child("govIdImage");
-        app_vaccCardRef = firebaseDatabase.getReference("applications").child(firebaseUser.getUid()).child("vaccCardImage");
+        app_govIdRef = firebaseDatabase.getReference("applications").child(firebaseUser.getUid());
+        app_vaccCardRef = firebaseDatabase.getReference("applications").child(firebaseUser.getUid());
 
         queue = Volley.newRequestQueue(getApplicationContext());
         //button
@@ -396,7 +396,9 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
                                 value.setStatus(stat);
 
                                 String govId = spinner_govId.getText().toString().trim();
-                                updateStatus(stat, govId);
+                                String govIdImage = govIdImageUri.getPath();
+                                String vaccCardImage = vaccCardImageUri.getPath();
+//                                updateStatus(stat, govId, govIdImage, vaccCardImage);
 
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
@@ -500,16 +502,65 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
     }
 
     private void uploadToFirebase() {
-        final StorageReference fileRef = storageReference.child("users/" + fAuth.getCurrentUser().getUid() + "govId.jpg");
+        final StorageReference fileRef = storageReference.child("users/" + firebaseUser.getUid() + "govId.jpg");
         fileRef.putFile(govIdImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        GovId image = new GovId(uri.toString());
-                        govIdRef.setValue(image);
-                        app_govIdRef.setValue(image);
+                        Query query = travelRef.orderByChild("email").equalTo(firebaseUser.getEmail());
+                        query.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                                    // Retrieving Data from firebase
+                                    String fn = "" + dataSnapshot1.child("firstname").getValue();
+                                    String mi = "" + dataSnapshot1.child("middleinitial").getValue();
+                                    String ln = "" + dataSnapshot1.child("lastname").getValue();
+                                    String sn = "" + dataSnapshot1.child("suffixname").getValue();
+                                    String cAdd = "" + dataSnapshot1.child("cAddress").getValue();
+                                    String cMuni = "" + dataSnapshot1.child("cMunicipality").getValue();
+                                    String cProv = "" + dataSnapshot1.child("cProvince").getValue();
+                                    String dAdd = "" + dataSnapshot1.child("dAddress").getValue();
+                                    String dMuni = "" + dataSnapshot1.child("dMunicipality").getValue();
+                                    String dProv = "" + dataSnapshot1.child("dProvince").getValue();
+                                    String depart = "" + dataSnapshot1.child("departure").getValue();
+                                    String arriv = "" + dataSnapshot1.child("arrival").getValue();
+                                    String mail = "" + dataSnapshot1.child("email").getValue();
+                                    String travType = "" + dataSnapshot1.child("travellerType").getValue();
+
+                                    // setting data to our text view
+                                    String fullname = fn + " " + mi + " " + ln + " " + sn;
+                                    String destination = dAdd + ", " + dMuni + ", " + dProv;
+                                    String origin = cAdd + ", " + cMuni + ", " + cProv;
+                                    String departure = depart;
+                                    String arrival = arriv;
+                                    String email = mail;
+                                    String travellerType = travType;
+                                    String govId = spinner_govId.getText().toString().trim();
+                                    String govIdNum = govIdNumber.getText().toString().trim();
+                                    String status = "Pending";
+
+                                    GovId image = new GovId(uri.toString());
+                                    govIdRef.setValue(image);
+//                                    GovIdImage image2 = new GovIdImage(fullname, destination, origin, departure, arrival, email, travellerType, govId, status, uri.toString());
+//                                    app_govIdRef.setValue(image2);
+
+                                    String stat = "Pending";
+                                    value.setStatus(stat);
+
+                                    String govID = spinner_govId.getText().toString().trim();
+                                    String govIdImage = uri.toString();
+                                    updateStatus(stat, govID, govIdImage);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
                     }
                 });
             }
@@ -522,8 +573,7 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
     }
 
     private void uploadToFirebase2() {
-        final StorageReference fileRef = storageReference.child("users/" + fAuth.getCurrentUser().getUid() + "vaccCard.jpg");
-
+        StorageReference fileRef = storageReference.child("users/" + firebaseUser.getUid() + "vaccCard.jpg");
         fileRef.putFile(vaccCardImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -532,7 +582,58 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
                     public void onSuccess(Uri uri) {
                         VaccCard image = new VaccCard(uri.toString());
                         vaccCardRef.setValue(image);
-                        app_vaccCardRef.setValue(image);
+                        Query query = travelRef.orderByChild("email").equalTo(firebaseUser.getEmail());
+                        query.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                                    // Retrieving Data from firebase
+                                    String fn = "" + dataSnapshot1.child("firstname").getValue();
+                                    String mi = "" + dataSnapshot1.child("middleinitial").getValue();
+                                    String ln = "" + dataSnapshot1.child("lastname").getValue();
+                                    String sn = "" + dataSnapshot1.child("suffixname").getValue();
+                                    String cAdd = "" + dataSnapshot1.child("cAddress").getValue();
+                                    String cMuni = "" + dataSnapshot1.child("cMunicipality").getValue();
+                                    String cProv = "" + dataSnapshot1.child("cProvince").getValue();
+                                    String dAdd = "" + dataSnapshot1.child("dAddress").getValue();
+                                    String dMuni = "" + dataSnapshot1.child("dMunicipality").getValue();
+                                    String dProv = "" + dataSnapshot1.child("dProvince").getValue();
+                                    String depart = "" + dataSnapshot1.child("departure").getValue();
+                                    String arriv = "" + dataSnapshot1.child("arrival").getValue();
+                                    String mail = "" + dataSnapshot1.child("email").getValue();
+                                    String travType = "" + dataSnapshot1.child("travellerType").getValue();
+
+                                    // setting data to our text view
+                                    String fullname = fn + " " + mi + " " + ln + " " + sn;
+                                    String destination = dAdd + ", " + dMuni + ", " + dProv;
+                                    String origin = cAdd + ", " + cMuni + ", " + cProv;
+                                    String departure = depart;
+                                    String arrival = arriv;
+                                    String email = mail;
+                                    String travellerType = travType;
+                                    String govId = spinner_govId.getText().toString().trim();
+                                    String govIdNum = govIdNumber.getText().toString().trim();
+                                    String status = "Pending";
+
+                                    VaccCard image = new VaccCard(uri.toString());
+                                    vaccCardRef.setValue(image);
+//                                    VaccCardImage image2 = new VaccCardImage(fullname, destination, origin, departure, arrival, email, travellerType, govId, status, uri.toString());
+//                                    app_vaccCardRef.setValue(image2);
+
+                                    String stat = "Pending";
+                                    value.setStatus(stat);
+
+                                    String govID = spinner_govId.getText().toString().trim();
+                                    String vaccCardImage = uri.toString();
+                                    updateStatus2(stat, govID, vaccCardImage);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                            }
+                        });
                     }
                 });
             }
@@ -554,7 +655,8 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
                     public void onSuccess(Uri uri) {
                         GovId image = new GovId(uri.toString());
                         govIdRef.setValue(image);
-                        app_govIdRef.setValue(image);
+//                        GovIdImage image2 = new GovIdImage(uri.toString());
+//                        app_govIdRef.setValue(image2);
                     }
                 });
             }
@@ -577,7 +679,8 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
                     public void onSuccess(Uri uri) {
                         VaccCard image = new VaccCard(uri.toString());
                         vaccCardRef.setValue(image);
-                        app_vaccCardRef.setValue(image);
+//                        VaccCardImage image2 = new VaccCardImage(uri.toString());
+//                        app_vaccCardRef.setValue(image2);
                     }
                 });
             }
@@ -645,10 +748,28 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
         uploadToFirebaseFromCamera2();
     }
 
-    private void updateStatus(String stat, String govId) {
+    private void updateStatus(String stat, String govId, String govIdImage) {
         HashMap user = new HashMap();
         user.put("status", stat);
         user.put("govId", govId);
+        user.put("govIdImage", govIdImage);
+
+        appref.child(fAuth.getCurrentUser().getUid()).updateChildren(user).addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(UploadDocxFullyVacc.this, "Success", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(UploadDocxFullyVacc.this, "Failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+    private void updateStatus2(String stat, String govId, String vaccCardImage) {
+        HashMap user = new HashMap();
+        user.put("status", stat);
+        user.put("govId", govId);
+        user.put("vaccCardImage", vaccCardImage);
 
         appref.child(fAuth.getCurrentUser().getUid()).updateChildren(user).addOnCompleteListener(new OnCompleteListener() {
             @Override

@@ -1,6 +1,7 @@
 package com.example.dakbayaknow;
 
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -15,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -37,6 +39,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -44,7 +47,7 @@ public class HealthDeclarationForm extends AppCompatActivity {
     private EditText countryText, cityText;
     private RadioButton sYes, sNo, cYes, cNo, aYes, aNo;
 
-    private TextInputEditText firstnameText, middlenameText, lastnameText, nationalityText, ageText, contactNumberText, emailText, presentAddressText;
+    private TextInputEditText firstnameText, middlenameText, lastnameText, nationalityText, ageText, contactNumberText, emailText, presentAddressText, arrivalText;
     private TextInputLayout firstnameInput;
 
     private Button submitButton;
@@ -63,6 +66,8 @@ public class HealthDeclarationForm extends AppCompatActivity {
     TextView genderRequired, sickRequired, symptomsRequired, covidRequired, animalRequired;
     RadioGroup sick, covid, animal;
     int checkgroup_sick, checkgroup_covid, checkgroup_animal;
+
+    DatePickerDialog.OnDateSetListener setListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +88,7 @@ public class HealthDeclarationForm extends AppCompatActivity {
         presentAddressText = findViewById(R.id.presentAddress);
         countryText = findViewById(R.id.country);
         cityText = findViewById(R.id.city);
+        arrivalText = findViewById(R.id.arrival);
 
         firstnameInput = findViewById(R.id.firstnameInput);
 
@@ -185,6 +191,29 @@ public class HealthDeclarationForm extends AppCompatActivity {
             }
         });
 
+        Calendar calendar = Calendar.getInstance();
+        final int year = calendar.get(Calendar.YEAR);
+        final int month = calendar.get(Calendar.MONTH);
+        final int day = calendar.get(Calendar.DAY_OF_MONTH);
+
+        arrivalText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                DatePickerDialog datePickerDialog = new DatePickerDialog(
+                        HealthDeclarationForm.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, setListener, year, month, day);
+                datePickerDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                datePickerDialog.show();
+            }
+        });
+        setListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int dayofMonth) {
+                month = month+1;
+                String date = month+"/"+dayofMonth+"/"+year;
+                arrivalText.setText(date);
+            }
+        };
+
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -207,6 +236,7 @@ public class HealthDeclarationForm extends AppCompatActivity {
                 String country = countryText.getText().toString().trim();
                 String city = cityText.getText().toString().trim();
                 String symptoms = spinner_symptoms.getText().toString().trim();
+                String arrival = arrivalText.getText().toString().trim();
 
                 //required
                 if (firstname.isEmpty()) {
@@ -272,6 +302,11 @@ public class HealthDeclarationForm extends AppCompatActivity {
                     cityText.requestFocus();
                     return;
                 }
+                if (arrival.isEmpty()) {
+                    arrivalText.setError("Arrival Date is Required");
+                    arrivalText.requestFocus();
+                    return;
+                }
 
                 if (checkgroup_sick<=0) {
                     sickRequired.setVisibility(View.VISIBLE);
@@ -318,6 +353,7 @@ public class HealthDeclarationForm extends AppCompatActivity {
                 value.setPresentAddress(presentAddressText.getText().toString().trim());
                 value.setCountry(countryText.getText().toString().trim());
                 value.setCity(cityText.getText().toString().trim());
+                value.setArrival(arrivalText.getText().toString().trim());
                 //spinner
                 value.setGender(spinner_gender.getText().toString());
                 value.setSymptoms(spinner_symptoms.getText().toString());
