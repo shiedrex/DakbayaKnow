@@ -18,6 +18,7 @@
             android:orientation="vertical">
 
             <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/firstnameInput"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -28,8 +29,7 @@
                 android:hint="First Name"
                 app:boxStrokeColor="@color/orange"
                 app:endIconMode="clear_text"
-                app:hintTextColor="@color/Orange"
-                android:id="@+id/firstnameInput">
+                app:hintTextColor="@color/Orange">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/firstname"
@@ -37,7 +37,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/nexalight"
                     android:inputType="text"
-                    android:maxLines="1"/>
+                    android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -59,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/nexalight"
                     android:inputType="text"
-                    android:maxLines="1"/>
+                    android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -81,7 +81,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/nexalight"
                     android:inputType="text"
-                    android:maxLines="1"/>
+                    android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -106,7 +106,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/nexalight"
                     android:inputType="text"
-                    android:maxLines="1"/>
+                    android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
@@ -153,8 +153,8 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nexalight"
                         android:inputType="number"
-                        android:maxLines="1"
-                        android:maxLength="2"/>
+                        android:maxLength="2"
+                        android:maxLines="1" />
                 </com.google.android.material.textfield.TextInputLayout>
             </LinearLayout>
 
@@ -169,9 +169,9 @@
                 android:paddingStart="10dp"
                 android:paddingEnd="0dp"
                 android:text="Gender is required!"
-                android:visibility="invisible"
                 android:textColor="@color/red"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:visibility="invisible" />
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -193,8 +193,8 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/nexalight"
                     android:inputType="phone"
-                    android:maxLines="1"
-                    android:maxLength="11"/>
+                    android:maxLength="11"
+                    android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -218,7 +218,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/nexalight"
                     android:inputType="textEmailAddress"
-                    android:maxLines="1"/>
+                    android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -242,7 +242,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/nexalight"
                     android:inputType="text"
-                    android:maxLines="1"/>
+                    android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
@@ -267,8 +267,8 @@
                 android:layout_marginEnd="20dp"
                 android:fontFamily="@font/nexalight"
                 android:inputType="text"
-                android:maxLines="1"
                 android:maxLength="100"
+                android:maxLines="1"
                 android:paddingStart="20dp"
                 android:paddingEnd="0dp" />
 
@@ -293,8 +293,8 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginEnd="20dp"
                 android:fontFamily="@font/nexalight"
-                android:maxLength="100"
                 android:inputType="text"
+                android:maxLength="100"
                 android:maxLines="1"
                 android:paddingStart="20dp"
                 android:paddingEnd="0dp" />
@@ -318,15 +318,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
                 android:fontFamily="@font/nexalight"
                 android:paddingStart="10dp"
                 android:paddingEnd="0dp"
                 android:text="*required"
-                android:visibility="invisible"
                 android:textColor="@color/red"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:visibility="invisible" />
 
             <RadioGroup
                 android:id="@+id/sick"
@@ -397,9 +397,9 @@
                 android:paddingStart="10dp"
                 android:paddingEnd="0dp"
                 android:text="This is required. Please SELECT."
-                android:visibility="invisible"
                 android:textColor="@color/red"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:visibility="invisible" />
 
             <TextView
                 android:layout_width="match_parent"
@@ -419,15 +419,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
                 android:fontFamily="@font/nexalight"
                 android:paddingStart="10dp"
                 android:paddingEnd="0dp"
                 android:text="*required"
-                android:visibility="invisible"
                 android:textColor="@color/red"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:visibility="invisible" />
 
             <RadioGroup
                 android:id="@+id/covid"
@@ -472,15 +472,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginEnd="20dp"
                 android:fontFamily="@font/nexalight"
                 android:paddingStart="10dp"
                 android:paddingEnd="0dp"
                 android:text="*required"
-                android:visibility="invisible"
                 android:textColor="@color/red"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:visibility="invisible" />
 
             <RadioGroup
                 android:id="@+id/animal"
@@ -506,17 +506,43 @@
                     android:text="No" />
             </RadioGroup>
 
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/nexalight"
+                android:hint="Date (Double tap to pop calendar)"
+                android:inputType="text"
+                android:maxLines="1"
+                app:boxStrokeColor="@color/orange"
+                app:endIconMode="clear_text"
+                app:hintTextColor="@color/Orange">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/arrival"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nexalight"
+                    android:inputType="text"
+                    android:maxLength="15"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
             <Button
                 android:id="@+id/submitButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="40dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="40dp"
                 android:backgroundTint="#FF9800"
                 android:fontFamily="@font/nexablack"
-                android:layout_gravity="center"
                 android:text="SUBMIT"
                 android:textColorLink="#FFC107" />
 

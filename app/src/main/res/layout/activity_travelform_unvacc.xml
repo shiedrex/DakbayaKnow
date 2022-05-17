@@ -87,6 +87,32 @@
                 android:layout_marginTop="20dp"
                 android:layout_marginEnd="20dp"
                 android:fontFamily="@font/nexalight"
+                android:hint="Date Today (Double tap to pop calendar)"
+                android:inputType="text"
+                android:maxLines="1"
+                app:boxStrokeColor="@color/orange"
+                app:endIconMode="clear_text"
+                app:hintTextColor="@color/Orange">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/datetoday"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/nexalight"
+                    android:inputType="text"
+                    android:maxLength="15"
+                    android:maxLines="1" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:fontFamily="@font/nexalight"
                 android:hint="First Name"
                 app:boxStrokeColor="@color/orange"
                 app:endIconMode="clear_text"
