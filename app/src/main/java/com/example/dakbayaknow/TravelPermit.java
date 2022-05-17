@@ -88,6 +88,7 @@ public class TravelPermit extends AppCompatActivity {
         qrCode = findViewById(R.id.qrCode);
 
         linearLayout = findViewById(R.id.layout);
+
         linearLayout.setVisibility(View.GONE);
         saveTravelPermit.setVisibility(View.GONE);
         noTravelPermit.setVisibility(View.VISIBLE);
@@ -138,11 +139,6 @@ public class TravelPermit extends AppCompatActivity {
                     dateTravel.setText(depart);
                     expectedArrival.setText(arriv);
 
-                    linearLayout.setVisibility(View.VISIBLE);
-                    saveTravelPermit.setVisibility(View.VISIBLE);
-                    noTravelPermit.setVisibility(View.GONE);
-                    fillUp.setVisibility(View.GONE);
-
                     Query query2 = databaseReference2.orderByChild("email").equalTo(firebaseUser.getEmail());
                     query2.addValueEventListener(new ValueEventListener() {
                         @Override
@@ -155,14 +151,17 @@ public class TravelPermit extends AppCompatActivity {
 
                                 if(stat.contains("Approved")){
                                     status.setTextColor(Color.parseColor("#008000"));
+                                    linearLayout.setVisibility(View.VISIBLE);
+                                    saveTravelPermit.setVisibility(View.VISIBLE);
+                                    noTravelPermit.setVisibility(View.GONE);
+                                    fillUp.setVisibility(View.GONE);
                                 } else if(stat.contains("Declined")){
                                     status.setTextColor(Color.parseColor("#FF0000"));
-                                } else if(stat.contains("Please upload required requirements (vaccinated)")){
-                                    status.setTextColor(Color.parseColor("#FF0000"));
-                                } else if(stat.contains("Please upload required requirements (unvaccinated)")){
-                                    status.setTextColor(Color.parseColor("#FFA500"));
-                                } else if(stat.contains("Pending")){
-                                    status.setTextColor(Color.parseColor("#FFFF00"));
+                                    linearLayout.setVisibility(View.GONE);
+                                    saveTravelPermit.setVisibility(View.GONE);
+                                    noTravelPermit.setVisibility(View.VISIBLE);
+                                    fillUp.setVisibility(View.VISIBLE);
+                                    fillUp.setText("Application Declined");
                                 }
                             }
                         }

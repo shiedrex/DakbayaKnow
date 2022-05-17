@@ -64,6 +64,8 @@ public class MyApplications extends AppCompatActivity {
         status = findViewById(R.id.status);
         hdfStatus = findViewById(R.id.hdfStatus);
 
+        travelPermitButton = findViewById(R.id.travelPermitButton);
+
         pd = new ProgressDialog(this);
         pd.setCanceledOnTouchOutside(false);
 
@@ -99,6 +101,21 @@ public class MyApplications extends AppCompatActivity {
                     Intent intent = new Intent(MyApplications.this, HealthDeclarationForm.class);
                     startActivity(intent);
                     finish();
+                }
+            }
+        });
+        travelPermitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(status.getText().toString().contains("Pending")){
+                    Toast.makeText(MyApplications.this, "Your application is on process. Please wait for 3-5 days", Toast.LENGTH_SHORT).show();
+                }
+                if(status.getText().toString().contains("Approved")){
+                    openTravelPermit();
+                    finish();
+                }
+                if(status.getText().toString().contains("Declined")){
+                    Toast.makeText(MyApplications.this, "Sorry your application is declined", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -185,14 +202,6 @@ public class MyApplications extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed, how to handle?
-            }
-        });
-
-        travelPermitButton = findViewById(R.id.travelPermitButton);
-        travelPermitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openTravelPermit();
             }
         });
 
