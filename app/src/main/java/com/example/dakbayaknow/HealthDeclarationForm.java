@@ -5,13 +5,16 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -36,10 +39,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.protobuf.StringValue;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -47,12 +54,11 @@ public class HealthDeclarationForm extends AppCompatActivity {
     private EditText countryText, cityText;
     private RadioButton sYes, sNo, cYes, cNo, aYes, aNo;
 
-    private TextInputEditText firstnameText, middlenameText, lastnameText, nationalityText, ageText, contactNumberText, emailText, presentAddressText, arrivalText;
-    private TextInputLayout firstnameInput;
+    private TextInputEditText ageText, nationalityText, arrivalText;
 
     private Button submitButton;
     FirebaseDatabase database;
-    DatabaseReference reference, ref2;
+    DatabaseReference reference, ref2, travelref;
     FirebaseAuth fAuth;
     HDFDetails value;
     Applications value2;
@@ -63,7 +69,8 @@ public class HealthDeclarationForm extends AppCompatActivity {
     Dialog dialog;
     ProgressDialog progressDialog;
 
-    TextView genderRequired, sickRequired, symptomsRequired, covidRequired, animalRequired;
+    TextView sickRequired, symptomsRequired, covidRequired, animalRequired,
+            fullname, currentAddress, destinationAddress, arrival, gender, contactNumber, emailAddress;
     RadioGroup sick, covid, animal;
     int checkgroup_sick, checkgroup_covid, checkgroup_animal;
 
@@ -76,24 +83,14 @@ public class HealthDeclarationForm extends AppCompatActivity {
 
         getSupportActionBar().setTitle("Health Declaration Form");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         //edit text
-        firstnameText = findViewById(R.id.firstname);
-        middlenameText = findViewById(R.id.middlename);
-        lastnameText = findViewById(R.id.lastname);
-        nationalityText = findViewById(R.id.nationality);
         ageText = findViewById(R.id.age);
-        contactNumberText = findViewById(R.id.contactNumber);
-        emailText = findViewById(R.id.emailAddress);
-        presentAddressText = findViewById(R.id.presentAddress);
+        nationalityText = findViewById(R.id.nationality);
         countryText = findViewById(R.id.country);
         cityText = findViewById(R.id.city);
         arrivalText = findViewById(R.id.arrival);
 
-        firstnameInput = findViewById(R.id.firstnameInput);
-
         //spinner
-        spinner_gender = findViewById(R.id.spinner_gender);
         spinner_symptoms = findViewById(R.id.spinner_symptoms);
 
         //radiobutton
@@ -108,6 +105,15 @@ public class HealthDeclarationForm extends AppCompatActivity {
         sick = findViewById(R.id.sick);
         covid = findViewById(R.id.covid);
         animal = findViewById(R.id.animal);
+
+        //retrieve from database
+        fullname = findViewById(R.id.fullnameText);
+        gender = findViewById(R.id.genderText);
+        contactNumber = findViewById(R.id.contactNumberText);
+        emailAddress = findViewById(R.id.emailText);
+        currentAddress = findViewById(R.id.currentAddressText);
+        destinationAddress = findViewById(R.id.destinationText);
+        arrival = findViewById(R.id.arrivalText);
 
         sick.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -134,7 +140,6 @@ public class HealthDeclarationForm extends AppCompatActivity {
         submitButton = findViewById(R.id.submitButton);
 
         //textview required
-        genderRequired = findViewById(R.id.genderRequired);
         sickRequired = findViewById(R.id.sickRequired);
         symptomsRequired = findViewById(R.id.symptomsRequired);
         covidRequired = findViewById(R.id.covidRequired);
@@ -145,21 +150,12 @@ public class HealthDeclarationForm extends AppCompatActivity {
         value = new HDFDetails();
         value2 = new Applications();
 
-        reference = database.getInstance().getReference("users").child(fAuth.getCurrentUser().getUid()).child("hdf");
+        reference = database.getInstance().getReference("hdf");
+        travelref = database.getInstance().getReference("travelform");
         ref2 = database.getInstance().getReference("applications");
 
         dialog = new Dialog(this);
         progressDialog = new ProgressDialog(this);
-
-        List<String> Categories = new ArrayList<>();
-        Categories.add("Male");
-        Categories.add("Female");
-        Categories.add("Rather not say");
-
-        ArrayAdapter<String> dataAdapter;
-        dataAdapter = new ArrayAdapter<>(this, R.layout.textview_gray, Categories);
-        dataAdapter.setDropDownViewResource(R.layout.textview_gray);
-        spinner_gender.setAdapter(dataAdapter);
 
         List<String> Categories2 = new ArrayList<>();
         Categories2.add("Fever");
@@ -208,11 +204,48 @@ public class HealthDeclarationForm extends AppCompatActivity {
         setListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int dayofMonth) {
-                month = month+1;
-                String date = month+"/"+dayofMonth+"/"+year;
+                month = month + 1;
+                String date = month + "/" + dayofMonth + "/" + year;
                 arrivalText.setText(date);
             }
         };
+
+        Query query = travelref.orderByChild("email").equalTo(fAuth.getCurrentUser().getEmail());
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    String fn = "" + dataSnapshot1.child("firstname").getValue();
+                    String mi = "" + dataSnapshot1.child("middleinitial").getValue();
+                    String ln = "" + dataSnapshot1.child("lastname").getValue();
+                    String sn = "" + dataSnapshot1.child("suffixname").getValue();
+                    String gn = "" + dataSnapshot1.child("gender").getValue();
+                    String contact = "" + dataSnapshot1.child("contactNumber").getValue();
+                    String em = "" + dataSnapshot1.child("email").getValue();
+                    String cAdd = "" + dataSnapshot1.child("cAddress").getValue();
+                    String cMuni = "" + dataSnapshot1.child("cMunicipality").getValue();
+                    String cProv = "" + dataSnapshot1.child("cProvince").getValue();
+                    String dAdd = "" + dataSnapshot1.child("dAddress").getValue();
+                    String dMuni = "" + dataSnapshot1.child("dMunicipality").getValue();
+                    String dProv = "" + dataSnapshot1.child("dProvince").getValue();
+                    String arriv = "" + dataSnapshot1.child("arrival").getValue();
+
+                    // setting data to our text view
+                    fullname.setText(fn + " " + mi + " " + ln + " " + sn);
+                    gender.setText(gn);
+                    contactNumber.setText(contact);
+                    emailAddress.setText(em);
+                    currentAddress.setText(cAdd + ", " + cMuni + ", " + cProv);
+                    destinationAddress.setText(dAdd + ", " + dMuni + ", " + dProv);
+                    arrivalText.setText(arriv);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -225,71 +258,16 @@ public class HealthDeclarationForm extends AppCompatActivity {
                 String a1 = aYes.getText().toString();
                 String a2 = aNo.getText().toString();
 
-                String firstname = firstnameText.getText().toString().trim();
-                String lastname = lastnameText.getText().toString().trim();
                 String nationality = nationalityText.getText().toString().trim();
-                String gender = spinner_gender.getText().toString().trim();
-                String age = ageText.getText().toString().trim();
-                String contactNumber = contactNumberText.getText().toString().trim();
-                String email = emailText.getText().toString().trim();
-                String presentAddress = presentAddressText.getText().toString().trim();
                 String country = countryText.getText().toString().trim();
                 String city = cityText.getText().toString().trim();
                 String symptoms = spinner_symptoms.getText().toString().trim();
                 String arrival = arrivalText.getText().toString().trim();
 
                 //required
-                if (firstname.isEmpty()) {
-                    firstnameText.setError("First Name is required!");
-                    firstnameText.requestFocus();
-                    return;
-                }
-                if (lastname.isEmpty()) {
-                    lastnameText.setError("Last Name is required!");
-                    lastnameText.requestFocus();
-                    return;
-                }
                 if (nationality.isEmpty()) {
                     nationalityText.setError("Nationality is required!");
                     nationalityText.requestFocus();
-                    return;
-                }
-                if (gender.isEmpty()) {
-                    genderRequired.setVisibility(View.VISIBLE);
-                    genderRequired.requestFocus();
-                    spinner_gender.requestFocus();
-                    return;
-                }else{
-                    genderRequired.setVisibility(View.INVISIBLE);
-                }
-                if (age.isEmpty()) {
-                    ageText.setError("Age is required!");
-                    ageText.requestFocus();
-                    return;
-                }
-                if (contactNumber.isEmpty()) {
-                    contactNumberText.setError("Contact Number is required!");
-                    contactNumberText.requestFocus();
-                    return;
-                }
-                if (email.isEmpty()) {
-                    emailText.setError("Email is required!");
-                    emailText.requestFocus();
-                    return;
-                }
-                if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-                    emailText.setError("Please provide valid Email!");
-                    emailText.requestFocus();
-                    return;
-                }
-                if(!email.matches(fAuth.getCurrentUser().getEmail())){
-                    emailText.setError("Incorrect Email!");
-                    emailText.requestFocus();
-                    return;
-                }
-                if (presentAddress.isEmpty()) {
-                    presentAddressText.setError("Present Adress is required!");
-                    presentAddressText.requestFocus();
                     return;
                 }
                 if (country.isEmpty()) {
@@ -308,7 +286,7 @@ public class HealthDeclarationForm extends AppCompatActivity {
                     return;
                 }
 
-                if (checkgroup_sick<=0) {
+                if (checkgroup_sick <= 0) {
                     sickRequired.setVisibility(View.VISIBLE);
                     sickRequired.requestFocus();
                     return;
@@ -321,11 +299,11 @@ public class HealthDeclarationForm extends AppCompatActivity {
                     symptomsRequired.requestFocus();
                     spinner_symptoms.requestFocus();
                     return;
-                }else{
+                } else {
                     symptomsRequired.setVisibility(View.INVISIBLE);
                 }
 
-                if (checkgroup_covid<=0) {
+                if (checkgroup_covid <= 0) {
                     covidRequired.setVisibility(View.VISIBLE);
                     covidRequired.requestFocus();
                     return;
@@ -333,7 +311,7 @@ public class HealthDeclarationForm extends AppCompatActivity {
                     covidRequired.setVisibility(View.INVISIBLE);
                 }
 
-                if (checkgroup_animal<=0) {
+                if (checkgroup_animal <= 0) {
                     animalRequired.setVisibility(View.VISIBLE);
                     animalRequired.requestFocus();
                     return;
@@ -341,22 +319,20 @@ public class HealthDeclarationForm extends AppCompatActivity {
                     animalRequired.setVisibility(View.INVISIBLE);
                 }
 
+                Date today = Calendar.getInstance().getTime();//getting date
+                SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");//formating according to my need
+                String date = formatter.format(today);
+
                 //submit values to database
-                //text
-                value.setFirstname(firstnameText.getText().toString().trim());
-                value.setMiddlename(middlenameText.getText().toString().trim());
-                value.setLastname(lastnameText.getText().toString().trim());
+                //textview
+                value.setEmail(emailAddress.getText().toString().trim());
                 value.setNationality(nationalityText.getText().toString().trim());
-                value.setAge(ageText.getText().toString().trim());
-                value.setContactNumber(contactNumberText.getText().toString().trim());
-                value.setEmail(emailText.getText().toString().trim());
-                value.setPresentAddress(presentAddressText.getText().toString().trim());
                 value.setCountry(countryText.getText().toString().trim());
                 value.setCity(cityText.getText().toString().trim());
                 value.setArrival(arrivalText.getText().toString().trim());
                 //spinner
-                value.setGender(spinner_gender.getText().toString());
                 value.setSymptoms(spinner_symptoms.getText().toString());
+                value.setDateToday(date);
 
                 if (sYes.isChecked()) {
                     value.setSick(s1);
@@ -382,95 +358,69 @@ public class HealthDeclarationForm extends AppCompatActivity {
                 progressDialog.setMessage("Submitting...Please Wait");
                 progressDialog.show();
 
-                reference.child(String.valueOf(fAuth.getCurrentUser().getUid())).setValue(value);
+                reference.child(fAuth.getCurrentUser().getUid()).setValue(value);
 
-                DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("users").child(fAuth.getCurrentUser().getUid()).child("hdf");
-                rootRef.addValueEventListener(new ValueEventListener() {
+                if (symptoms.contains("NO") && sNo.isChecked() && cNo.isChecked() && aNo.isChecked()) {
+                    String health = "Good Condition";
+                    String stat = "Pending";
+                    updateStatus(health, date, stat);
 
-                    @Override
-                    public void onDataChange(DataSnapshot snapshot) {
-                        Boolean found, found2, found3, found4;
-                        String search = "NO", search2 = "No";
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressDialog.dismiss();
+                            dialog.setContentView(R.layout.hdf_success_dialog);
+                            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-                        for (DataSnapshot ds : snapshot.getChildren()) {
-                            String symptoms = ds.child("symptoms").getValue(String.class);
-                            String sick = ds.child("sick").getValue(String.class);
-                            String covid = ds.child("covid").getValue(String.class);
-                            String animal = ds.child("animal").getValue(String.class);
+                            Button ok = dialog.findViewById(R.id.okButton);
+                            dialog.show();
 
-                            found = symptoms.contains(search);
-                            found2 = sick.contains(search2);
-                            found3 = covid.contains(search2);
-                            found4 = animal.contains(search2);
-
-                            if (found == true && found2 == true && found3 == true && found4 == true) {
-                                String fullname = firstnameText.getText().toString().trim() + " " + lastnameText.getText().toString().trim();
-                                String health = "Safe";
-                                String email = emailText.getText().toString().trim();
-                                updateStatus(fullname, health, email);
-
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        progressDialog.dismiss();
-                                        dialog.setContentView(R.layout.hdf_success_dialog);
-                                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-                                        Button ok = dialog.findViewById(R.id.okButton);
-                                        dialog.show();
-
-                                        ok.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View view) {
-                                                dialog.dismiss();
-                                                finish();
-                                            }
-                                        });
-                                    }
-                                }, 3000);
-
-                            } else {
-                                String fullname = firstnameText.getText().toString().trim() + " " + lastnameText.getText().toString().trim();
-                                String health = "Stay at Home";
-                                String email = emailText.getText().toString().trim();
-                                updateStatus(fullname, health, email);
-
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        progressDialog.dismiss();
-                                        dialog.setContentView(R.layout.hdf_failed_dialog);
-                                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-                                        Button ok = dialog.findViewById(R.id.okButton);
-                                        dialog.show();
-
-                                        ok.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View view) {
-                                                dialog.dismiss();
-                                                finish();
-                                            }
-                                        });
-                                    }
-                                }, 3000);
-                            }
+                            ok.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    dialog.dismiss();
+                                    startActivity(new Intent(HealthDeclarationForm.this, MainActivity.class));
+                                }
+                            });
                         }
-                    }
+                    }, 3000);
 
-                    @Override
-                    public void onCancelled(DatabaseError error) {
-                        // Failed, how to handle?
-                    }
-                });
+                } else if (!symptoms.contains("NO") || sYes.isChecked() || cYes.isChecked() || aYes.isChecked()) {
+                    String health = "Stay at Home";
+                    String stat = "Pending";
+                    updateStatus(health, date, stat);
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressDialog.dismiss();
+                            dialog.setContentView(R.layout.hdf_failed_dialog);
+                            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                            Button ok = dialog.findViewById(R.id.okButton);
+
+                            dialog.show();
+
+                            ok.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    dialog.dismiss();
+                                    Intent intent = new Intent(HealthDeclarationForm.this, MainActivity.class);
+                                    startActivity(intent);
+                                }
+                            });
+                        }
+                    }, 3000);
             }
-        });
-    }
-    private void updateStatus(String fullname, String health, String email) {
+        }
+    });
+}
+
+    private void updateStatus(String health, String date, String stat) {
         HashMap user = new HashMap();
-        user.put("fullname", fullname);
         user.put("health", health);
-        user.put("email", email);
+        user.put("dateToday", date);
+        user.put("status", stat);
 
         ref2.child(fAuth.getCurrentUser().getUid()).updateChildren(user).addOnCompleteListener(new OnCompleteListener() {
             @Override
@@ -482,5 +432,13 @@ public class HealthDeclarationForm extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (dialog != null && progressDialog != null)
+            dialog.dismiss();
+        progressDialog.dismiss();
     }
 }

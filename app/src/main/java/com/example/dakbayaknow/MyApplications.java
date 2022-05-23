@@ -56,8 +56,10 @@ public class MyApplications extends AppCompatActivity {
         // getting current user data
         firebaseUser = firebaseAuth.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("users").child(firebaseAuth.getCurrentUser().getUid()).child("travelform");
+        databaseReference = firebaseDatabase.getReference("travelForm");
         appref = firebaseDatabase.getReference("applications");
+        databaseReference.keepSynced(true);
+        appref.keepSynced(true);
 
         // Initialising the text view
         destination = findViewById(R.id.destination);
@@ -171,6 +173,7 @@ public class MyApplications extends AppCompatActivity {
         });
 
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference("users").child(firebaseAuth.getCurrentUser().getUid()).child("hdf");
+        rootRef.keepSynced(true);
         rootRef.addValueEventListener(new ValueEventListener() {
 
             @Override

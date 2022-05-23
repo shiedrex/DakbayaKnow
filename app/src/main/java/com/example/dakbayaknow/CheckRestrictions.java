@@ -32,6 +32,7 @@ public class CheckRestrictions extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ref = FirebaseDatabase.getInstance().getReference().child("lgu");
+        ref.keepSynced(true);
         recyclerView = findViewById(R.id.rv);
         searchView = findViewById(R.id.searchView);
     }

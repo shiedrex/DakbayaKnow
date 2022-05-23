@@ -41,7 +41,7 @@
                 android:gravity="center"
                 android:paddingStart="20dp"
                 android:paddingEnd="20dp"
-                android:text="If YES, kindly click Health Declaration Form button. If NO, kindly click Book Ticket button."
+                android:text="If YES, kindly click Upload Docx button. If NO, kindly click Book Ticket button."
                 android:textSize="18sp" />
 
             <Button
@@ -54,17 +54,6 @@
                 android:backgroundTint="#FF9800"
                 android:fontFamily="@font/nexablack"
                 android:text="BOOK TICKET"
-                android:textColorLink="#FFC107" />
-
-            <Button
-                android:id="@+id/HDFButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:backgroundTint="#FF9800"
-                android:fontFamily="@font/nexablack"
-                android:text="Health Declaration Form"
                 android:textColorLink="#FFC107" />
 
             <Button

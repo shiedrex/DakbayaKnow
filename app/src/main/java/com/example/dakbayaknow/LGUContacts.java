@@ -37,6 +37,7 @@ public class LGUContacts extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ref = FirebaseDatabase.getInstance().getReference().child("contacts");
+        ref.keepSynced(true);
         recyclerView = findViewById(R.id.rv);
         searchView = findViewById(R.id.searchView);
     }

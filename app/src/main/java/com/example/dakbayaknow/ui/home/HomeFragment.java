@@ -12,12 +12,14 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.dakbayaknow.CheckRestrictions;
+import com.example.dakbayaknow.HDFHistory;
 import com.example.dakbayaknow.HealthDeclarationForm;
 import com.example.dakbayaknow.LGUContacts;
 import com.example.dakbayaknow.MyApplications;
 import com.example.dakbayaknow.R;
 import com.example.dakbayaknow.TravelPermit;
 import com.example.dakbayaknow.TravelRequirements;
+import com.example.dakbayaknow.UsersApplications;
 import com.example.dakbayaknow.UsersFeedback;
 
 public class HomeFragment extends Fragment {
@@ -42,7 +44,7 @@ public class HomeFragment extends Fragment {
         myApplicationsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, MyApplications.class);
+                Intent intent = new Intent(context, UsersApplications.class);
                 startActivity(intent);
             }
         });
@@ -50,7 +52,7 @@ public class HomeFragment extends Fragment {
         HDFButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, HealthDeclarationForm.class);
+                Intent intent = new Intent(context, HDFHistory.class);
                 startActivity(intent);
             }
         });

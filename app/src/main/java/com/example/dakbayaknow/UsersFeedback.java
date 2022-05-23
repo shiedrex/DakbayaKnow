@@ -76,6 +76,9 @@ public class UsersFeedback extends AppCompatActivity {
         ref = database.getInstance().getReference("userFeedback").child(fAuth.getCurrentUser().getUid());
         ref2 = FirebaseDatabase.getInstance().getReference().child("userFeedback");
         userRef = database.getInstance().getReference("users");
+        ref.keepSynced(true);
+        ref2.keepSynced(true);
+        userRef.keepSynced(true);
 
         addFeedback.setOnClickListener(new View.OnClickListener() {
             @Override

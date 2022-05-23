@@ -105,12 +105,12 @@ public class UploadDocxUnvacc extends AppCompatActivity {
         // getting current user data
         firebaseUser = firebaseAuth.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("users").child(firebaseUser.getUid()).child("uploadDocx");
+        databaseReference = firebaseDatabase.getReference("uploadDocx");
 
-        travelRef = firebaseDatabase.getReference("users").child(firebaseAuth.getCurrentUser().getUid()).child("travelform");
-        govIdRef = firebaseDatabase.getReference("users").child(firebaseUser.getUid()).child("uploadDocx").child(firebaseAuth.getCurrentUser().getUid()).child("govIdImage");
-        rtcprRef = firebaseDatabase.getReference("users").child(firebaseUser.getUid()).child("uploadDocx").child(firebaseAuth.getCurrentUser().getUid()).child("rtcprImage");
-        otherfilesRef = firebaseDatabase.getReference("users").child(firebaseUser.getUid()).child("uploadDocx").child(firebaseAuth.getCurrentUser().getUid()).child("otherfilemage");
+        travelRef = firebaseDatabase.getReference("travelform");
+        govIdRef = firebaseDatabase.getReference("uploadDocx").child(firebaseAuth.getCurrentUser().getUid()).child("govIdImage");
+        rtcprRef = firebaseDatabase.getReference("uploadDocx").child(firebaseAuth.getCurrentUser().getUid()).child("rtcprImage");
+        otherfilesRef = firebaseDatabase.getReference("uploadDocx").child(firebaseAuth.getCurrentUser().getUid()).child("otherfileImage");
         appref = FirebaseDatabase.getInstance().getReference("applications");
 
         queue = Volley.newRequestQueue(getApplicationContext());
@@ -331,34 +331,35 @@ public class UploadDocxUnvacc extends AppCompatActivity {
                                 value.setGovId(spinner_govId.getText().toString().trim());
                                 value.setGovIdNumber(govIdNumber.getText().toString().trim());
 
-                                uploadToFirebase();
-                                uploadToFirebase2();
-                                uploadToFirebase3();
+                                if(uploadToFirebase()==true && uploadToFirebase2()==true && uploadToFirebase3()==true) {
+                                    databaseReference.child((firebaseAuth.getCurrentUser().getUid())).setValue(value);
 
-                                databaseReference.child(String.valueOf(firebaseAuth.getCurrentUser().getUid())).setValue(value);
-                                String stat = "Pending";
-                                String govId = spinner_govId.getText().toString().trim();
-                                updateStatus(stat, govId);
+                                    String stat = "Fill up HDF";
+                                    String govID = spinner_govId.getText().toString().trim();
+                                    updateStatus4(govID, stat);
 
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        progressDialog.dismiss();
-                                        dialog.setContentView(R.layout.uploaddocx_success_dialog);
-                                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            progressDialog.dismiss();
+                                            dialog.setContentView(R.layout.uploaddocx_success_dialog);
+                                            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
-                                        Button ok = dialog.findViewById(R.id.okButton);
-                                        dialog.show();
+                                            Button ok = dialog.findViewById(R.id.okButton);
+                                            dialog.show();
 
-                                        ok.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View view) {
-                                                dialog.dismiss();
-                                                startActivity(new Intent(UploadDocxUnvacc.this, MainActivity.class));
-                                            }
-                                        });
-                                    }
-                                }, 3000);
+                                            ok.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    dialog.dismiss();
+                                                    startActivity(new Intent(UploadDocxUnvacc.this, HealthDeclarationForm.class));
+                                                }
+                                            });
+                                        }
+                                    }, 3000);
+                                } else {
+                                    Toast.makeText(UploadDocxUnvacc.this, "Error", Toast.LENGTH_SHORT).show();
+                                }
                             } else {
                                 // if the response if failure we are displaying
                                 // a below toast message.
@@ -427,7 +428,7 @@ public class UploadDocxUnvacc extends AppCompatActivity {
         }
     }
 
-    private void uploadToFirebase() {
+    private boolean uploadToFirebase() {
         final StorageReference fileRef = storageReference.child("users/" + fAuth.getCurrentUser().getUid() + "govId.jpg");
         fileRef.putFile(govIdImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -437,6 +438,9 @@ public class UploadDocxUnvacc extends AppCompatActivity {
                     public void onSuccess(Uri uri) {
                         GovId image = new GovId(uri.toString());
                         govIdRef.setValue(image);
+
+                        String govIdImage = uri.toString();
+                        updateStatus(govIdImage);
                     }
                 });
             }
@@ -446,9 +450,10 @@ public class UploadDocxUnvacc extends AppCompatActivity {
                 Toast.makeText(UploadDocxUnvacc.this, "Failed.", Toast.LENGTH_SHORT).show();
             }
         });
+        return true;
     }
 
-    private void uploadToFirebase2() {
+    private boolean uploadToFirebase2() {
         final StorageReference fileRef = storageReference.child("users/" + fAuth.getCurrentUser().getUid() + "RTPCR.jpg");
         fileRef.putFile(rtcprImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -458,6 +463,9 @@ public class UploadDocxUnvacc extends AppCompatActivity {
                     public void onSuccess(Uri uri) {
                         RTCPR image = new RTCPR(uri.toString());
                         rtcprRef.setValue(image);
+
+                        String rtcprImage = uri.toString();
+                        updateStatus2(rtcprImage);
                         Toast.makeText(UploadDocxUnvacc.this, "RT-PCR Test uploaded successfully!", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -468,9 +476,10 @@ public class UploadDocxUnvacc extends AppCompatActivity {
                 Toast.makeText(UploadDocxUnvacc.this, "Failed.", Toast.LENGTH_SHORT).show();
             }
         });
+        return true;
     }
 
-    private void uploadToFirebase3() {
+    private boolean uploadToFirebase3() {
         final StorageReference fileRef = storageReference.child("users/" + fAuth.getCurrentUser().getUid() + "otherFile.jpg");
 
         fileRef.putFile(otherfilesImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -481,6 +490,9 @@ public class UploadDocxUnvacc extends AppCompatActivity {
                     public void onSuccess(Uri uri) {
                         OtherFiles image = new OtherFiles(uri.toString());
                         otherfilesRef.setValue(image);
+
+                        String otherfileImage = uri.toString();
+                        updateStatus3(otherfileImage);
                         Toast.makeText(UploadDocxUnvacc.this, "File uploaded successfully!", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -491,6 +503,7 @@ public class UploadDocxUnvacc extends AppCompatActivity {
                 Toast.makeText(UploadDocxUnvacc.this, "Failed.", Toast.LENGTH_SHORT).show();
             }
         });
+        return true;
     }
 
     private String getFileExtension(Uri mUri) {
@@ -501,17 +514,65 @@ public class UploadDocxUnvacc extends AppCompatActivity {
 
     }
 
-    private void updateStatus(String stat, String govId) {
+    private void updateStatus(String govIdImage) {
+        HashMap user = new HashMap();
+        user.put("govIdImage", govIdImage);
+
+        appref.child(firebaseUser.getUid()).updateChildren(user).addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(UploadDocxUnvacc.this, "Success", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(UploadDocxUnvacc.this, "Failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void updateStatus2(String rtcprImage) {
+        HashMap user = new HashMap();
+        user.put("rtcprImage", rtcprImage);
+
+        appref.child(firebaseUser.getUid()).updateChildren(user).addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(UploadDocxUnvacc.this, "Success", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(UploadDocxUnvacc.this, "Failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void updateStatus3(String otherfileImage) {
+        HashMap user = new HashMap();
+        user.put("otherfileImage", otherfileImage);
+
+        appref.child(firebaseUser.getUid()).updateChildren(user).addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(UploadDocxUnvacc.this, "Success", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(UploadDocxUnvacc.this, "Failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void updateStatus4(String stat, String govId) {
         HashMap user = new HashMap();
         user.put("status", stat);
         user.put("govId", govId);
 
-        appref.child(fAuth.getCurrentUser().getUid()).updateChildren(user).addOnCompleteListener(new OnCompleteListener() {
+        appref.child(firebaseUser.getUid()).updateChildren(user).addOnCompleteListener(new OnCompleteListener() {
             @Override
             public void onComplete(@NonNull Task task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     Toast.makeText(UploadDocxUnvacc.this, "Success", Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     Toast.makeText(UploadDocxUnvacc.this, "Failed", Toast.LENGTH_SHORT).show();
                 }
             }

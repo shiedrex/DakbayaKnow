@@ -59,46 +59,43 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="10dp">
 
             <TextView
                 android:id="@+id/textView85"
                 android:layout_width="80dp"
-                android:layout_height="60dp"
+                android:layout_height="40dp"
                 android:fontFamily="@font/nexabold"
-                android:text="My
-                Applications"
+                android:text="My\nApplications"
                 android:textAlignment="center"
                 android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/textView92"
                 android:layout_width="80dp"
-                android:layout_height="60dp"
+                android:layout_height="40dp"
                 android:fontFamily="@font/nexabold"
-                android:text="@string/health_declaration_form"
+                android:text="HDF\nHistory"
                 android:textAlignment="center"
                 android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/textView851"
                 android:layout_width="80dp"
-                android:layout_height="60dp"
+                android:layout_height="40dp"
                 android:fontFamily="@font/nexabold"
-                android:text="Travel
-                Permit"
+                android:text="Travel\nPermit"
                 android:textAlignment="center"
                 android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/textView8512"
                 android:layout_width="80dp"
-                android:layout_height="60dp"
+                android:layout_height="40dp"
                 android:fontFamily="@font/nexabold"
-                android:text="Users
-                Feedback"
+                android:text="Users\nFeedback"
                 android:textAlignment="center"
                 android:textSize="12sp" />
         </LinearLayout>

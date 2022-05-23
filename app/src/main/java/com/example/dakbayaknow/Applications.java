@@ -5,13 +5,14 @@ public class Applications {
     private String destination;
     private String status;
     private String health;
-    private String travellerType, origin, travelDate, arrivalDate;
+    private String travellerType, origin, travelDate, arrivalDate, dateToday, travelId;
 
     public Applications() {
 
     }
 
-    public Applications(String fullname, String destination, String status, String health, String travellerType, String origin, String travelDate, String arrivalDate) {
+    public Applications(String fullname, String destination, String status, String health, String travellerType,
+                        String origin, String travelDate, String arrivalDate, String dateToday, String travelId) {
         this.fullname = fullname;
         this.destination = destination;
         this.status = status;
@@ -20,6 +21,8 @@ public class Applications {
         this.origin = origin;
         this.travelDate = travelDate;
         this.arrivalDate = arrivalDate;
+        this.dateToday = dateToday;
+        this.travelId = travelId;
     }
 
     public String getFullname() {
@@ -84,5 +87,21 @@ public class Applications {
 
     public void setArrivalDate(String arrivalDate) {
         this.arrivalDate = arrivalDate;
+    }
+
+    public String getDateToday() {
+        return dateToday;
+    }
+
+    public void setDateToday(String dateToday) {
+        this.dateToday = dateToday;
+    }
+
+    public String getTravelId() {
+        return travelId;
+    }
+
+    public void setTravelId(String travelId) {
+        this.travelId = travelId;
     }
 }

@@ -58,6 +58,7 @@
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_hdf2.xml" value="0.33" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_hdf3..xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_hdf3.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_hdfhistory.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_healthdeclarationform.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_home.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_lgucontacts.xml" value="0.33" />
@@ -90,11 +91,12 @@
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_unvacc_manila.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_updateprofile.xml" value="0.33" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_uploaddocuments.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_uploaddocx.xml" value="0.33" />
+        <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_uploaddocx.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_uploaddocx2.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_uploaddocx3.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_uploaddocxfullyvacc.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_uploaddocxunvacc.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_usersapplications.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_usersfeedback.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_welcomeuser.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/alert1_dialog.xml" value="0.36666666666666664" />
@@ -109,6 +111,8 @@
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/card_holder2.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/card_holder3.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/card_holder4.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/card_holder_hdfhistory.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/card_holder_myapp.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/content_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/content_main2.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/dialog_searchable_spinner.xml" value="0.25" />

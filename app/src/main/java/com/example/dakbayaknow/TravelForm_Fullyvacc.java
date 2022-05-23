@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,7 +30,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.google.protobuf.StringValue;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -63,7 +66,7 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
     AutoCompleteTextView spinner_travellerType, spinner_title;
 
     private android.widget.Spinner spinner_cProvince, spinner_cRegion, spinner_cMunicipality,
-                                   spinner_dProvince, spinner_dRegion, spinner_dMunicipality;
+            spinner_dProvince, spinner_dRegion, spinner_dMunicipality;
 
     ArrayList<String> arrayList_Region, arrayList_Province, arrayList_Municipality;
     ArrayAdapter<String> arrayAdapter_Region, arrayAdapter_Province, arrayAdapter_Municipality;
@@ -103,10 +106,10 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
         spinner_title = findViewById(R.id.spinner_title);
 
         spinner_cRegion = findViewById(R.id.spinner_cRegion);
-        spinner_cProvince= findViewById(R.id.spinner_cProvince);
+        spinner_cProvince = findViewById(R.id.spinner_cProvince);
         spinner_cMunicipality = findViewById(R.id.spinner_cMunicipality);
         spinner_dRegion = findViewById(R.id.spinner_dRegion);
-        spinner_dProvince= findViewById(R.id.spinner_dProvince);
+        spinner_dProvince = findViewById(R.id.spinner_dProvince);
         spinner_dMunicipality = findViewById(R.id.spinner_dMunicipality);
 
         //radiobutton
@@ -120,7 +123,7 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
         value = new TravelFormDetails();
         value2 = new Applications();
 
-        reference = database.getInstance().getReference("users").child(fAuth.getCurrentUser().getUid()).child("travelform");
+        reference = database.getInstance().getReference("travelform");
         ref2 = database.getInstance().getReference("applications");
 
         dialog = new Dialog(this);
@@ -146,8 +149,8 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
         setListener = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int dayofMonth) {
-                month = month+1;
-                String date = month+"/"+dayofMonth+"/"+year;
+                month = month + 1;
+                String date = month + "/" + dayofMonth + "/" + year;
                 departureText.setText(date);
             }
         };
@@ -163,8 +166,8 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
         setListener2 = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker datePicker, int year, int month, int dayofMonth) {
-                month = month+1;
-                String date = month+"/"+dayofMonth+"/"+year;
+                month = month + 1;
+                String date = month + "/" + dayofMonth + "/" + year;
                 arrivalText.setText(date);
             }
         };
@@ -224,8 +227,8 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
 
         spinner_cRegion.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i , long l) {
-                int position = (int)adapterView.getItemIdAtPosition(i);
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                int position = (int) adapterView.getItemIdAtPosition(i);
                 switch (position) {
                     case 0:
                         arrayList_Province = new ArrayList<>();
@@ -283,7 +286,7 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
 
         spinner_cProvince.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i , long l) {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String item = adapterView.getSelectedItem().toString();
                 switch (item) {
                     //NCR
@@ -817,8 +820,8 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
 
         spinner_dRegion.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i , long l) {
-                int position = (int)adapterView.getItemIdAtPosition(i);
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                int position = (int) adapterView.getItemIdAtPosition(i);
                 switch (position) {
                     case 0:
                         arrayList_Province = new ArrayList<>();
@@ -876,7 +879,7 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
 
         spinner_dProvince.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i , long l) {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 String item = adapterView.getSelectedItem().toString();
                 switch (item) {
                     //NCR
@@ -1410,8 +1413,8 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
         reference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if(snapshot.exists()){
-                    maxid = (int)snapshot.getChildrenCount();
+                if (snapshot.exists()) {
+                    maxid = (int) snapshot.getChildrenCount() + 1;
                 }
             }
 
@@ -1455,11 +1458,11 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
                 value.setdProvince(spinner_dProvince.getSelectedItem().toString());
                 value.setdMunicipality(spinner_dMunicipality.getSelectedItem().toString());
 
-                if(male.isChecked()){
+                if (male.isChecked()) {
                     value.setGender(g1);
-                }else if (female.isChecked()){
+                } else if (female.isChecked()) {
                     value.setGender(g2);
-                }else{
+                } else {
                     value.setGender((g3));
                 }
 
@@ -1473,7 +1476,7 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
                 String dAddress = dAddressText.getText().toString().trim();
                 String departure = departureText.getText().toString().trim();
                 String arrival = arrivalText.getText().toString().trim();
-                String datetoday  = dateTodayText.getText().toString().trim();
+                String datetoday = dateTodayText.getText().toString().trim();
 
                 //required
                 if (firstname.isEmpty()) {
@@ -1496,7 +1499,7 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
                     emailText.requestFocus();
                     return;
                 }
-                if(!email.matches(fAuth.getCurrentUser().getEmail())){
+                if (!email.matches(fAuth.getCurrentUser().getEmail())) {
                     emailText.setError("Incorrect Email!");
                     emailText.requestFocus();
                     return;
@@ -1508,7 +1511,7 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
                 }
                 if (emergencyContactPerson.isEmpty()) {
                     emergencyContactPersonText.setError("Emergency Contact Person is required!");
-                   emergencyContactPersonText.requestFocus();
+                    emergencyContactPersonText.requestFocus();
                     return;
                 }
                 if (emergencyContactNumber.isEmpty()) {
@@ -1548,7 +1551,7 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
                 String vax = "vaccinated";
                 value.setVaccineStatus(vax);
 
-                reference.child(String.valueOf(fAuth.getCurrentUser().getUid())).setValue(value);
+                reference.child((fAuth.getCurrentUser().getUid())).setValue(value);
 
                 String stat = "Please upload required requirements (vaccinated)";
                 value.setStatus(stat);
@@ -1563,8 +1566,10 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
                 String travDate = departureText.getText().toString();
                 String arrivDate = arrivalText.getText().toString();
                 String dateToday = dateTodayText.getText().toString().trim();
+                String fullname = firstnameText.getText().toString()+" "+middleInitialText.getText().toString()+" "+
+                        lastnameText.getText().toString()+" "+suffixnameText.getText().toString();
 
-                updateStatus(stat, travType, orig, des, travDate, arrivDate, email, dateToday);
+                updateStatus(fullname, stat, travType, orig, des, travDate, arrivDate, email, dateToday);
 
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -1574,6 +1579,7 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
                         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
                         Button ok = dialog.findViewById(R.id.okButton);
+
                         dialog.show();
 
                         ok.setOnClickListener(new View.OnClickListener() {
@@ -1584,7 +1590,7 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
                             }
                         });
                     }
-                }, 3000);
+                },3000);
             }
         });
 
@@ -1599,16 +1605,19 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
         arrayList_Region.add("Northern Mindanao (Region X)");
         loadRegion(arrayList_Region);
     }
+
     public void loadRegion(ArrayList<String> arrayList_Region) {
         arrayAdapter_Region = new ArrayAdapter<>(this, R.layout.textview_gray, arrayList_Region);
         arrayAdapter_Region.setDropDownViewResource(R.layout.textview_gray);
         spinner_cRegion.setAdapter(arrayAdapter_Region);
     }
+
     public void loadProvince(ArrayList<String> arrayList_Province) {
         arrayAdapter_Province = new ArrayAdapter<>(this, R.layout.textview_gray, arrayList_Province);
         arrayAdapter_Province.setDropDownViewResource(R.layout.textview_gray);
         spinner_cProvince.setAdapter(arrayAdapter_Province);
     }
+
     public void loadMunicipality(ArrayList<String> arrayList_Municipality) {
         arrayAdapter_Municipality = new ArrayAdapter<>(this, R.layout.textview_gray, arrayList_Municipality);
         arrayAdapter_Municipality.setDropDownViewResource(R.layout.textview_gray);
@@ -1624,24 +1633,28 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
         arrayList_Region.add("Northern Mindanao (Region X)");
         load_dRegion(arrayList_Region);
     }
+
     public void load_dRegion(ArrayList<String> arrayList_Region) {
         arrayAdapter_Region = new ArrayAdapter<>(this, R.layout.textview_gray, arrayList_Region);
         arrayAdapter_Region.setDropDownViewResource(R.layout.textview_gray);
         spinner_dRegion.setAdapter(arrayAdapter_Region);
     }
+
     public void load_dProvince(ArrayList<String> arrayList_Province) {
         arrayAdapter_Province = new ArrayAdapter<>(this, R.layout.textview_gray, arrayList_Province);
         arrayAdapter_Province.setDropDownViewResource(R.layout.textview_gray);
         spinner_dProvince.setAdapter(arrayAdapter_Province);
     }
+
     public void load_dMunicipality(ArrayList<String> arrayList_Municipality) {
         arrayAdapter_Municipality = new ArrayAdapter<>(this, R.layout.textview_gray, arrayList_Municipality);
         arrayAdapter_Municipality.setDropDownViewResource(R.layout.textview_gray);
         spinner_dMunicipality.setAdapter(arrayAdapter_Municipality);
     }
 
-    private void updateStatus(String stat, String travType, String orig, String des, String travDate, String arrivDate, String email, String dateToday) {
+    private void updateStatus(String fullname, String stat, String travType, String orig, String des, String travDate, String arrivDate, String email, String dateToday) {
         HashMap user = new HashMap();
+        user.put("fullname", fullname);
         user.put("status", stat);
         user.put("travellerType", travType);
         user.put("origin", orig);
@@ -1654,12 +1667,19 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
         ref2.child(fAuth.getCurrentUser().getUid()).updateChildren(user).addOnCompleteListener(new OnCompleteListener() {
             @Override
             public void onComplete(@NonNull Task task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     Toast.makeText(TravelForm_Fullyvacc.this, "Success", Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     Toast.makeText(TravelForm_Fullyvacc.this, "Failed", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(dialog != null && progressDialog !=null)
+            dialog.dismiss();
+            progressDialog.dismiss();
     }
 }

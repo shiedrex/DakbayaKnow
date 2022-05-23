@@ -49,6 +49,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -64,7 +65,10 @@ import com.google.firebase.storage.UploadTask;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -114,14 +118,14 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
         // getting current user data
         firebaseUser = firebaseAuth.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("users").child(firebaseUser.getUid()).child("uploadDocx");
+        databaseReference = firebaseDatabase.getReference("uploadDocx");
 
-        travelRef = firebaseDatabase.getReference("users").child(firebaseAuth.getCurrentUser().getUid()).child("travelform");
-        govIdRef = firebaseDatabase.getReference("users").child(firebaseUser.getUid()).child("uploadDocx").child(firebaseAuth.getCurrentUser().getUid()).child("govIdImage");
-        vaccCardRef = firebaseDatabase.getReference("users").child(firebaseUser.getUid()).child("uploadDocx").child(firebaseAuth.getCurrentUser().getUid()).child("vaccCardImage");
+        travelRef = firebaseDatabase.getReference("travelform");
+        govIdRef = firebaseDatabase.getReference("uploadDocx").child(firebaseAuth.getCurrentUser().getUid());
+        vaccCardRef = firebaseDatabase.getReference("uploadDocx").child(firebaseAuth.getCurrentUser().getUid());
         appref = FirebaseDatabase.getInstance().getReference("applications");
-        app_govIdRef = firebaseDatabase.getReference("applications").child(firebaseUser.getUid());
-        app_vaccCardRef = firebaseDatabase.getReference("applications").child(firebaseUser.getUid());
+        app_govIdRef = firebaseDatabase.getReference("applications");
+        app_vaccCardRef = firebaseDatabase.getReference("applications");
 
         queue = Volley.newRequestQueue(getApplicationContext());
         //button
@@ -173,10 +177,9 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
         int PERMISSION_ALL = 1;
         String[] PERMISSIONS = {Manifest.permission.CAMERA};
 
-        if(!hasPermissions(this,PERMISSIONS)) {
+        if (!hasPermissions(this, PERMISSIONS)) {
             ActivityCompat.requestPermissions(this, PERMISSIONS, PERMISSION_ALL);
-        }
-        else {
+        } else {
             govIdButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -292,7 +295,6 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    // Retrieving Data from firebase
                     String fn = "" + dataSnapshot1.child("firstname").getValue();
                     String mi = "" + dataSnapshot1.child("middleinitial").getValue();
                     String ln = "" + dataSnapshot1.child("lastname").getValue();
@@ -316,7 +318,7 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });
@@ -388,37 +390,40 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
 
                                 uploadToFirebase();
                                 uploadToFirebase2();
-//                                uploadToFirebaseFromCamera();
-//                                uploadToFirebaseFromCamera2();
 
-                                databaseReference.child(String.valueOf(firebaseAuth.getCurrentUser().getUid())).setValue(value);
-                                String stat = "Pending";
-                                value.setStatus(stat);
+//                              uploadToFirebaseFromCamera();
+//                              uploadToFirebaseFromCamera2();
 
-                                String govId = spinner_govId.getText().toString().trim();
-                                String govIdImage = govIdImageUri.getPath();
-                                String vaccCardImage = vaccCardImageUri.getPath();
-//                                updateStatus(stat, govId, govIdImage, vaccCardImage);
+                                if (uploadToFirebase()==true && uploadToFirebase2()==true) {
+                                    databaseReference.child((firebaseAuth.getCurrentUser().getUid())).setValue(value);
 
-                                new Handler().postDelayed(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        progressDialog.dismiss();
-                                        dialog.setContentView(R.layout.uploaddocx_success_dialog);
-                                        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                    String stat = "Fill up HDF";
+                                    String govID = spinner_govId.getText().toString().trim();
 
-                                        Button ok = dialog.findViewById(R.id.okButton);
-                                        dialog.show();
+                                    updateStatus3(stat, govID);
 
-                                        ok.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View view) {
-                                                dialog.dismiss();
-                                                startActivity(new Intent(UploadDocxFullyVacc.this, MainActivity.class));
-                                            }
-                                        });
-                                    }
-                                }, 3000);
+                                    new Handler().postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            progressDialog.dismiss();
+                                            dialog.setContentView(R.layout.uploaddocx_success_dialog);
+                                            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                                            Button ok = dialog.findViewById(R.id.okButton);
+
+                                            dialog.show();
+
+                                            ok.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    dialog.dismiss();
+                                                    startActivity(new Intent(UploadDocxFullyVacc.this, HealthDeclarationForm.class));
+                                                }
+                                            });
+                                        }
+                                    }, 3000);
+                                }
+
                             } else {
                                 // if the response if failure we are displaying
                                 // a below toast message.
@@ -501,7 +506,7 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
         }
     }
 
-    private void uploadToFirebase() {
+    private boolean uploadToFirebase() {
         final StorageReference fileRef = storageReference.child("users/" + firebaseUser.getUid() + "govId.jpg");
         fileRef.putFile(govIdImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -509,58 +514,11 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
                 fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                     @Override
                     public void onSuccess(Uri uri) {
-                        Query query = travelRef.orderByChild("email").equalTo(firebaseUser.getEmail());
-                        query.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                                    // Retrieving Data from firebase
-                                    String fn = "" + dataSnapshot1.child("firstname").getValue();
-                                    String mi = "" + dataSnapshot1.child("middleinitial").getValue();
-                                    String ln = "" + dataSnapshot1.child("lastname").getValue();
-                                    String sn = "" + dataSnapshot1.child("suffixname").getValue();
-                                    String cAdd = "" + dataSnapshot1.child("cAddress").getValue();
-                                    String cMuni = "" + dataSnapshot1.child("cMunicipality").getValue();
-                                    String cProv = "" + dataSnapshot1.child("cProvince").getValue();
-                                    String dAdd = "" + dataSnapshot1.child("dAddress").getValue();
-                                    String dMuni = "" + dataSnapshot1.child("dMunicipality").getValue();
-                                    String dProv = "" + dataSnapshot1.child("dProvince").getValue();
-                                    String depart = "" + dataSnapshot1.child("departure").getValue();
-                                    String arriv = "" + dataSnapshot1.child("arrival").getValue();
-                                    String mail = "" + dataSnapshot1.child("email").getValue();
-                                    String travType = "" + dataSnapshot1.child("travellerType").getValue();
+                        GovId image = new GovId(uri.toString());
+                        govIdRef.child("govIdImage").setValue(image);
 
-                                    // setting data to our text view
-                                    String fullname = fn + " " + mi + " " + ln + " " + sn;
-                                    String destination = dAdd + ", " + dMuni + ", " + dProv;
-                                    String origin = cAdd + ", " + cMuni + ", " + cProv;
-                                    String departure = depart;
-                                    String arrival = arriv;
-                                    String email = mail;
-                                    String travellerType = travType;
-                                    String govId = spinner_govId.getText().toString().trim();
-                                    String govIdNum = govIdNumber.getText().toString().trim();
-                                    String status = "Pending";
-
-                                    GovId image = new GovId(uri.toString());
-                                    govIdRef.setValue(image);
-//                                    GovIdImage image2 = new GovIdImage(fullname, destination, origin, departure, arrival, email, travellerType, govId, status, uri.toString());
-//                                    app_govIdRef.setValue(image2);
-
-                                    String stat = "Pending";
-                                    value.setStatus(stat);
-
-                                    String govID = spinner_govId.getText().toString().trim();
-                                    String govIdImage = uri.toString();
-                                    updateStatus(stat, govID, govIdImage);
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
+                        String govIdImage = uri.toString();
+                        updateStatus(govIdImage);
                     }
                 });
             }
@@ -570,9 +528,11 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
                 Toast.makeText(UploadDocxFullyVacc.this, "Failed.", Toast.LENGTH_SHORT).show();
             }
         });
+        return true;
     }
 
-    private void uploadToFirebase2() {
+    private boolean uploadToFirebase2() {
+
         StorageReference fileRef = storageReference.child("users/" + firebaseUser.getUid() + "vaccCard.jpg");
         fileRef.putFile(vaccCardImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
@@ -581,59 +541,10 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
                     @Override
                     public void onSuccess(Uri uri) {
                         VaccCard image = new VaccCard(uri.toString());
-                        vaccCardRef.setValue(image);
-                        Query query = travelRef.orderByChild("email").equalTo(firebaseUser.getEmail());
-                        query.addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                                    // Retrieving Data from firebase
-                                    String fn = "" + dataSnapshot1.child("firstname").getValue();
-                                    String mi = "" + dataSnapshot1.child("middleinitial").getValue();
-                                    String ln = "" + dataSnapshot1.child("lastname").getValue();
-                                    String sn = "" + dataSnapshot1.child("suffixname").getValue();
-                                    String cAdd = "" + dataSnapshot1.child("cAddress").getValue();
-                                    String cMuni = "" + dataSnapshot1.child("cMunicipality").getValue();
-                                    String cProv = "" + dataSnapshot1.child("cProvince").getValue();
-                                    String dAdd = "" + dataSnapshot1.child("dAddress").getValue();
-                                    String dMuni = "" + dataSnapshot1.child("dMunicipality").getValue();
-                                    String dProv = "" + dataSnapshot1.child("dProvince").getValue();
-                                    String depart = "" + dataSnapshot1.child("departure").getValue();
-                                    String arriv = "" + dataSnapshot1.child("arrival").getValue();
-                                    String mail = "" + dataSnapshot1.child("email").getValue();
-                                    String travType = "" + dataSnapshot1.child("travellerType").getValue();
+                        vaccCardRef.child("vaccCardImage").setValue(image);
 
-                                    // setting data to our text view
-                                    String fullname = fn + " " + mi + " " + ln + " " + sn;
-                                    String destination = dAdd + ", " + dMuni + ", " + dProv;
-                                    String origin = cAdd + ", " + cMuni + ", " + cProv;
-                                    String departure = depart;
-                                    String arrival = arriv;
-                                    String email = mail;
-                                    String travellerType = travType;
-                                    String govId = spinner_govId.getText().toString().trim();
-                                    String govIdNum = govIdNumber.getText().toString().trim();
-                                    String status = "Pending";
-
-                                    VaccCard image = new VaccCard(uri.toString());
-                                    vaccCardRef.setValue(image);
-//                                    VaccCardImage image2 = new VaccCardImage(fullname, destination, origin, departure, arrival, email, travellerType, govId, status, uri.toString());
-//                                    app_vaccCardRef.setValue(image2);
-
-                                    String stat = "Pending";
-                                    value.setStatus(stat);
-
-                                    String govID = spinner_govId.getText().toString().trim();
-                                    String vaccCardImage = uri.toString();
-                                    updateStatus2(stat, govID, vaccCardImage);
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                            }
-                        });
+                        String vaccCardImage = uri.toString();
+                        updateStatus2(vaccCardImage);
                     }
                 });
             }
@@ -643,6 +554,7 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
                 Toast.makeText(UploadDocxFullyVacc.this, "Failed.", Toast.LENGTH_SHORT).show();
             }
         });
+        return true;
     }
 
     private void uploadToFirebaseFromCamera() {
@@ -654,7 +566,7 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
                     @Override
                     public void onSuccess(Uri uri) {
                         GovId image = new GovId(uri.toString());
-                        govIdRef.setValue(image);
+                        govIdRef.child("govIdImage").setValue(image);
 //                        GovIdImage image2 = new GovIdImage(uri.toString());
 //                        app_govIdRef.setValue(image2);
                     }
@@ -670,7 +582,6 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
 
     private void uploadToFirebaseFromCamera2() {
         final StorageReference fileRef = storageReference.child("users/" + fAuth.getCurrentUser().getUid() + "vaccCard.jpg");
-
         fileRef.putBytes(bb2).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -678,7 +589,7 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
                     @Override
                     public void onSuccess(Uri uri) {
                         VaccCard image = new VaccCard(uri.toString());
-                        vaccCardRef.setValue(image);
+                        vaccCardRef.child("vaccCardImage").setValue(image);
 //                        VaccCardImage image2 = new VaccCardImage(uri.toString());
 //                        app_vaccCardRef.setValue(image2);
                     }
@@ -693,7 +604,6 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
     }
 
 
-
     private String getFileExtension(Uri mUri) {
         ContentResolver cr = getContentResolver();
         MimeTypeMap mime = MimeTypeMap.getSingleton();
@@ -704,23 +614,26 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
         Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(openGalleryIntent, 1000);
     }
+
     public void pick_gallery_vacccard() {
         Intent openGalleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         startActivityForResult(openGalleryIntent, 2000);
     }
+
     public void pick_camera_govid() {
         Intent openGalleryIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(openGalleryIntent, 3000);
     }
+
     public void pick_camera_vacccard() {
         Intent openGalleryIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         startActivityForResult(openGalleryIntent, 4000);
     }
 
     public static boolean hasPermissions(Context context, String... permissions) {
-        if (context!=null && permissions!=null){
-            for(String permission : permissions) {
-                if(ActivityCompat.checkSelfPermission(context,permission) != PackageManager.PERMISSION_GRANTED) {
+        if (context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
                     return false;
                 }
             }
@@ -728,7 +641,7 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
         return true;
     }
 
-    private void onCaptureImageResult(Intent data){
+    private void onCaptureImageResult(Intent data) {
         Bitmap bitmap = (Bitmap) data.getExtras().get("data");
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
@@ -738,7 +651,7 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
         uploadToFirebaseFromCamera();
     }
 
-    private void onCaptureImageResult2(Intent data){
+    private void onCaptureImageResult2(Intent data) {
         Bitmap bitmap = (Bitmap) data.getExtras().get("data");
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes);
@@ -748,38 +661,60 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
         uploadToFirebaseFromCamera2();
     }
 
-    private void updateStatus(String stat, String govId, String govIdImage) {
+    private void updateStatus(String govIdImage) {
         HashMap user = new HashMap();
-        user.put("status", stat);
-        user.put("govId", govId);
         user.put("govIdImage", govIdImage);
 
-        appref.child(fAuth.getCurrentUser().getUid()).updateChildren(user).addOnCompleteListener(new OnCompleteListener() {
+        appref.child(firebaseUser.getUid()).updateChildren(user).addOnCompleteListener(new OnCompleteListener() {
             @Override
             public void onComplete(@NonNull Task task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     Toast.makeText(UploadDocxFullyVacc.this, "Success", Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     Toast.makeText(UploadDocxFullyVacc.this, "Failed", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
-    private void updateStatus2(String stat, String govId, String vaccCardImage) {
+
+    private void updateStatus2(String vaccCardImage) {
         HashMap user = new HashMap();
-        user.put("status", stat);
-        user.put("govId", govId);
         user.put("vaccCardImage", vaccCardImage);
 
-        appref.child(fAuth.getCurrentUser().getUid()).updateChildren(user).addOnCompleteListener(new OnCompleteListener() {
+        appref.child(firebaseUser.getUid()).updateChildren(user).addOnCompleteListener(new OnCompleteListener() {
             @Override
             public void onComplete(@NonNull Task task) {
-                if(task.isSuccessful()){
+                if (task.isSuccessful()) {
                     Toast.makeText(UploadDocxFullyVacc.this, "Success", Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     Toast.makeText(UploadDocxFullyVacc.this, "Failed", Toast.LENGTH_SHORT).show();
                 }
             }
         });
+    }
+
+    private void updateStatus3(String stat, String govId) {
+        HashMap user = new HashMap();
+        user.put("status", stat);
+        user.put("govId", govId);
+
+        appref.child(firebaseUser.getUid()).updateChildren(user).addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(UploadDocxFullyVacc.this, "Success", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(UploadDocxFullyVacc.this, "Failed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (dialog != null && progressDialog != null)
+            dialog.dismiss();
+        progressDialog.dismiss();
     }
 }

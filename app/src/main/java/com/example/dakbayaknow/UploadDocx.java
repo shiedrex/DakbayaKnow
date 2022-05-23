@@ -8,7 +8,7 @@ import android.widget.Button;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class UploadDocx extends AppCompatActivity {
-    private Button checkRequirementsButton, uploadDocxFullyVacc, uploadDocxUnvacc;
+    private Button checkRequirementsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,15 +18,15 @@ public class UploadDocx extends AppCompatActivity {
         getSupportActionBar().setTitle("Upload Docx");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        checkRequirementsButton = (Button) findViewById(R.id.checkRequirementsButton);
+        checkRequirementsButton = findViewById(R.id.checkRequirementsButton);
         checkRequirementsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openUploadDocxFullyVac();
+                openUploadDocxFullyVacc();
             }
         });
     }
-    public void openUploadDocxFullyVac() {
+    public void openUploadDocxFullyVacc() {
         Intent intent = new Intent(this, UploadDocxFullyVacc.class);
         startActivity(intent);
     }

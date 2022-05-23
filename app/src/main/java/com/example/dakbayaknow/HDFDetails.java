@@ -1,9 +1,12 @@
 package com.example.dakbayaknow;
 
 public class HDFDetails {
-    private String gender, firstname, middlename, lastname, nationality, age, email, contactNumber, presentAddress, country, city, arrival, symptoms, sick, covid, animal;
+    private String gender, firstname, middlename, lastname, nationality, age, email, contactNumber, presentAddress, country, city, arrival,
+            symptoms, sick, covid, animal, dateToday, status;
 
-    public HDFDetails(String gender, String firstname, String middlename, String lastname, String nationality, String age, String email, String contactNumber, String presentAddress, String country, String city, String arrival, String symptoms, String sick, String covid, String animal) {
+    public HDFDetails(String gender, String firstname, String middlename, String lastname, String nationality, String age, String email, String contactNumber,
+                      String presentAddress, String country, String city, String arrival,
+                      String symptoms, String sick, String covid, String animal, String dateToday, String status) {
         this.gender = gender;
         this.firstname = firstname;
         this.middlename = middlename;
@@ -19,7 +22,8 @@ public class HDFDetails {
         this.sick = sick;
         this.covid = covid;
         this.animal = animal;
-
+        this.dateToday = dateToday;
+        this.status = status;
     }
 
     public HDFDetails(){
@@ -152,5 +156,21 @@ public class HDFDetails {
 
     public void setArrival(String arrival) {
         this.arrival = arrival;
+    }
+
+    public String getDateToday() {
+        return dateToday;
+    }
+
+    public void setDateToday(String dateToday) {
+        this.dateToday = dateToday;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

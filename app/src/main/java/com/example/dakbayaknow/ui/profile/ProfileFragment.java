@@ -93,6 +93,7 @@ public class ProfileFragment extends Fragment {
         databaseReference.keepSynced(true);
 
         reference = firebaseDatabase.getInstance().getReference("users").child(firebaseUser.getUid()).child("profileImage");
+        reference.keepSynced(true);
 
         // Initialising the text view and imageview
         usernameText = view.findViewById(R.id.username);

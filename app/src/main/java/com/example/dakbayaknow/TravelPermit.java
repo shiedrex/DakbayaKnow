@@ -70,8 +70,10 @@ public class TravelPermit extends AppCompatActivity {
         // getting current user data
         firebaseUser = firebaseAuth.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("users").child(firebaseAuth.getCurrentUser().getUid()).child("travelform");
+        databaseReference = firebaseDatabase.getReference("travelform");
         databaseReference2 = firebaseDatabase.getReference("applications");
+        databaseReference.keepSynced(true);
+        databaseReference2.keepSynced(true);
 
         // Initialising the text view and imageview
         fullname = findViewById(R.id.fullnameText);
@@ -113,75 +115,54 @@ public class TravelPermit extends AppCompatActivity {
             }
         });
 
-        Query query = databaseReference.orderByChild("email").equalTo(firebaseUser.getEmail());
-        query.addValueEventListener(new ValueEventListener() {
+        Query query2 = databaseReference2.orderByChild("email").equalTo(firebaseUser.getEmail());
+        query2.addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot1 : snapshot.getChildren()) {
                     // Retrieving Data from firebase
-                    String fn = "" + dataSnapshot1.child("firstname").getValue();
-                    String ln = "" + dataSnapshot1.child("lastname").getValue();
-                    String traveller = "" + dataSnapshot1.child("travellerType").getValue();
-                    String cAdd = "" + dataSnapshot1.child("cAddress").getValue();
-                    String cMuni = "" + dataSnapshot1.child("cMunicipality").getValue();
-                    String cProv = "" + dataSnapshot1.child("cProvince").getValue();
-                    String dAdd = "" + dataSnapshot1.child("dAddress").getValue();
-                    String dMuni = "" + dataSnapshot1.child("dMunicipality").getValue();
-                    String dProv = "" + dataSnapshot1.child("dProvince").getValue();
-                    String depart = "" + dataSnapshot1.child("departure").getValue();
-                    String arriv = "" + dataSnapshot1.child("arrival").getValue();
                     String stat = "" + dataSnapshot1.child("status").getValue();
                     // setting data to our text view
-                    fullname.setText(fn+" "+ln);
+                    status.setText(stat);
+
+                    if(stat.contains("Approved")){
+                        status.setTextColor(Color.parseColor("#008000"));
+                        linearLayout.setVisibility(View.VISIBLE);
+                        saveTravelPermit.setVisibility(View.VISIBLE);
+                        noTravelPermit.setVisibility(View.GONE);
+                        fillUp.setVisibility(View.GONE);
+                    } else if(stat.contains("Declined")){
+                        status.setTextColor(Color.parseColor("#FF0000"));
+                        linearLayout.setVisibility(View.GONE);
+                        saveTravelPermit.setVisibility(View.GONE);
+                        noTravelPermit.setVisibility(View.VISIBLE);
+                        fillUp.setVisibility(View.VISIBLE);
+                        fillUp.setText("Application Declined");
+                    }
+
+                    String fn = "" + dataSnapshot1.child("fullname").getValue();
+                    String traveller = "" + dataSnapshot1.child("travellerType").getValue();
+                    String des = "" + dataSnapshot1.child("destination").getValue();
+                    String orig = "" + dataSnapshot1.child("origin").getValue();
+                    String depart = "" + dataSnapshot1.child("departure").getValue();
+                    String arriv = "" + dataSnapshot1.child("arrival").getValue();
+                    // setting data to our text view
+                    fullname.setText(fn);
                     travellerType.setText(traveller);
-                    origin.setText(cAdd+", "+cMuni+", "+cProv);
-                    destination.setText(dAdd+", "+dMuni+", "+dProv);
+                    origin.setText(des);
+                    destination.setText(orig);
                     dateTravel.setText(depart);
                     expectedArrival.setText(arriv);
-
-                    Query query2 = databaseReference2.orderByChild("email").equalTo(firebaseUser.getEmail());
-                    query2.addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                                // Retrieving Data from firebase
-                                String stat = "" + dataSnapshot1.child("status").getValue();
-                                // setting data to our text view
-                                status.setText(stat);
-
-                                if(stat.contains("Approved")){
-                                    status.setTextColor(Color.parseColor("#008000"));
-                                    linearLayout.setVisibility(View.VISIBLE);
-                                    saveTravelPermit.setVisibility(View.VISIBLE);
-                                    noTravelPermit.setVisibility(View.GONE);
-                                    fillUp.setVisibility(View.GONE);
-                                } else if(stat.contains("Declined")){
-                                    status.setTextColor(Color.parseColor("#FF0000"));
-                                    linearLayout.setVisibility(View.GONE);
-                                    saveTravelPermit.setVisibility(View.GONE);
-                                    noTravelPermit.setVisibility(View.VISIBLE);
-                                    fillUp.setVisibility(View.VISIBLE);
-                                    fillUp.setText("Application Declined");
-                                }
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-//                    status.setText(stat);
 
                     MultiFormatWriter writer = new MultiFormatWriter();
                     try {
 
-                        BitMatrix matrix = writer.encode("Full Name: "+fn+" "+ln+
-                                                                 "\n\nOrigin: " +cAdd+", "+cMuni+", "+cProv+
-                                                                 "\n\nDestination: " +dAdd+", "+dMuni+", "+dProv+
-                                                                 "\n\nDeparture: " +depart+
-                                                                 "\n\nArrival: " +arriv+
-                                                                 "\n\nStatus: " +stat,
+                        BitMatrix matrix = writer.encode("Full Name: "+fn+
+                                        "\n\nOrigin: " +orig+
+                                        "\n\nDestination: " +des+
+                                        "\n\nDeparture: " +depart+
+                                        "\n\nArrival: " +arriv+
+                                        "\n\nStatus: " +stat,
                                 BarcodeFormat.QR_CODE,350, 350);
                         BarcodeEncoder encoder = new BarcodeEncoder();
                         Bitmap bitmap = encoder.createBitmap(matrix);
@@ -195,12 +176,11 @@ public class TravelPermit extends AppCompatActivity {
                     }catch (WriterException e){
                         e.printStackTrace();
                     }
-
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError error) {
 
             }
         });

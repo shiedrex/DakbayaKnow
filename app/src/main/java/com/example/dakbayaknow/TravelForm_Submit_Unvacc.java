@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class TravelForm_Submit_Unvacc extends AppCompatActivity {
 
-    private Button bookTicketButton, HDFButton, uploadDocxButton;
+    private Button bookTicketButton, uploadDocxButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,13 +26,6 @@ public class TravelForm_Submit_Unvacc extends AppCompatActivity {
                 openBookTicket();
             }
         });
-        HDFButton = (Button) findViewById(R.id.HDFButton);
-        HDFButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openHDF();
-            }
-        });
         uploadDocxButton = (Button) findViewById(R.id.uploadDocxButton);
         uploadDocxButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -43,10 +36,6 @@ public class TravelForm_Submit_Unvacc extends AppCompatActivity {
     }
     public void openBookTicket() {
         Intent intent = new Intent(this, BookTicket.class);
-        startActivity(intent);
-    }
-    public void openHDF() {
-        Intent intent = new Intent(this, HealthDeclarationForm.class);
         startActivity(intent);
     }
     public void openUploadDocx() {
