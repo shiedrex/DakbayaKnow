@@ -105,6 +105,7 @@ public class ScanFragment extends Fragment {
                     public void run() {
                         String data = result.getText();
                         text.setText(data);
+                        scannerView.setVisibility(View.GONE);
                     }
                 });
             }
@@ -160,6 +161,7 @@ public class ScanFragment extends Fragment {
                     {
                         Result result = reader.decode(bBitmap);
                         text.setText(result.getText());
+                        scannerView.setVisibility(View.GONE);
 //                        Toast.makeText(getContext(), "The content of the QR image is: " + result.getText(), Toast.LENGTH_SHORT).show();
                     }
                     catch (NotFoundException e)
