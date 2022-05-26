@@ -1569,7 +1569,8 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
                 String fullname = firstnameText.getText().toString()+" "+middleInitialText.getText().toString()+" "+
                         lastnameText.getText().toString()+" "+suffixnameText.getText().toString();
 
-                updateStatus(fullname, stat, travType, orig, des, travDate, arrivDate, email, dateToday);
+                String req = "Vaccine Card Photo (vaccinated)";
+                updateStatus(fullname, stat, travType, orig, des, travDate, arrivDate, email, dateToday, req);
 
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -1652,7 +1653,7 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
         spinner_dMunicipality.setAdapter(arrayAdapter_Municipality);
     }
 
-    private void updateStatus(String fullname, String stat, String travType, String orig, String des, String travDate, String arrivDate, String email, String dateToday) {
+    private void updateStatus(String fullname, String stat, String travType, String orig, String des, String travDate, String arrivDate, String email, String dateToday, String req) {
         HashMap user = new HashMap();
         user.put("fullname", fullname);
         user.put("status", stat);
@@ -1663,6 +1664,7 @@ public class TravelForm_Fullyvacc extends AppCompatActivity {
         user.put("arrival", arrivDate);
         user.put("email", email);
         user.put("dateToday", dateToday);
+        user.put("requirement", req);
 
         ref2.child(fAuth.getCurrentUser().getUid()).updateChildren(user).addOnCompleteListener(new OnCompleteListener() {
             @Override

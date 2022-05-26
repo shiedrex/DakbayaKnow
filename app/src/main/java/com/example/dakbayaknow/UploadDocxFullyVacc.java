@@ -388,9 +388,6 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
                                 value.setGovId(spinner_govId.getText().toString().trim());
                                 value.setGovIdNumber(govIdNumber.getText().toString().trim());
 
-                                uploadToFirebase();
-                                uploadToFirebase2();
-
 //                              uploadToFirebaseFromCamera();
 //                              uploadToFirebaseFromCamera2();
 
@@ -541,10 +538,10 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
                     @Override
                     public void onSuccess(Uri uri) {
                         VaccCard image = new VaccCard(uri.toString());
-                        vaccCardRef.child("vaccCardImage").setValue(image);
+                        vaccCardRef.child("requirementImage").setValue(image);
 
-                        String vaccCardImage = uri.toString();
-                        updateStatus2(vaccCardImage);
+                        String requirementImage = uri.toString();
+                        updateStatus2(requirementImage);
                     }
                 });
             }
@@ -677,9 +674,9 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
         });
     }
 
-    private void updateStatus2(String vaccCardImage) {
+    private void updateStatus2(String requirementImage) {
         HashMap user = new HashMap();
-        user.put("vaccCardImage", vaccCardImage);
+        user.put("vaccCardImage", requirementImage);
 
         appref.child(firebaseUser.getUid()).updateChildren(user).addOnCompleteListener(new OnCompleteListener() {
             @Override

@@ -1544,10 +1544,8 @@ public class TravelForm_Unvacc extends AppCompatActivity {
 
                 String vax = "unvaccinated";
                 value.setVaccineStatus(vax);
-                String ca = spinner_cProvince.getSelectedItem().toString();
-                String da = spinner_dProvince.getSelectedItem().toString();
 
-                reference.child((fAuth.getCurrentUser().getUid())).child(ca + "-" + da).setValue(value);
+                reference.child((fAuth.getCurrentUser().getUid())).setValue(value);
 
                 String stat = "Please upload required requirements (unvaccinated)";
                 value.setStatus(stat);
@@ -1561,9 +1559,12 @@ public class TravelForm_Unvacc extends AppCompatActivity {
                         spinner_dProvince.getSelectedItem().toString();
                 String travDate = departureText.getText().toString();
                 String arrivDate = arrivalText.getText().toString();
-                String dateToday = dateTodayText.getText().toString();
+                String dateToday = dateTodayText.getText().toString().trim();
+                String fullname = firstnameText.getText().toString()+" "+middleInitialText.getText().toString()+" "+
+                        lastnameText.getText().toString()+" "+suffixnameText.getText().toString();
 
-                updateStatus(stat, travType, orig, des, travDate, arrivDate, email, dateToday, ca, da);
+                String req = "RTCPR Test Photo (unvaccinated)";
+                updateStatus(fullname, stat, travType, orig, des, travDate, arrivDate, email, dateToday, req);
 
 
                 progressDialog.dismiss();
@@ -1641,8 +1642,9 @@ public class TravelForm_Unvacc extends AppCompatActivity {
         spinner_dMunicipality.setAdapter(arrayAdapter_Municipality);
     }
 
-    private void updateStatus(String stat, String travType, String orig, String des, String travDate, String arrivDate, String email, String dateToday, String ca, String da) {
+    private void updateStatus(String fullname, String stat, String travType, String orig, String des, String travDate, String arrivDate, String email, String dateToday, String req) {
         HashMap user = new HashMap();
+        user.put("fullname", fullname);
         user.put("status", stat);
         user.put("travellerType", travType);
         user.put("origin", orig);
@@ -1651,9 +1653,9 @@ public class TravelForm_Unvacc extends AppCompatActivity {
         user.put("arrival", arrivDate);
         user.put("email", email);
         user.put("dateToday", dateToday);
+        user.put("requirement", req);
 
-        String s = reference.push().getKey();
-        ref2.child(s).updateChildren(user).addOnCompleteListener(new OnCompleteListener() {
+        ref2.child(fAuth.getCurrentUser().getUid()).updateChildren(user).addOnCompleteListener(new OnCompleteListener() {
             @Override
             public void onComplete(@NonNull Task task) {
                 if (task.isSuccessful()) {
