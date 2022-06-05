@@ -3,9 +3,6 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/FERNANDEZ-Android/DakbayaKnow/app/src/main/res/layout/activity_bookticket.xml" value="0.35885416666666664" />
-        <entry key="..\:/FERNANDEZ-Android/DakbayaKnow/app/src/main/res/layout/activity_profile_review.xml" value="0.35885416666666664" />
-        <entry key="..\:/FERNANDEZ-Android/DakbayaKnow/app/src/main/res/menu/main.xml" value="0.35885416666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.22135416666666666" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/drawable/alertlevel1.xml" value="0.3828125" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/drawable/alertlevel5.xml" value="0.3828125" />
@@ -54,10 +51,14 @@
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_bookticket.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_checkrestrictions.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_fullvacc.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_fullvacc_cdo.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_fullvacc_cebu.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_fullvacc_manila.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_hdf.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_hdf2.xml" value="0.33" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_hdf3..xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_hdf3.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_hdfhistory.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_healthdeclarationform.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_home.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_lgucontacts.xml" value="0.33" />
@@ -69,7 +70,8 @@
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_notification.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_profile.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_profile_review.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_recovered.xml" value="0.33" />
+        <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_recovered.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_recovered_manila.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_register.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_registration.xml" value="0.33" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_registration2.xml" value="0.36666666666666664" />
@@ -78,19 +80,23 @@
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_travelform.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_travelform2.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_travelform3.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_travelform_fullyvacc.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_travelform_fullyvacc.xml" value="0.32653061224489793" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_travelform_submit.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_travelform_unvacc.xml" value="0.34526728788621874" />
+        <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_travelform_unvacc.xml" value="0.32653061224489793" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_travelpermit.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_travelrequirements.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_unvacc.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_unvacc_cdo.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_unvacc_cebu.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_unvacc_manila.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_updateprofile.xml" value="0.33" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_uploaddocuments.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_uploaddocx.xml" value="0.33" />
+        <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_uploaddocx.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_uploaddocx2.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_uploaddocx3.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_uploaddocxfullyvacc.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_uploaddocxunvacc.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_usersapplications.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_usersfeedback.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/activity_welcomeuser.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/alert1_dialog.xml" value="0.36666666666666664" />
@@ -105,6 +111,8 @@
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/card_holder2.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/card_holder3.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/card_holder4.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/card_holder_hdfhistory.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/card_holder_myapp.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/content_main.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/content_main2.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/layout/dialog_searchable_spinner.xml" value="0.25" />
@@ -156,49 +164,21 @@
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/menu/main.xml" value="0.36666666666666664" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.3828125" />
         <entry key="..\:/Users/SHIED/AndroidStudioProjects/DakbayaKnow/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.3828125" />
-        <entry key="..\:/Users/SHIED/Desktop/DakbayaKnow/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_bookticket.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_checkrestrictions.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_feedback.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_fullvacc.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_fullvacc_cdo.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_fullvacc_cebu.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_fullvacc_manila.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_hdf.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_lgucontacts.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_login.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_main.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_myapplications.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_profile_review.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_recovered.xml" value="0.33" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_recovered_manila.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_travelform_fullyvacc.xml" value="0.3389504092441021" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_travelform_submit.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_travelform_unvacc.xml" value="0.3389504092441021" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_travelrequirements.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_unvacc.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_unvacc_cdo.xml" value="0.5" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_unvacc_cebu.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_unvacc_manila.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_uploaddocx.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_uploaddocx2.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_usersfeedback.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_welcomeuser.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/app_bar_main.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/card_holder.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/card_holder2.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/card_holder4.xml" value="0.2861111111111111" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/content_main.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/hdf_failed_dialog.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/hdf_success_dialog.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/nav_header_main.xml" value="0.1527777777777778" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/rating_dialog.xml" value="0.6280487804878049" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/requirements_dialog.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/splash_screen.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/testonly.xml" value="0.365625" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/textview_gray.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/layout/travelform_success_dialog.xml" value="0.36666666666666664" />
-        <entry key="..\:/Users/joyce/StudioProjects/DakbayaKnow/app/src/main/res/menu/activity_main_drawer.xml" value="0.36666666666666664" />
+        <entry key="..\:/Users/lexis/StudioProjects/DakbayaKnow/app/src/main/res/drawable/ic_profile.xml" value="0.197" />
+        <entry key="..\:/Users/lexis/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_bookticket.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/lexis/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_hdf.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/lexis/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_hdfhistory.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/lexis/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_lgucontacts.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/lexis/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_login.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/lexis/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_profile_review.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/lexis/StudioProjects/DakbayaKnow/app/src/main/res/layout/activity_register.xml" value="0.22" />
+        <entry key="..\:/Users/lexis/StudioProjects/DakbayaKnow/app/src/main/res/layout/editprofile_dialog.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/lexis/StudioProjects/DakbayaKnow/app/src/main/res/layout/fragment_about.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/lexis/StudioProjects/DakbayaKnow/app/src/main/res/layout/fragment_profile.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/lexis/StudioProjects/DakbayaKnow/app/src/main/res/layout/fragment_scan.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/lexis/StudioProjects/DakbayaKnow/app/src/main/res/layout/textview_gray.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/lexis/StudioProjects/DakbayaKnow/app/src/main/res/menu/activity_main_drawer.xml" value="0.20416666666666666" />
+        <entry key="..\:/Users/lexis/StudioProjects/DakbayaKnow/app/src/main/res/menu/main.xml" value="0.20416666666666666" />
       </map>
     </option>
   </component>
