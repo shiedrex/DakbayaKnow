@@ -27,6 +27,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -104,9 +108,30 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
     List<RequirementModel> requirementModelList;
     byte[] bb, bb2;
 
+    Bitmap bitmap;
+    boolean isVaccard = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActivityResultLauncher<Intent> mGetContent1 = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(), new ActivityResultCallback<ActivityResult>() {
+            @Override
+            public void onActivityResult(ActivityResult result) {
+                if(result.getResultCode() == RESULT_OK && result.getData()!=null)
+                {
+                    Bundle bundle = result.getData().getExtras();
+                    bitmap = (Bitmap) bundle.get("data");
+                    if(isVaccard == true){
+                        vaccCardImage.setImageBitmap(bitmap);
+                    }
+                    else{
+                        govIdImage.setImageBitmap(bitmap);
+                    }
+                    dialog.dismiss();
+                    uploadToFirebaseFromCamera();
+                }
+            }
+        });
         setContentView(R.layout.activity_uploaddocxfullyvacc);
 
         getSupportActionBar().setTitle("Upload Docx");
@@ -222,7 +247,9 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
                         @Override
                         public void onClick(View view) {
 //                            pick_camera_govid();
-                            Toast.makeText(UploadDocxFullyVacc.this, "Under Development", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            mGetContent1.launch(intent);
+                           // Toast.makeText(UploadDocxFullyVacc.this, "Under Development", Toast.LENGTH_SHORT).show();
                         }
                     });
 
@@ -255,8 +282,12 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
                     cam.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Toast.makeText(UploadDocxFullyVacc.this, "Under Development", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            mGetContent1.launch(intent);
+                            isVaccard = true;
+                            //Toast.makeText(UploadDocxFullyVacc.this, "Under Development", Toast.LENGTH_SHORT).show();
 //                            pick_camera_vacccard();
+
                         }
                     });
 
@@ -992,7 +1023,7 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
 
     private void uploadToFirebaseFromCamera() {
         final StorageReference fileRef = storageReference.child("users/" + fAuth.getCurrentUser().getUid() + "govId.jpg");
-        fileRef.putBytes(bb).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        fileRef.putFile(getImageUri(UploadDocxFullyVacc.this, bitmap)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 fileRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -1120,5 +1151,14 @@ public class UploadDocxFullyVacc extends AppCompatActivity {
         if (dialog != null && progressDialog != null)
             dialog.dismiss();
         progressDialog.dismiss();
+
+
+    }
+
+    private Uri getImageUri(Context context, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), inImage, "Title"+ Calendar.getInstance().getTime(), null);
+        return Uri.parse(path);
     }
 }

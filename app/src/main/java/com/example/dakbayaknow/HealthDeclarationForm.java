@@ -372,7 +372,7 @@ public class HealthDeclarationForm extends AppCompatActivity {
                     }, 3000);
 
                 } else if (!symptoms.contains("NO") || sYes.isChecked() || cYes.isChecked() || aYes.isChecked()) {
-                    String health = "Stay at Home";
+                    String health = "Severe Condition";
                     String stat = "Pending";
                     updateStatus(health, date, stat);
 
