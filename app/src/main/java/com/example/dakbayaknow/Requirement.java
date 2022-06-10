@@ -1,13 +1,13 @@
 package com.example.dakbayaknow;
 
-public class VaccCard {
+public class Requirement {
     private String imageUrl;
 
-    public VaccCard(){
+    public Requirement(){
 
     }
 
-    public VaccCard(String imageUrl) {
+    public Requirement(String imageUrl) {
         this.imageUrl = imageUrl;
     }
 

@@ -1,7 +1,5 @@
 package com.example.dakbayaknow;
 
-import static androidx.core.content.ContextCompat.startActivity;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -12,14 +10,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -28,14 +23,15 @@ public class AdapterClass3 extends RecyclerView.Adapter<AdapterClass3.myViewHold
     Dialog dialog;
     Context context;
 
-    public AdapterClass3(ArrayList<Requirements> list, Context context){
+    public AdapterClass3(ArrayList<Requirements> list, Context context) {
         this.list = list;
         this.context = context;
     }
+
     @NonNull
     @Override
     public myViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_holder3,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_holder3, parent, false);
         return new myViewHolder(view);
     }
 
@@ -52,6 +48,7 @@ public class AdapterClass3 extends RecyclerView.Adapter<AdapterClass3.myViewHold
 
     class myViewHolder extends RecyclerView.ViewHolder {
         TextView ct, po;
+
         public myViewHolder(@NonNull View itemView) {
             super(itemView);
             ct = itemView.findViewById(R.id.city);
@@ -73,14 +70,16 @@ public class AdapterClass3 extends RecyclerView.Adapter<AdapterClass3.myViewHold
                     lgu.setText(ct.getText());
                     dialog.show();
 
-                    if(lgu.getText().equals("Cebu") || lgu.getText().equals("Cebu City")) {
+                    if (lgu.getText().equals("Cebu") || lgu.getText().equals("Cebu City")) {
                         recover.setVisibility(View.GONE);
                         full.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 dialog.dismiss();
-                                Intent intent = new Intent(context, FullyVaccinated_Cebu.class);
+                                Intent intent = new Intent(context, FullyVaccinated2.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.putExtra(Intent.EXTRA_TEXT, lgu.getText().toString());
+                                intent.putExtra("requirement", "For COVID-19 Fully Vaccinated Individuals");
                                 context.startActivity(intent);
 
                             }
@@ -89,8 +88,10 @@ public class AdapterClass3 extends RecyclerView.Adapter<AdapterClass3.myViewHold
                             @Override
                             public void onClick(View view) {
                                 dialog.dismiss();
-                                Intent intent = new Intent(context, Unvaccinated_Cebu.class);
+                                Intent intent = new Intent(context, Unvaccinated2.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.putExtra(Intent.EXTRA_TEXT, lgu.getText().toString());
+                                intent.putExtra("requirement", "For Unvaccinated or Incompletely Vaccinated Individuals");
                                 context.startActivity(intent);
                             }
                         });
@@ -100,16 +101,16 @@ public class AdapterClass3 extends RecyclerView.Adapter<AdapterClass3.myViewHold
                                 dialog.dismiss();
                             }
                         });
-                    }
-
-                    else if(lgu.getText().equals("Cagayan De Oro City")) {
+                    } else if (lgu.getText().equals("Cagayan De Oro City")) {
                         recover.setVisibility(View.GONE);
                         full.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 dialog.dismiss();
-                                Intent intent = new Intent(context, FullyVaccinated_CDO.class);
+                                Intent intent = new Intent(context, FullyVaccinated2.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.putExtra(Intent.EXTRA_TEXT, lgu.getText().toString());
+                                intent.putExtra("requirement", "For COVID-19 Fully Vaccinated Individuals");
                                 context.startActivity(intent);
 
                             }
@@ -118,8 +119,10 @@ public class AdapterClass3 extends RecyclerView.Adapter<AdapterClass3.myViewHold
                             @Override
                             public void onClick(View view) {
                                 dialog.dismiss();
-                                Intent intent = new Intent(context, Unvaccinated_CDO.class);
+                                Intent intent = new Intent(context, Unvaccinated2.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.putExtra(Intent.EXTRA_TEXT, lgu.getText().toString());
+                                intent.putExtra("requirement", "For Unvaccinated or Incompletely Vaccinated Individuals");
                                 context.startActivity(intent);
                             }
                         });
@@ -129,14 +132,15 @@ public class AdapterClass3 extends RecyclerView.Adapter<AdapterClass3.myViewHold
                                 dialog.dismiss();
                             }
                         });
-                    }
-                    else if(lgu.getText().equals("City of Manila")) {
+                    } else if (lgu.getText().equals("City of Manila")) {
                         full.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 dialog.dismiss();
-                                Intent intent = new Intent(context, FullyVaccinated_Manila.class);
+                                Intent intent = new Intent(context, FullyVaccinated2.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.putExtra(Intent.EXTRA_TEXT, lgu.getText().toString());
+                                intent.putExtra("requirement", "For COVID-19 Fully Vaccinated Individuals");
                                 context.startActivity(intent);
 
                             }
@@ -145,8 +149,10 @@ public class AdapterClass3 extends RecyclerView.Adapter<AdapterClass3.myViewHold
                             @Override
                             public void onClick(View view) {
                                 dialog.dismiss();
-                                Intent intent = new Intent(context, Unvaccinated_Manila.class);
+                                Intent intent = new Intent(context, Unvaccinated2.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.putExtra(Intent.EXTRA_TEXT, lgu.getText().toString());
+                                intent.putExtra("requirement", "For Unvaccinated or Incompletely Vaccinated Individuals");
                                 context.startActivity(intent);
                             }
                         });
@@ -154,8 +160,10 @@ public class AdapterClass3 extends RecyclerView.Adapter<AdapterClass3.myViewHold
                             @Override
                             public void onClick(View view) {
                                 dialog.dismiss();
-                                Intent intent = new Intent(context, Recovered_Manila.class);
+                                Intent intent = new Intent(context, Recovered.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.putExtra(Intent.EXTRA_TEXT, lgu.getText().toString());
+                                intent.putExtra("requirement", "For Recovered COVID-19 positive travelers within 3 months from positive swab test results");
                                 context.startActivity(intent);
                             }
                         });
@@ -165,14 +173,15 @@ public class AdapterClass3 extends RecyclerView.Adapter<AdapterClass3.myViewHold
                                 dialog.dismiss();
                             }
                         });
-                    }
-                    else{
+                    } else {
                         full.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 dialog.dismiss();
                                 Intent intent = new Intent(context, FullyVaccinated.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.putExtra(Intent.EXTRA_TEXT, lgu.getText().toString());
+                                intent.putExtra("requirement", "For COVID-19 Fully Vaccinated Individuals");
                                 context.startActivity(intent);
 
                             }
@@ -183,6 +192,8 @@ public class AdapterClass3 extends RecyclerView.Adapter<AdapterClass3.myViewHold
                                 dialog.dismiss();
                                 Intent intent = new Intent(context, Unvaccinated.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.putExtra(Intent.EXTRA_TEXT, lgu.getText().toString());
+                                intent.putExtra("requirement", "For Unvaccinated or Incompletely Vaccinated Individuals");
                                 context.startActivity(intent);
                             }
                         });
@@ -192,6 +203,8 @@ public class AdapterClass3 extends RecyclerView.Adapter<AdapterClass3.myViewHold
                                 dialog.dismiss();
                                 Intent intent = new Intent(context, Recovered.class);
                                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.putExtra(Intent.EXTRA_TEXT, lgu.getText().toString());
+                                intent.putExtra("requirement", "For Recovered COVID-19 positive travelers within 3 months from positive swab test results");
                                 context.startActivity(intent);
                             }
                         });

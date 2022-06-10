@@ -33,6 +33,10 @@
             android:exported="true"
             android:parentActivityName=".UploadDocx2" />
         <activity
+            android:name=".UploadDocxFullyVacc_2"
+            android:exported="true"
+            android:parentActivityName=".UploadDocx" />
+        <activity
             android:name=".UploadDocxFullyVacc"
             android:exported="true"
             android:parentActivityName=".UploadDocx" />
@@ -89,7 +93,11 @@
             android:exported="true"
             android:parentActivityName=".TravelRequirements" />
         <activity
-            android:name=".FullyVaccinated_Manila"
+            android:name=".Unvaccinated2"
+            android:exported="true"
+            android:parentActivityName=".TravelRequirements" />
+        <activity
+            android:name=".FullyVaccinated2"
             android:exported="true"
             android:parentActivityName=".TravelRequirements" />
         <activity

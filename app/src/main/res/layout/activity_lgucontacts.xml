@@ -16,7 +16,7 @@
         android:layout_marginEnd="20dp"
         android:background="@drawable/border"
         app:iconifiedByDefault="false"
-        app:queryHint="Search Province/Municipality"
+        app:queryHint="Search LGU"
         app:floatingSearch_close_search_on_keyboard_dismiss="true" />
 
     <androidx.recyclerview.widget.RecyclerView

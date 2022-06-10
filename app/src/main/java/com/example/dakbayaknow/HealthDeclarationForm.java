@@ -173,20 +173,6 @@ public class HealthDeclarationForm extends AppCompatActivity {
         dataAdapter2.setDropDownViewResource(R.layout.textview_gray);
         spinner_symptoms.setAdapter(dataAdapter2);
 
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    maxid = (int) snapshot.getChildrenCount();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
         Calendar calendar = Calendar.getInstance();
         final int year = calendar.get(Calendar.YEAR);
         final int month = calendar.get(Calendar.MONTH);

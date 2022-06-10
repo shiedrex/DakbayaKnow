@@ -22,7 +22,7 @@
             android:background="@drawable/border"
             app:floatingSearch_close_search_on_keyboard_dismiss="true"
             app:iconifiedByDefault="false"
-            app:queryHint="Search Province/Municipality" />
+            app:queryHint="Search LGU" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv"

@@ -306,67 +306,309 @@
                 android:text="For Partially Vaccinated/Unvaccinated"
                 android:textSize="18sp" />
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
-                android:fontFamily="@font/nexalight"
-                android:paddingStart="10dp"
-                android:paddingEnd="0dp"
-                android:text="RT-PCR Test Result or Equivalent"
-                android:textSize="18sp" />
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="20dp"
-                android:fontFamily="@font/nexalight"
-                android:paddingStart="10dp"
-                android:paddingEnd="0dp"
-                android:text="Upload a photo/pdf of the RT-PCR/MCC results taken 72hrs prior."
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/rtpcrImageRequired"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:fontFamily="@font/nexalight"
-                android:paddingStart="10dp"
-                android:paddingEnd="0dp"
-                android:text="*required"
-                android:textColor="@color/red"
-                android:textSize="14sp" />
-
             <LinearLayout
+                android:visibility="gone"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/req1">
 
-                <Button
-                    android:id="@+id/RTPCRButton"
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/uVaccReq1"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
                     android:layout_marginEnd="20dp"
-                    android:backgroundTint="#FEA400 "
-                    android:fontFamily="@font/nexablack"
-                    android:text="CHOOSE FILE"
-                    android:textColorLink="#FFC107" />
-
-                <ImageView
-                    android:id="@+id/rtcprImage"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginEnd="20dp"
+                    android:fontFamily="@font/nexalight"
                     android:paddingStart="10dp"
-                    android:paddingEnd="0dp" />
+                    android:paddingEnd="0dp"
+                    android:text="Requirement 1"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/uVaccReq1Required"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:fontFamily="@font/nexalight"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="0dp"
+                    android:text="*required"
+                    android:textColor="@color/red"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/uVaccReq1Button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:backgroundTint="#FEA400 "
+                        android:fontFamily="@font/nexablack"
+                        android:text="CHOOSE FILE"
+                        android:textColorLink="#FFC107" />
+
+                    <ImageView
+                        android:id="@+id/uVaccReq1Image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="0dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/req2">
+
+                <TextView
+                    android:id="@+id/uVaccReq2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:fontFamily="@font/nexalight"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="0dp"
+                    android:text="Requirement 2"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/uVaccReq2Required"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:fontFamily="@font/nexalight"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="0dp"
+                    android:text="*required"
+                    android:textColor="@color/red"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/uVaccReq2Button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:backgroundTint="#FEA400 "
+                        android:fontFamily="@font/nexablack"
+                        android:text="CHOOSE FILE"
+                        android:textColorLink="#FFC107" />
+
+                    <ImageView
+                        android:id="@+id/uVaccReq2Image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="0dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/req3">
+
+                <TextView
+                    android:id="@+id/uVaccReq3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:fontFamily="@font/nexalight"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="0dp"
+                    android:text="Requirement 3"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/uVaccReq3Required"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:fontFamily="@font/nexalight"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="0dp"
+                    android:text="*required"
+                    android:textColor="@color/red"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/uVaccReq3Button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:backgroundTint="#FEA400 "
+                        android:fontFamily="@font/nexablack"
+                        android:text="CHOOSE FILE"
+                        android:textColorLink="#FFC107" />
+
+                    <ImageView
+                        android:id="@+id/uVaccReq3Image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="0dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/req4">
+
+                <TextView
+                    android:id="@+id/uVaccReq4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:fontFamily="@font/nexalight"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="0dp"
+                    android:text="Requirement 4"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/uVaccReq4Required"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:fontFamily="@font/nexalight"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="0dp"
+                    android:text="*required"
+                    android:textColor="@color/red"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/uVaccReq4Button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:backgroundTint="#FEA400 "
+                        android:fontFamily="@font/nexablack"
+                        android:text="CHOOSE FILE"
+                        android:textColorLink="#FFC107" />
+
+                    <ImageView
+                        android:id="@+id/uVaccReq4Image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="0dp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:id="@+id/req5">
+
+                <TextView
+                    android:id="@+id/uVaccReq5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:fontFamily="@font/nexalight"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="0dp"
+                    android:text="Requirement 5"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/uVaccReq5Required"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:fontFamily="@font/nexalight"
+                    android:paddingStart="10dp"
+                    android:paddingEnd="0dp"
+                    android:text="*required"
+                    android:textColor="@color/red"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/uVaccReq5Button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:backgroundTint="#FEA400 "
+                        android:fontFamily="@font/nexablack"
+                        android:text="CHOOSE FILE"
+                        android:textColorLink="#FFC107" />
+
+                    <ImageView
+                        android:id="@+id/uVaccReq5Image"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginEnd="20dp"
+                        android:paddingStart="10dp"
+                        android:paddingEnd="0dp" />
+                </LinearLayout>
             </LinearLayout>
 
             <Button
@@ -375,7 +617,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="80dp"
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="40dp"
                 android:backgroundTint="#FEA400 "
